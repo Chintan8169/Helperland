@@ -1,0 +1,342 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Roboto", sans-serif !important;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	overflow-x: hidden;
+}
+
+nav {
+	min-height: 64px;
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+	width: 100%;
+	background: #525252;
+}
+
+.logoDiv {
+	padding-top: 6px;
+	padding-left: 15px;
+}
+
+.navItem a {
+	display: block;
+	text-decoration: none;
+	color: #fff;
+	margin: 0 10px;
+	font-size: 17px;
+	padding: 8px 15px;
+	border-radius: 50px;
+	transition: border 0.4s, background 0.4s;
+	border: 1px solid transparent;
+}
+
+.navItem.highlight a,
+.navItem a:hover {
+	border: 1px solid white;
+	background: #29626d;
+}
+
+.contactusCarousel img,
+.map img {
+	width: 100%;
+	height: auto;
+}
+
+.contactUsHeaderText {
+	font-size: 36px;
+	margin: 39px 0px 9px 0px;
+	font-weight: 700;
+	color: #4f4f4f;
+}
+
+.contactUsHeaderDecoration span {
+	width: 62px;
+	height: 1px;
+	margin: 0 8px;
+	background: #cccccc;
+}
+
+.contactUsHeaderDecoration {
+	margin-bottom: 52px;
+}
+
+.contactUsHeader {
+	max-width: 1140px;
+}
+
+.contactUsHeader hr {
+	height: 3px;
+	color: #e1e1e1;
+	margin-bottom: 80px;
+}
+
+.address,
+.phone,
+.email {
+	margin: 0 102px;
+	margin-bottom: 80px;
+}
+
+.address svg,
+.phone svg,
+.email img {
+	margin-bottom: 23px;
+}
+.address div a,
+.phone div a,
+.email div a {
+	text-decoration: none;
+	font-size: 16px;
+	color: #4f4f4f;
+}
+
+.newsletterHeader {
+	font-size: 17px;
+	color: #353548;
+	margin-bottom: 16px;
+	margin-top: 77px;
+	font-weight: 500;
+}
+
+.newsletterForm input {
+	outline: none;
+	border: 1px solid #565656;
+	padding: 11px 22px 13px;
+	margin-right: 11px;
+	background: transparent;
+	font-size: 14px;
+	width: 233px;
+}
+
+.newsletterForm button {
+	outline: none;
+	border: none;
+	background: #ff7b6d;
+	color: #fff;
+	padding: 11px 21px 13px 23px;
+	font-size: 14px;
+}
+
+footer {
+	margin-top: 53px;
+	padding: 20px 123px 26px 115px;
+	background: #111111;
+}
+
+footer hr {
+	display: block;
+	height: 1px;
+	background: #424242;
+	margin: 19px 0 25px 0;
+}
+
+.footerMenuItem a {
+	display: block;
+	text-decoration: none;
+	color: #f1f1f1;
+	margin: 0 10px;
+}
+
+.socialMedia a:nth-child(1) {
+	margin-right: 20px;
+}
+
+.terms {
+	color: #9ba0a3;
+}
+
+.terms a {
+	text-decoration: none;
+	color: #9ba0a3;
+}
+
+.contactUsForm {
+	max-width: 641px;
+}
+
+.form-item {
+	margin-bottom: 15px;
+}
+
+.form-select {
+	background-image: url("../images/downArrow.svg");
+}
+.form-control,
+.form-select {
+	padding: 14px 15px;
+	font-size: 16px;
+	color: #a0a0a0;
+}
+
+.submit {
+	font-size: 20px;
+	color: #fff;
+	padding: 10px 50px;
+	background: #1d7a8c;
+	width: 163px;
+	margin-bottom: 80px;
+}
+
+.form-control::placeholder {
+	color: #a0a0a0;
+}
+
+.map {
+	position: relative;
+}
+
+.map img:nth-child(1) {
+	position: absolute;
+	top: 45.5%;
+	left: 45.4%;
+	width: 3.1%;
+	height: 16.8%;
+}
+
+@media screen and (max-width: 1024px) {
+	nav {
+		flex-direction: column;
+		justify-content: center;
+	}
+	.logoDiv {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.navMenu {
+		overflow: hidden;
+		height: 0;
+		width: 100%;
+		padding-left: 15px;
+		background: #525252;
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 0;
+		transition: height 0.5s ease-in-out;
+		pointer-events: none;
+	}
+
+	.navMenu.open {
+		height: 400px;
+		pointer-events: all;
+	}
+
+	.navItem a,
+	.navMenu .dropdown {
+		margin: 5px 0;
+	}
+	.navMenu .dropdown {
+		margin-left: 10px;
+	}
+
+	.hamburger {
+		position: relative;
+		height: 30px;
+		width: 30px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.hamburger::before {
+		content: "";
+		position: absolute;
+		width: 30px;
+		height: 5px;
+		background-color: #fff;
+		transform: translateY(-10px);
+		box-shadow: 0 10px #fff;
+		transition: all 0.3s;
+	}
+
+	.hamburger::after {
+		content: "";
+		position: absolute;
+		width: 30px;
+		height: 5px;
+		background-color: #fff;
+		transform: translateY(10px);
+		transition: all 0.3s;
+	}
+
+	.hamburger.open::before {
+		transform: translateY(0) rotate(45deg);
+		box-shadow: none;
+	}
+
+	.hamburger.open::after {
+		transform: translateY(0) rotate(-45deg);
+	}
+
+	.address,
+	.phone,
+	.email {
+		margin: 0 50px;
+		margin-bottom: 65px;
+	}
+
+	footer {
+		padding: 25px;
+	}
+
+	.footerMain {
+		justify-content: space-evenly !important;
+	}
+
+	.footerMenu {
+		flex-direction: column;
+	}
+
+	.footerMenuItem {
+		margin-bottom: 10px;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.address,
+	.phone,
+	.email {
+		margin: 0 15px;
+		margin-bottom: 50px;
+	}
+
+	.contactUsHeader hr {
+		margin-bottom: 30px;
+	}
+
+	.footerMain {
+		flex-direction: column !important;
+	}
+
+	.footerLogo {
+		margin-bottom: 15px;
+	}
+
+	.footerMenu {
+		margin: 15px 0;
+	}
+
+	.newsletterForm {
+		flex-direction: column;
+	}
+
+	.newsletterForm button {
+		margin-top: 10px;
+	}
+}
