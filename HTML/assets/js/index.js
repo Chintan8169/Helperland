@@ -9,11 +9,13 @@ const navMenu = document.querySelector(".navMenu");
 
 window.addEventListener("scroll", () => {
 	if (window.scrollY > 130) {
-		nav.classList.add("bg-black");
+		nav.classList.add("bg-grey");
 		scrollToTop.classList.remove("hidden");
+		navMenu.style.marginTop = "27.5px";
 	} else {
-		nav.classList.remove("bg-black");
+		nav.classList.remove("bg-grey");
 		scrollToTop.classList.add("hidden");
+		navMenu.style.marginTop = "55px";
 	}
 	if (window.scrollY + window.innerHeight >= document.body.clientHeight - 100 || window.scrollY === 0) {
 		cookieConsent.classList.add("atBottom");

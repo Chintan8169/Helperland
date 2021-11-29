@@ -29,10 +29,6 @@ header {
 	padding-top: 175px;
 	background: url("../images/group-35.png") center center;
 	background-size: cover;
-	/* position: sticky;
-	top: 0;
-	left: 0;
-	transition: background 0.5s; */
 	z-index: 1000;
 }
 
@@ -43,6 +39,7 @@ header {
 
 .navMenu {
 	margin-top: 55px;
+	transition: margin-top 0.5s;
 }
 
 .navItem a {
@@ -53,7 +50,7 @@ header {
 	font-size: 17px;
 	padding: 8px 15px;
 	border-radius: 50px;
-	transition: border 0.4s;
+	transition: border 0.4s, background 0.4s;
 	border: 1px solid transparent;
 }
 
@@ -397,6 +394,25 @@ header {
 	font-size: 14px;
 }
 
+.bg-grey {
+	background: #646464;
+}
+
+.logoDiv a img {
+	transition: width 0.5s, height 0.5s;
+	height: 130px;
+	width: 175px;
+}
+
+.bg-grey .logoDiv a img {
+	width: 106px;
+	height: 78px;
+}
+
+.bg-grey .navMenu .active a {
+	background: #29626d !important;
+}
+
 footer {
 	padding: 20px 123px 26px 115px;
 	background: #111111;
@@ -428,7 +444,6 @@ footer {
 }
 
 .cookieConsentText {
-	/* width: calc(100vw - 100px - 30px); */
 	font-size: 16px;
 	color: #f1f1f1;
 }

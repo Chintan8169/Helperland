@@ -54,74 +54,200 @@ nav {
 	background: transparent !important;
 }
 
-.contactusCarousel img,
-.map img {
+.navItem.active a,
+.navItem.navItem.active a:hover {
+	border: 1px solid white !important;
+	background: transparent !important;
+}
+
+.pricesCarousel img {
 	width: 100%;
 	height: auto;
 }
 
-.contactUsHeaderText {
+.pricesHeader {
+	max-width: 1140px;
+}
+
+.pricesHeader hr {
+	height: 3px;
+	color: #dcdcdc;
+	margin: 51px 0 47px;
+}
+
+.pricesHeaderText,
+.cleaningServicesHeaderText,
+.whyHelperlandHeaderText {
 	font-size: 36px;
 	margin: 39px 0px 9px 0px;
 	font-weight: 700;
 	color: #4f4f4f;
 }
 
-.contactUsFormHeader {
-	font-size: 28px;
-	color: #4f4f4f;
-	margin-bottom: 23px;
-	font-weight: bold;
-}
-
-.contactUsHeaderDecoration span,
-.contactUsFormDecoration span {
+.pricesHeaderDecoration span,
+.cleaningServicesHeaderDecoration span,
+.whyHelperlandHeaderDecoration span {
 	width: 62px;
 	height: 1px;
 	margin: 0 8px;
 	background: #cccccc;
 }
 
-.contactUsHeaderDecoration,
-.contactUsFormDecoration {
-	margin-bottom: 52px;
+.pricesHeaderDecoration,
+.cleaningServicesHeaderDecoration,
+.whyHelperlandHeaderDecoration {
+	margin-bottom: 42px;
 }
 
-.contactUsHeader {
-	max-width: 1140px;
+.priceCard {
+	max-width: 553px;
+	margin: auto;
+	border: 1px solid #b0c9ce;
+	padding-bottom: 10px;
+	transition: transform 0.35s;
 }
 
-.contactUsHeader hr {
-	height: 3px;
-	color: #e1e1e1;
-	margin-bottom: 74px;
+.priceCard:hover {
+	transform: scale(1.07);
 }
 
-.address,
-.phone,
-.email {
-	margin: 0 102px;
-	margin-bottom: 80px;
+.priceCardHeader {
+	font-size: 28px;
+	font-weight: bold;
+	color: #fff;
+	padding: 12px 0 13px;
+	background: #1d7a8c;
 }
 
-.address svg,
-.phone svg,
-.email img {
-	margin-bottom: 23px;
+.priceCardText {
+	position: relative;
+	font-size: 48px;
+	font-weight: bold;
+	color: #646464;
+	line-height: 48px;
+	margin: 18px 0 30px;
 }
-.address div a,
-.phone div a,
-.email div a {
-	text-decoration: none;
+
+.priceCardText::before {
+	content: "\20AC";
+	margin-right: 8px;
+}
+
+.priceCardText::after {
+	content: "/hr";
+	font-size: 30px;
+	font-weight: normal;
+	align-self: flex-end;
+	line-height: 38px;
+}
+
+.priceCardDescriptionItem {
+	max-width: 553px;
+	margin: auto;
+	font-size: 17px;
+	margin-bottom: 24px;
+	color: #646464;
+}
+
+.priceCardDescriptionItem img {
+	margin-right: 9px;
+}
+
+.service {
+	margin: 0 54px;
+	margin-bottom: 56px;
+}
+
+.serviceImage {
+	border: 1px solid #b0c9ce;
+	width: 108px;
+	height: 108px;
+	margin: auto;
+}
+
+.serviceText {
+	font-size: 16px;
+	margin: 17px 0 9px;
+	color: #646464;
+}
+
+.serviceTime {
+	font-size: 18px;
+	color: #1d7a8c;
+	font-weight: bold;
+}
+
+.cleaningServices {
+	background: #f6f6f6;
+	padding-bottom: 41px;
+	padding-top: 73px;
+}
+
+.cleaningServicesHeaderText {
+	margin-top: 0 !important;
+}
+
+.cleaningServicesCard {
+	margin: 0 10px;
+	max-width: 360px;
+	margin-bottom: 40px;
+}
+
+.cleaningServicesCardHeader {
+	margin: 20px 0 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #4f4f4f;
+}
+
+.cleaningServicesCardsDescriptionItem {
 	font-size: 16px;
 	color: #4f4f4f;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.cleaningServicesCardsDescriptionItem::before {
+	content: "";
+	background: url("../images/vector-smart-object-copy.png");
+	height: 22px;
+	width: 22px;
+	margin-right: 9px;
+}
+
+.bestCleaningServiceSvg {
+	margin: 0 46px;
+	width: 329px;
+}
+
+.whyDescriptionItemHeader {
+	font-size: 20px;
+	font-weight: bold;
+	color: #646464;
+	margin-bottom: 10px;
+}
+
+.whyDescriptionItemText {
+	font-size: 14px;
+	color: #646464;
+	margin-bottom: 47px;
+}
+
+.whyHelperlandHeaderText {
+	margin-top: 71px;
+}
+
+.whyDescriptionItem {
+	max-width: 337px;
 }
 
 .newsletterHeader {
 	font-size: 17px;
 	color: #353548;
 	margin-bottom: 16px;
-	margin-top: 77px;
+	margin-top: 30px;
 	font-weight: 500;
 }
 
@@ -132,7 +258,7 @@ nav {
 	margin-right: 11px;
 	background: transparent;
 	font-size: 14px;
-	width: 233px;
+	max-width: 233px;
 }
 
 .newsletterForm button {
@@ -177,50 +303,7 @@ footer hr {
 	color: #9ba0a3;
 }
 
-.contactUsForm {
-	max-width: 641px;
-}
-
-.form-item {
-	margin-bottom: 15px;
-}
-
-.form-select {
-	background-image: url("../images/downArrow.svg");
-}
-.form-control,
-.form-select {
-	padding: 14px 15px;
-	font-size: 16px;
-	color: #a0a0a0;
-}
-
-.submit {
-	font-size: 20px;
-	color: #fff;
-	padding: 10px 50px;
-	background: #1d7a8c;
-	width: 163px;
-	margin-bottom: 80px;
-}
-
-.form-control::placeholder {
-	color: #a0a0a0;
-}
-
-.map {
-	position: relative;
-}
-
-.map img:nth-child(1) {
-	position: absolute;
-	top: 45.5%;
-	left: 45.4%;
-	width: 3.1%;
-	height: 16.8%;
-}
-
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 992px) {
 	nav {
 		flex-direction: column;
 		justify-content: center;
@@ -257,6 +340,18 @@ footer hr {
 	}
 	.navMenu .dropdown {
 		margin-left: 10px;
+	}
+
+	.whyDescription {
+		flex-direction: column;
+	}
+
+	.whyDescriptionItem {
+		max-width: 100%;
+	}
+
+	.bestCleaningServiceSvg {
+		align-self: center;
 	}
 
 	.hamburger {
@@ -299,13 +394,6 @@ footer hr {
 		transform: translateY(0) rotate(-45deg);
 	}
 
-	.address,
-	.phone,
-	.email {
-		margin: 0 50px;
-		margin-bottom: 65px;
-	}
-
 	footer {
 		padding: 25px;
 	}
@@ -324,23 +412,21 @@ footer hr {
 }
 
 @media screen and (max-width: 575px) {
-	.address,
-	.phone,
-	.email {
-		margin: 0 15px;
-		margin-bottom: 50px;
-	}
-
-	.contactUsHeader hr {
-		margin-bottom: 30px;
-	}
-
 	.footerMain {
 		flex-direction: column !important;
 	}
 
 	.footerLogo {
 		margin-bottom: 15px;
+	}
+
+	.bestCleaningServiceSvg {
+		transform: scale(0.85);
+	}
+
+	.cleaningServicesCard img,
+	.cleaningServicesCard {
+		max-width: 100%;
 	}
 
 	.footerMenu {
