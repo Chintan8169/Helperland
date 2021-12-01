@@ -433,7 +433,7 @@ header {
 	margin-right: 11px;
 	background: transparent;
 	font-size: 14px;
-	width: 233px;
+	max-width: 233px;
 }
 
 .newsletterForm button {
@@ -695,6 +695,11 @@ footer {
 
 	.newsletterForm {
 		flex-direction: column;
+	}
+
+	.newsletterForm input {
+		margin-right: 0;
+		width: 100%;
 	}
 
 	.send {

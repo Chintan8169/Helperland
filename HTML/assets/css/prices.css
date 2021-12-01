@@ -209,9 +209,7 @@ nav {
 	justify-content: flex-start;
 }
 
-.cleaningServicesCardsDescriptionItem::before {
-	content: "";
-	background: url("../images/vector-smart-object-copy.png");
+.cleaningServicesCardsDescriptionItem img {
 	height: 22px;
 	width: 22px;
 	margin-right: 9px;
@@ -288,10 +286,30 @@ footer hr {
 	text-decoration: none;
 	color: #f1f1f1;
 	margin: 0 10px;
+	transition: color 0.5s;
 }
 
-.socialMedia a:nth-child(1) {
-	margin-right: 20px;
+.tooltip-inner {
+	background: #fff !important;
+	color: #000 !important;
+}
+
+.tooltip-arrow::before {
+	border-top-color: #fff !important;
+}
+
+.footerMenuItem a:hover {
+	color: #1d7a8c;
+}
+
+.socialMedia a {
+	width: 40px;
+	height: 40px;
+	transition: background 0.4s;
+}
+
+.socialMedia a:hover {
+	background: #29626d;
 }
 
 .terms {
@@ -301,6 +319,38 @@ footer hr {
 .terms a {
 	text-decoration: none;
 	color: #9ba0a3;
+}
+
+#scrollToTop {
+	position: fixed;
+	bottom: 70px;
+	left: 70px;
+	height: 48px;
+	width: 48px;
+	background: #525252;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	opacity: 1;
+	transition: opacity 0.5s, background 0.5s;
+}
+
+#scrollToTop:hover {
+	background: #006072;
+}
+
+.messageBot {
+	position: fixed;
+	bottom: 70px;
+	right: 71px;
+}
+
+.hidden {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 @media screen and (max-width: 992px) {
@@ -394,6 +444,16 @@ footer hr {
 		transform: translateY(0) rotate(-45deg);
 	}
 
+	#scrollToTop {
+		bottom: 45px;
+		left: 45px;
+	}
+
+	.messageBot {
+		bottom: 45px;
+		right: 45px;
+	}
+
 	footer {
 		padding: 25px;
 	}
@@ -421,7 +481,8 @@ footer hr {
 	}
 
 	.bestCleaningServiceSvg {
-		transform: scale(0.85);
+		width: 100%;
+		height: auto;
 	}
 
 	.cleaningServicesCard img,
@@ -437,7 +498,22 @@ footer hr {
 		flex-direction: column;
 	}
 
+	.newsletterForm input {
+		margin-right: 0;
+		width: 100%;
+	}
+
 	.newsletterForm button {
 		margin-top: 10px;
+	}
+
+	#scrollToTop {
+		bottom: 30px;
+		left: 30px;
+	}
+
+	.messageBot {
+		bottom: 30px;
+		right: 30px;
 	}
 }

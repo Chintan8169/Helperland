@@ -64,15 +64,17 @@ nav {
 	padding-bottom: 25px;
 	background: #f6f6f6;
 	color: #646464;
-	border-bottom: 4px solid #1d7a8c;
+	/* border-bottom: 4px solid #1d7a8c; */
 	font-size: 24px;
 	cursor: pointer;
-	transition: background 0.3s, color 0.3s;
+	transition: color 0.3s, box-shadow 0.3s;
+	overflow: hidden;
+	box-shadow: inset 0 -4px 0 #1d7a8c;
 }
 
 .forCustomer.active,
 .forServiceProvider.active {
-	background: #1d7a8c !important;
+	box-shadow: inset 0 -100px 0 0 #1d7a8c;
 	color: #fff !important;
 }
 
@@ -187,10 +189,21 @@ footer hr {
 	text-decoration: none;
 	color: #f1f1f1;
 	margin: 0 10px;
+	transition: color 0.5s;
 }
 
-.socialMedia a:nth-child(1) {
-	margin-right: 20px;
+.footerMenuItem a:hover {
+	color: #1d7a8c;
+}
+
+.socialMedia a {
+	width: 40px;
+	height: 40px;
+	transition: background 0.4s;
+}
+
+.socialMedia a:hover {
+	background: #29626d;
 }
 
 .terms {
@@ -200,6 +213,15 @@ footer hr {
 .terms a {
 	text-decoration: none;
 	color: #9ba0a3;
+}
+
+.tooltip-inner {
+	background: #fff !important;
+	color: #000 !important;
+}
+
+.tooltip-arrow::before {
+	border-top-color: #fff !important;
 }
 
 @media screen and (max-width: 1024px) {

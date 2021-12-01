@@ -4,6 +4,9 @@ const forCustomer = document.querySelector(".forCustomer");
 const forServiceProvider = document.querySelector(".forServiceProvider");
 const accordion = document.querySelector(".accordion");
 
+const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
 hamburger.addEventListener("click", () => {
 	hamburger.classList.toggle("open");
 	navMenu.classList.toggle("open");
