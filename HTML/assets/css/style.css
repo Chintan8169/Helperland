@@ -16,7 +16,6 @@ body {
 }
 
 nav {
-	/* height: 0; */
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -25,10 +24,23 @@ nav {
 	transition: background 0.5s;
 }
 
+.backgroundImage {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -2;
+	width: 100vw;
+	object-fit: contain;
+}
+
+.backgroundImage img {
+	height: 100%;
+	width: 100%;
+}
+
 header {
 	padding-top: 175px;
-	background: url("../images/group-35.png") center center;
-	background-size: cover;
 	z-index: 1000;
 }
 
@@ -86,16 +98,24 @@ header {
 }
 .topCrousel {
 	min-height: calc(100vh - 140px);
+	z-index: -1;
 }
 
 .scrollDown {
 	height: 40px;
 	width: 40px;
 	margin: 0 auto;
+	margin-bottom: 33px;
 	cursor: pointer;
+	transition: background 0.5s;
+	border-radius: 50%;
 }
 .scrollDown svg {
 	position: absolute;
+}
+
+.scrollDown:hover {
+	background: #006072;
 }
 
 .crouselInfo {
@@ -105,7 +125,7 @@ header {
 
 .crouselHeader {
 	font-size: 50px;
-	margin-bottom: 10px;
+	margin-bottom: 16px;
 }
 
 .crouselInfoItem {
@@ -132,14 +152,12 @@ header {
 }
 
 .steps {
-	/* margin-top: 163px; */
+	margin-top: 163px;
 	margin-bottom: 43px;
-	margin-top: 63px;
 }
 
 .step svg,
 .step img {
-	/* margin-bottom: 44px; */
 	margin-bottom: 20px;
 }
 
@@ -177,6 +195,14 @@ header {
 	margin: 39px 0;
 }
 
+.whyCardImage img {
+	transition: transform 0.65s;
+}
+
+.whycard:hover .whyCardImage img {
+	transform: scale(1.1);
+}
+
 .whyCardText {
 	font-size: 17px;
 }
@@ -187,16 +213,15 @@ header {
 
 .rightInfo {
 	order: 1;
-	text-align: justify;
-	/* width: 630px; */
 }
 
 .threeImages {
+	transform-style: preserve-3d;
+	transform: perspective(500px) scale(0.9);
 	order: 2;
 	width: 403px;
 	max-width: 403px;
 	height: 336px;
-	/* margin-left: 97px; */
 	position: relative;
 }
 
@@ -205,16 +230,19 @@ header {
 }
 
 .threeImages img:nth-child(1) {
+	transform: translateZ(0px);
 	top: 44px;
 	left: 0;
 	z-index: 0;
 }
 .threeImages img:nth-child(2) {
+	transform: translateZ(30px);
 	top: 0;
 	left: 216px;
 	z-index: 0;
 }
 .threeImages img:nth-child(3) {
+	transform: translateZ(60px);
 	bottom: 0;
 	left: 202px;
 	z-index: -1;
@@ -245,6 +273,11 @@ header {
 	overflow: hidden;
 	margin-bottom: 43px;
 	padding-bottom: 26px;
+	transition: box-shadow 0.35s;
+}
+
+.blogCard:hover {
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
 }
 
 .blogCardHeader,
@@ -281,6 +314,15 @@ header {
 	font-size: 17px;
 }
 
+.blogReadMore img,
+.customerFeedbackReadMore img {
+	transition: transform 0.4s;
+}
+.blogReadMore:hover img,
+.customerFeedbackReadMore:hover img {
+	transform: translateX(10px);
+}
+
 .blogReadMore span,
 .customerFeedbackReadMore span {
 	margin-right: 11px;
@@ -303,7 +345,11 @@ header {
 	border: none;
 	cursor: pointer;
 	opacity: 1;
-	transition: opacity 0.5s;
+	transition: opacity 0.5s, background 0.5s;
+}
+
+#scrollToTop:hover {
+	background: #006072;
 }
 .hidden {
 	opacity: 0 !important;
@@ -335,7 +381,14 @@ header {
 	border-radius: 3px;
 	margin: 0 21.5px;
 	margin-bottom: 50px;
+	transition: box-shadow 0.3s ease-in-out 0.3s, transform 0.3s;
 }
+
+.customerFeedbackCard:hover {
+	box-shadow: 0 0 5px rgb(0 0 0 / 20%), inset 30px 0 0 #1d7a8c;
+	transform: translateY(-20px);
+}
+
 .customerFeedbackCardHeader img {
 	margin-right: 17px;
 }
@@ -352,13 +405,11 @@ header {
 .customerName {
 	font-size: 20px;
 	color: #4f4f4f;
-	/* margin-bottom: 5px; */
 	font-weight: bold;
 }
 .customerAddress {
 	font-size: 14px;
 	color: #8e8e8e;
-	/* margin-bottom: 5px; */
 	font-weight: bold;
 }
 
@@ -423,10 +474,21 @@ footer {
 	text-decoration: none;
 	color: #f1f1f1;
 	margin: 0 10px;
+	transition: color 0.3s;
 }
 
-.socialMedia a:nth-child(1) {
-	margin-right: 20px;
+.footerMenuItem:hover a {
+	color: #29626d;
+}
+
+.socialMedia a {
+	width: 40px;
+	height: 40px;
+	transition: background 0.4s;
+}
+
+.socialMedia a:hover {
+	background: #29626d;
 }
 
 .cookieConsent {
@@ -456,8 +518,6 @@ footer {
 	font-weight: 500;
 	width: 100px;
 	height: 40px;
-	/* position: absolute;
-	right: 15px; */
 	outline: none;
 	border: none;
 	padding: 10px 37px;
@@ -494,7 +554,7 @@ footer {
 		overflow: hidden;
 		height: 0;
 		padding-left: 17px;
-		background: #000;
+		background: #646464;
 		flex-direction: column;
 		align-items: flex-start;
 		margin-top: 20px;
@@ -586,6 +646,7 @@ footer {
 @media screen and (max-width: 600px) {
 	.info {
 		margin-top: 0px !important;
+		overflow: hidden;
 	}
 
 	.blogHeader {
@@ -605,7 +666,7 @@ footer {
 	}
 
 	.threeImages {
-		transform: scale(0.7);
+		transform: scale(0.7) !important;
 	}
 
 	#scrollToTop {

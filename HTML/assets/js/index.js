@@ -5,7 +5,17 @@ const scrollToTop = document.querySelector("#scrollToTop");
 const cookieAgree = document.querySelector(".cookieAgree");
 const cookieConsent = document.querySelector(".cookieConsent");
 const hamburger = document.querySelector(".hamburger");
+const backgroundImage = document.querySelector(".backgroundImage");
+const topCrousel = document.querySelector(".topCrousel");
 const navMenu = document.querySelector(".navMenu");
+const rellax = new Rellax(".rellax");
+const vanila = VanillaTilt.init(document.querySelector(".threeImages"), {
+	max: 25,
+	speed: 400,
+	glare: false,
+	reverse: true,
+	gyroscope: false,
+});
 
 window.addEventListener("scroll", () => {
 	if (window.scrollY > 130) {

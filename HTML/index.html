@@ -12,6 +12,7 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="stylesheet" href="assets/css/style.css" />
+		<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
 		<nav class="d-flex justify-content-between text-white">
@@ -68,26 +69,33 @@
 			</div>
 		</nav>
 		<header>
-			<section class="topCrousel">
+			<div class="backgroundImage rellax" data-rellax-speed="-5"><img src="assets/images/group-35.png" alt="bg" /></div>
+			<section class="topCrousel rellax" data-rellax-speed="10">
 				<div class="crouselInfo text-white">
-					<div class="crouselHeader">Lorem, ipsum dolor.</div>
+					<div class="crouselHeader">Do not feel like housework?</div>
 					<div class="crouselInfoItem">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10">
 							<path fill-rule="evenodd" fill="#FFF" d="m11.279.2 1.719 1.562-8.041 8.234L0 4.92l1.719-1.761 3.238 3.317L11.279.2z" />
 						</svg>
-						<span>Lorem ipsum dolor sit amet consectetur adipisicing.</span>
+						<span>certified & insured helper</span>
 					</div>
 					<div class="crouselInfoItem">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10">
 							<path fill-rule="evenodd" fill="#FFF" d="m11.279.2 1.719 1.562-8.041 8.234L0 4.92l1.719-1.761 3.238 3.317L11.279.2z" />
 						</svg>
-						<span>Lorem ipsum dolor sit amet consectetur adipisicing.</span>
+						<span>easy booking procedure</span>
 					</div>
 					<div class="crouselInfoItem">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10">
 							<path fill-rule="evenodd" fill="#FFF" d="m11.279.2 1.719 1.562-8.041 8.234L0 4.92l1.719-1.761 3.238 3.317L11.279.2z" />
 						</svg>
-						<span>Lorem ipsum dolor sit amet consectetur adipisicing.</span>
+						<span>friendly customer service.</span>
+					</div>
+					<div class="crouselInfoItem">
+						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10">
+							<path fill-rule="evenodd" fill="#FFF" d="m11.279.2 1.719 1.562-8.041 8.234L0 4.92l1.719-1.761 3.238 3.317L11.279.2z" />
+						</svg>
+						<span>secure online payment method.</span>
 					</div>
 				</div>
 				<div class="d-flex align-items-center justify-content-center bookCleaner">
@@ -206,18 +214,18 @@
 				</div>
 			</div>
 		</section>
-		<section class="container overflow-hidden info d-flex justify-content-center">
+		<section class="container info d-flex justify-content-center">
 			<div class="row align-items-center justify-content-center">
 				<div class="rightInfo col-10 col-sm-11 col-md-12 col-lg-6 text-break">
-					<div class="rightInfoHeader">Lorem ipsum dolor sit amet consectetur.</div>
-					<div class="rightInfoText">
-						Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quas libero hic saepe mollitia, iste recusandae.
+					<div class="rightInfoHeader text-center text-lg-start">We do not know what makes you happy, but ...</div>
+					<div class="rightInfoText text-center text-lg-start">
+						If it's not dusting off, our friendly helpers will free you from this burden - do not worry anymore about spending valuable
+						time doing housework, but savor life, you're well worth your time with beautiful experiences.
 					</div>
-					<div class="rightInfoText">
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error unde molestiae quia adipisci inventore quo consequatur,
-						ducimus cum fugiat, rerum voluptatibus repellendus ad. Sit, id voluptatibus tempora quod fuga modi.
+					<div class="rightInfoText text-center text-lg-start">
+						Free yourself and enjoy the gained time: Go celebrate, relax, play with your children, meet friends or dare to jump on the
+						bungee.Other leisure ideas and exclusive events can be found in our blog - guaranteed free from dust and cleaning tips!
 					</div>
-					<div class="rightInfoText">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</div>
 				</div>
 				<div class="threeImages col-10 col-sm-11 col-md-12 col-lg-6 text-break">
 					<img src="assets/images/Group 25.png" class="rounded-circle overflow-hidden" alt="group-25" />
@@ -357,8 +365,8 @@
 				<div class="footerMenuItem"><a href="#">IMPRESSUM</a></div>
 			</div>
 			<div class="socialMedia d-flex flex-nowrap align-items-center justify-content-center">
-				<a class="d-block" href="https://facebook.com" target="_blank">
-					<svg xmlns="http://www.w3.org/2000/svg" width="9" height="18">
+				<a class="d-flex align-items-center justify-content-center rounded-circle" href="https://facebook.com/helperDE" target="_blank">
+					<svg class="d-block" xmlns="http://www.w3.org/2000/svg" width="9" height="18">
 						<path
 							fill-rule="evenodd"
 							fill="#CCC"
@@ -366,8 +374,12 @@
 						/>
 					</svg>
 				</a>
-				<a class="d-block" href="https://instagram.com" target="_blank">
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+				<a
+					class="d-flex align-items-center justify-content-center rounded-circle"
+					href="https://www.instagram.com/helperlandde"
+					target="_blank"
+				>
+					<svg class="d-block" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 						<path
 							fill-rule="evenodd"
 							fill="#CCC"
@@ -402,5 +414,7 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"
 	></script>
+	<script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+	<script src="assets/js/vanilla-tilt.min.js"></script>
 	<script src="assets/js/index.js"></script>
 </html>
