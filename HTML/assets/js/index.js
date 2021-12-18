@@ -14,8 +14,11 @@ const vanila = VanillaTilt.init(document.querySelector(".threeImages"), {
 	speed: 400,
 	glare: false,
 	reverse: true,
-	gyroscope: false,
+	gyroscope: true,
 });
+
+const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 
 window.addEventListener("scroll", () => {
 	if (window.scrollY > 130) {

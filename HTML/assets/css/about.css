@@ -48,6 +48,15 @@ nav {
 	background: #29626d;
 }
 
+.tooltip-inner {
+	background: #fff !important;
+	color: #000 !important;
+}
+
+.tooltip-arrow::before {
+	border-top-color: #fff !important;
+}
+
 .aboutCarousel img {
 	width: 100%;
 	height: auto;
@@ -133,10 +142,21 @@ footer hr {
 	text-decoration: none;
 	color: #f1f1f1;
 	margin: 0 10px;
+	transition: color 0.5s;
 }
 
-.socialMedia a:nth-child(1) {
-	margin-right: 20px;
+.footerMenuItem a:hover {
+	color: #1d7a8c;
+}
+
+.socialMedia a {
+	width: 40px;
+	height: 40px;
+	transition: background 0.4s;
+}
+
+.socialMedia a:hover {
+	background: #29626d;
 }
 
 .terms {

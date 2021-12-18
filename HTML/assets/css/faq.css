@@ -78,6 +78,15 @@ nav {
 	color: #fff !important;
 }
 
+.tooltip-inner {
+	background: #fff !important;
+	color: #000 !important;
+}
+
+.tooltip-arrow::before {
+	border-top-color: #fff !important;
+}
+
 .faq {
 	max-width: 946px;
 	margin: auto;

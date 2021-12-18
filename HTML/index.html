@@ -69,10 +69,10 @@
 			</div>
 		</nav>
 		<header>
-			<div class="backgroundImage rellax" data-rellax-speed="-5"><img src="assets/images/group-35.png" alt="bg" /></div>
-			<section class="topCrousel rellax container-fluid" data-rellax-speed="10">
+			<div class="backgroundImage rellax" data-rellax-speed="-1"><img src="assets/images/group-35.png" alt="bg" /></div>
+			<section class="topCrousel rellax container-fluid" data-rellax-speed="3">
 				<div class="crouselInfo text-white">
-					<div class="crouselHeader">Do not feel like housework?</div>
+					<div class="crouselHeader text-break">Do not feel like housework?</div>
 					<div class="crouselInfoItem">
 						<svg xmlns="http://www.w3.org/2000/svg" width="13" height="10">
 							<path fill-rule="evenodd" fill="#FFF" d="m11.279.2 1.719 1.562-8.041 8.234L0 4.92l1.719-1.761 3.238 3.317L11.279.2z" />
@@ -187,9 +187,9 @@
 				</div>
 			</section>
 		</header>
-		<section class="container whyChooseUs">
+		<section class="container-fluid d-flex align-items-center justify-content-center flex-column bg-white whyChooseUs">
 			<div class="whyheader text-center" id="topScroll">Why Helperland</div>
-			<div class="whycards d-flex align-items-center justify-content-center flex-wrap">
+			<div class="whycards d-flex align-items-start justify-content-center flex-wrap">
 				<div class="whycard">
 					<div class="whyCardImage rounded-circle overflow-hidden"><img src="assets/images/Group 21.png" alt="" /></div>
 					<div class="whyCardHeader text-center">Experiance and Vetted Professionals</div>
@@ -231,10 +231,11 @@
 					<img src="assets/images/Group 25.png" class="rounded-circle overflow-hidden" alt="group-25" />
 					<img src="assets/images/Group 26.png" class="rounded-circle overflow-hidden" alt="group-26" />
 					<img src="assets/images/Group 27.png" class="rounded-circle overflow-hidden" alt="group-27" />
+					<img class="smallScreenImage" src="assets/images/threeImagesMerged.png" alt="threeImages" />
 				</div>
 			</div>
 		</section>
-		<section class="container blog mb-5">
+		<section class="container-fluid d-flex align-items-center justify-content-center flex-column blog mb-5">
 			<div class="blogHeader text-center">Our Blog</div>
 			<div class="blogCards d-flex flex-wrap align-items-center justify-content-center">
 				<div class="blogCard">
@@ -260,89 +261,87 @@
 				</div>
 			</div>
 		</section>
-		<section class="customerFeedback container-fluid">
-			<div class="container">
-				<div class="customerFeedbackHeader text-center">What Our Customers Say</div>
-				<div class="customerFeedbackCards d-flex flex-wrap align-items-center justify-content-center">
-					<div class="customerFeedbackCard">
-						<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
-							<path
-								fill-rule="evenodd"
-								fill="#DAE5EC"
-								d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
-							/>
-						</svg>
-						<div class="customerFeedbackCardHeader d-flex align-items-center">
-							<img src="assets/images/Group 31.png" alt="group-31" />
-							<div class="customerDetails">
-								<div class="customerName">Lary Watson</div>
-								<div class="customerAddress">Manchester</div>
-							</div>
+		<section class="customerFeedback d-flex flex-column align-items-center justify-content-center container-fluid">
+			<div class="customerFeedbackHeader text-center">What Our Customers Say</div>
+			<div class="customerFeedbackCards d-flex flex-wrap align-items-center justify-content-center">
+				<div class="customerFeedbackCard">
+					<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
+						<path
+							fill-rule="evenodd"
+							fill="#DAE5EC"
+							d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
+						/>
+					</svg>
+					<div class="customerFeedbackCardHeader d-flex align-items-center">
+						<img src="assets/images/Group 31.png" alt="group-31" />
+						<div class="customerDetails">
+							<div class="customerName">Lary Watson</div>
+							<div class="customerAddress">Manchester</div>
 						</div>
-						<div class="customerFeedbackCardText">
-							<div class="customerFeedbackPara">
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem
-								voluptate libero deserunt!
-							</div>
-							<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
-						</div>
-						<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
 					</div>
-					<div class="customerFeedbackCard">
-						<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
-							<path
-								fill-rule="evenodd"
-								fill="#DAE5EC"
-								d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
-							/>
-						</svg>
-						<div class="customerFeedbackCardHeader d-flex align-items-center">
-							<img src="assets/images/Group 32.png" alt="group-32" />
-							<div class="customerDetails">
-								<div class="customerName">John Smith</div>
-								<div class="customerAddress">Manchester</div>
-							</div>
+					<div class="customerFeedbackCardText">
+						<div class="customerFeedbackPara">
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem voluptate
+							libero deserunt!
 						</div>
-						<div class="customerFeedbackCardText">
-							<div class="customerFeedbackPara">
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem
-								voluptate libero deserunt!
-							</div>
-							<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
-						</div>
-						<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
+						<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
 					</div>
-					<div class="customerFeedbackCard">
-						<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
-							<path
-								fill-rule="evenodd"
-								fill="#DAE5EC"
-								d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
-							/>
-						</svg>
-						<div class="customerFeedbackCardHeader d-flex align-items-center">
-							<img src="assets/images/Group 33.png" alt="group-33" />
-							<div class="customerDetails">
-								<div class="customerName">Lars Johnson</div>
-								<div class="customerAddress">Manchester</div>
-							</div>
-						</div>
-						<div class="customerFeedbackCardText">
-							<div class="customerFeedbackPara">
-								Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem
-								voluptate libero deserunt!
-							</div>
-							<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
-						</div>
-						<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
-					</div>
+					<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
 				</div>
-				<div class="newsletter container d-flex flex-column align-items-center justify-content-center">
-					<div class="newsletterHeader">GET OUR NEWSLETTER</div>
-					<div class="newsletterForm d-flex flex-wrap align-items-center justify-content-center">
-						<input type="email" class="rounded-pill" name="email" id="email" placeholder="Your Email" />
-						<button class="send rounded-pill">Submit</button>
+				<div class="customerFeedbackCard">
+					<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
+						<path
+							fill-rule="evenodd"
+							fill="#DAE5EC"
+							d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
+						/>
+					</svg>
+					<div class="customerFeedbackCardHeader d-flex align-items-center">
+						<img src="assets/images/Group 32.png" alt="group-32" />
+						<div class="customerDetails">
+							<div class="customerName">John Smith</div>
+							<div class="customerAddress">Manchester</div>
+						</div>
 					</div>
+					<div class="customerFeedbackCardText">
+						<div class="customerFeedbackPara">
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem voluptate
+							libero deserunt!
+						</div>
+						<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
+					</div>
+					<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
+				</div>
+				<div class="customerFeedbackCard">
+					<svg xmlns="http://www.w3.org/2000/svg" width="35" height="36">
+						<path
+							fill-rule="evenodd"
+							fill="#DAE5EC"
+							d="M10.545 10.962h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847 0-.468.933-.847.878-.847zm13.217 9.713c.485 0 .878.865.878.848 0 .467-.393.846-.878.846h-7.556c-.484 0-.877-.379-.877-.846 0 .017.393-.848.877-.848h7.556zM9.667 16.666c0-.468.933-.847.878-.847h13.217c.485 0 .878.379.878.847 0 .468-.393.847-.878.847H10.545c.055 0-.878-.379-.878-.847zm19.506 10.531c-3.601 3.475-8.714 5.152-13.763 4.536l-5.7 4.061c-.19.136-.419.406-.12.406-.629 0-.726-.211-.822-.236-.325-.086-.59-.311-.298-.61l-2.048-3.733c-.235.199.027-1.16 1.378-1.387-.233.566.41.027.645.566l1.084 2.491 4.938-3.519a1.12 1.12 0 0 1 .82-.194c4.509.675 9.117-.774 12.334-3.878 5.582-5.386 5.582-14.15 0-19.536C22.4.778 12.959.778 7.377 6.164 3.83 9.587 2.411 14.446 3.58 19.162a.571.571 0 0 1 .008.035c.165.652.379 1.296.631 2.773l2.563 5.013c.388.539-.028 1.16-.586 1.386-.559.227-1.202-.026-1.437-.565L2.19 21.903c-.3-.717-.548-1.464-.726-2.178a.982.982 0 0 1-.038-.151C.114 14.162 1.755 8.595 5.825 4.666c6.437-6.211 16.911-6.21 23.348 0 6.437 6.212 6.437 16.319 0 22.531z"
+						/>
+					</svg>
+					<div class="customerFeedbackCardHeader d-flex align-items-center">
+						<img src="assets/images/Group 33.png" alt="group-33" />
+						<div class="customerDetails">
+							<div class="customerName">Lars Johnson</div>
+							<div class="customerAddress">Manchester</div>
+						</div>
+					</div>
+					<div class="customerFeedbackCardText">
+						<div class="customerFeedbackPara">
+							Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit possimus, voluptas quae nemo labore exercitationem voluptate
+							libero deserunt!
+						</div>
+						<div class="customerFeedbackPara">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatibus, repellat.</div>
+					</div>
+					<a href="#" class="customerFeedbackReadMore"><span>Read More</span><img src="assets/images/Shape 2.png" alt="" /></a>
+				</div>
+			</div>
+			<div class="newsletter container d-flex flex-column align-items-center justify-content-center">
+				<div class="newsletterHeader">GET OUR NEWSLETTER</div>
+				<div class="newsletterForm d-flex flex-wrap align-items-center justify-content-center">
+					<input type="email" class="rounded-pill" name="email" id="email" placeholder="Your Email" />
+					<button class="send rounded-pill">Submit</button>
 				</div>
 			</div>
 		</section>
@@ -365,7 +364,14 @@
 				<div class="footerMenuItem"><a href="#">IMPRESSUM</a></div>
 			</div>
 			<div class="socialMedia d-flex flex-nowrap align-items-center justify-content-center">
-				<a class="d-flex align-items-center justify-content-center rounded-circle" href="https://facebook.com/helperDE" target="_blank">
+				<a
+					class="d-flex align-items-center justify-content-center rounded-circle"
+					href="https://facebook.com/helperDE"
+					target="_blank"
+					data-bs-toggle="tooltip"
+					data-bs-placement="top"
+					title="Like Us on Facebook"
+				>
 					<svg class="d-block" xmlns="http://www.w3.org/2000/svg" width="9" height="18">
 						<path
 							fill-rule="evenodd"
@@ -376,8 +382,11 @@
 				</a>
 				<a
 					class="d-flex align-items-center justify-content-center rounded-circle"
-					href="https://www.instagram.com/helperlandde"
+					href="https://instagram.com/helperlandde"
 					target="_blank"
+					data-bs-toggle="tooltip"
+					data-bs-placement="top"
+					title="Follow Us on Instagram"
 				>
 					<svg class="d-block" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
 						<path

@@ -281,14 +281,6 @@ footer hr {
 	margin: 19px 0 25px 0;
 }
 
-.footerMenuItem a {
-	display: block;
-	text-decoration: none;
-	color: #f1f1f1;
-	margin: 0 10px;
-	transition: color 0.5s;
-}
-
 .tooltip-inner {
 	background: #fff !important;
 	color: #000 !important;
@@ -296,6 +288,14 @@ footer hr {
 
 .tooltip-arrow::before {
 	border-top-color: #fff !important;
+}
+
+.footerMenuItem a {
+	display: block;
+	text-decoration: none;
+	color: #f1f1f1;
+	margin: 0 10px;
+	transition: color 0.5s;
 }
 
 .footerMenuItem a:hover {
