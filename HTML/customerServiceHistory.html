@@ -17,7 +17,7 @@
 		<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
 	</head>
 	<body>
-		<nav class="d-flex align-items-center justify-content-between text-white">
+		<nav class="d-none d-md-flex align-items-center justify-content-between text-white">
 			<div class="logoDiv">
 				<a class="d-block" href="index.html">
 					<img src="assets/images/logo-small.png" alt="logo" />
@@ -61,11 +61,46 @@
 				</div>
 			</div>
 		</nav>
+		<nav class="navSm d-flex d-md-none align-items-center justify-content-between">
+			<div class="logoDiv">
+				<a class="d-block" href="index.html">
+					<img src="assets/images/logo-small.png" alt="logo" />
+				</a>
+			</div>
+			<div class="notifications position-relative">
+				<img src="assets/images/icon-notification.png" />
+				<span class="position-absolute text-center badge rounded-circle">2</span>
+			</div>
+			<div class="hamburger me-3 me-md-0"></div>
+			<div class="fullPage d-flex">
+				<div class="fullPageHidden"></div>
+				<div class="navSmMenu bg-white">
+					<div class="greetings">
+						Welcome,<br />
+						<strong>Gaurang Patel</strong>
+					</div>
+					<hr class="my-1" />
+					<div class="navSmMenuItem">Dashboard</div>
+					<div class="navSmMenuItem active">Service History</div>
+					<div class="navSmMenuItem">Service Schedule</div>
+					<div class="navSmMenuItem">Favourite Providers</div>
+					<div class="navSmMenuItem">Invoices</div>
+					<div class="navSmMenuItem">Notifications</div>
+					<div class="navSmMenuItem">My Settings</div>
+					<div class="navSmMenuItem">Logout</div>
+					<hr class="my-1" />
+					<div class="navSmMenuItem"><a href="prices.html">Plans & Services</a></div>
+					<div class="navSmMenuItem"><a href="#">Warranty</a></div>
+					<div class="navSmMenuItem"><a href="#">Blog</a></div>
+					<div class="navSmMenuItem"><a href="contact.html">Contact</a></div>
+					<hr class="my-1" />
+				</div>
+			</div>
+		</nav>
 		<h1 class="heading d-flex align-items-center justify-content-center flex-wrap text-break">Welcome,&nbsp;<span>Gaurang!</span></h1>
 		<div class="container position-relative d-flex align-items-start justify-content-center">
-			<div class="verticalNavbar">
-				<div class="hamburger"></div>
-				<ul class="verticalNavItems p-0">
+			<div class="verticalNavbar d-none d-md-block">
+				<ul class="verticalNavItems p-0 m-0">
 					<li class="verticalNavItem">Dashboard</li>
 					<li class="verticalNavItem active">Service History</li>
 					<li class="verticalNavItem">Service Schedule</li>

@@ -1,20 +1,26 @@
 const tbody = document.querySelector("tbody");
 const verticalNavbar = document.querySelector(".verticalNavbar");
 const serviceHistoryTableContainer = document.querySelector(".serviceHistoryTableContainer");
-const verticalNavbarHamburger = document.querySelector(".verticalNavbar .hamburger");
-const navMenu = document.querySelector(".navMenu");
-const navbarHamburger = document.querySelector(".loggedInMenu .hamburger");
+const navMenu = document.querySelector(".fullPage");
+const fullPageHidden = document.querySelector(".fullPageHidden");
+const navbarHamburger = document.querySelector(".navSm .hamburger");
 
-verticalNavbar.style.height = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
 
-verticalNavbarHamburger.addEventListener("click", () => verticalNavbar.classList.toggle("open"));
-navbarHamburger.addEventListener("click", () => navMenu.classList.toggle("open"));
+navbarHamburger.addEventListener("click", () => navMenu.classList.add("open"));
+fullPageHidden.addEventListener("click", () => navMenu.classList.remove("open"));
+
+document.addEventListener("wheel", () => navMenu.classList.remove("open"));
 
 const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
 
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
+window.addEventListener("resize", () => {
+	verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+});
 
 for (let i = 0; i < 55; i++) {
 	tbody.innerHTML += `<tr>
@@ -38,13 +44,12 @@ for (let i = 0; i < 55; i++) {
 								</div>
 							</td>
 							<td class="text-start distance">${Math.floor(Math.random() * i * 10)} km</td>
-							<td><button class="rounded-pill text-nowrap cancel">Cancel</button></td>
+							<td><button class="rounded-pill position-relative d-flex align-items-center justify-content-center text-nowrap cancel">Cancel</button></td>
 						</tr>`;
 }
 
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 	"kmNum-pre": function (a) {
-		console.log(a);
 		a = a.replace(" km", "");
 		return parseInt(a);
 	},

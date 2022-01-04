@@ -1,14 +1,14 @@
 const tbody = document.querySelector("tbody");
 const verticalNavbar = document.querySelector(".verticalNavbar");
 const serviceHistoryTableContainer = document.querySelector(".serviceHistoryTableContainer");
-const verticalNavbarHamburger = document.querySelector(".verticalNavbar .hamburger");
-const navMenu = document.querySelector(".navMenu");
-const navbarHamburger = document.querySelector(".loggedInMenu .hamburger");
+const navMenu = document.querySelector(".fullPage");
+const fullPageHidden = document.querySelector(".fullPageHidden");
+const navbarHamburger = document.querySelector(".navSm .hamburger");
 
-verticalNavbar.style.height = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
 
-verticalNavbarHamburger.addEventListener("click", () => verticalNavbar.classList.toggle("open"));
-navbarHamburger.addEventListener("click", () => navMenu.classList.toggle("open"));
+navbarHamburger.addEventListener("click", () => navMenu.classList.add("open"));
+fullPageHidden.addEventListener("click", () => navMenu.classList.remove("open"));
 
 const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
@@ -74,6 +74,10 @@ const names = [
 	"Nathan Elena",
 ];
 
+window.addEventListener("resize", () => {
+	verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+});
+
 for (let i = 0; i < 55; i++) {
 	tbody.innerHTML += `<tr>
 					<td>
@@ -106,7 +110,7 @@ for (let i = 0; i < 55; i++) {
 								(i + 1) * Math.random() * 20
 							)}</span></td>
 							<td class="text-center"><span class='status ${Math.random() > 0.5 ? "cancelled'>Cancelled" : "completed'>Completed"}</span></td>
-							<td><button class="rate rounded-pill text-nowrap">Rate SP</button></td>
+							<td><button class="rate position-relative d-flex align-items-center justify-content-center rounded-pill text-nowrap">Rate SP</button></td>
 						</tr>`;
 }
 

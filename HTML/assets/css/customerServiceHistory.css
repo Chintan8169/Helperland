@@ -25,6 +25,7 @@ nav {
 .logoDiv {
 	padding-top: 6px;
 	padding-left: 15px;
+	padding-bottom: 4px;
 }
 
 .navItem a {
@@ -85,16 +86,12 @@ nav {
 }
 
 .verticalNavbar {
+	background: #1d7a8c;
 	z-index: 1;
 	flex: 0 0 262px;
 	width: 262px;
 	position: sticky;
 	top: 94px;
-}
-
-.verticalNavbar .hamburger {
-	display: none;
-	pointer-events: none;
 }
 
 .verticalNavItems {
@@ -323,6 +320,60 @@ div.dataTables_paginate {
 	margin-bottom: 6px !important;
 	border: none !important;
 	outline: none !important;
+	position: relative !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.dt-button::before,
+.rate::before,
+.cancel::before {
+	pointer-events: none;
+	content: "Click Here to Download Excel file of this table";
+	position: absolute;
+	width: max-content;
+	color: #fff;
+	right: calc(100% + 6px);
+	font-size: 13px;
+	background: #000;
+	border-radius: 5px;
+	padding: 5px 10px;
+	opacity: 0;
+	transition: opacity 0.3s;
+	z-index: 5000;
+}
+
+.rate::before {
+	content: "Rate this Service Provider";
+}
+.cancel::before {
+	content: "Cancel this Service";
+}
+
+.dt-button::after,
+.rate::after,
+.cancel::after {
+	pointer-events: none;
+	content: "";
+	position: absolute;
+	right: calc(100% - 6px);
+	width: 0;
+	height: 0;
+	border: 6px solid transparent;
+	transition: border-left 0.3s;
+	z-index: 5000;
+}
+
+.dt-button:hover::before,
+.rate:hover::before,
+.cancel:hover::before {
+	opacity: 1;
+}
+.dt-button:hover::after,
+.rate:hover::after,
+.cancel:hover::after {
+	border-left: 6px solid #000;
 }
 
 .tableHeader {
@@ -428,56 +479,77 @@ footer hr {
 }
 
 @media screen and (max-width: 767px) {
-	.verticalNavbar {
-		position: absolute;
-		left: -262px;
-		top: 0;
-		transition: left 0.35s;
+	.rate:hover::before,
+	.cancel:hover::before {
+		opacity: 0;
 	}
 
-	.verticalNavbar.open {
+	.rate:hover::after,
+	.cancel:hover::after {
+		border-left: 6px solid transparent;
+	}
+
+	.fullPage {
+		position: fixed;
+		min-height: 100vh;
+		width: 100vw;
+		top: 0;
+		left: 100vw;
+		transition: left 0.4s;
+	}
+
+	.fullPage.open {
 		left: 0;
 	}
 
-	.verticalNavbar .hamburger {
-		display: block;
-		pointer-events: all;
+	.fullPageHidden {
+		background: rgba(0, 0, 0, 0);
+		width: 50vw;
+		height: 100vh;
+		transition: background 0.35s;
+	}
+
+	.fullPage.open .fullPageHidden {
+		background: rgba(0, 0, 0, 0.45);
+	}
+
+	.navSmMenu {
+		width: 50vw;
+		font-size: 17px;
+		color: #646464;
+	}
+	.navSmMenu hr {
+		height: 1px;
+		background: #e9e9e9;
+		opacity: 1;
+	}
+
+	.greetings,
+	.navSmMenuItem {
+		padding: 7px 15px;
+	}
+
+	.navSmMenuItem,
+	.navSmMenuItem a {
 		cursor: pointer;
-		font-size: 15px;
-		text-align: center;
-		color: #fff;
-		position: absolute;
-		right: -35px;
-		top: 0px;
-		height: 35px;
-		width: 35px;
-		background: #1d7a8c;
-		border-top-right-radius: 100px;
-		border-bottom-right-radius: 100px;
+		text-decoration: none;
+		color: #646464;
+		transition: color 0.35s;
 	}
 
-	.verticalNavbar .hamburger::before {
-		width: 20px;
-		top: 15px;
-		height: 3px;
-		left: 5px;
-		box-shadow: 0 8px #fff;
-		transform: translateY(-7px);
-	}
-	.verticalNavbar .hamburger::after {
-		width: 20px;
-		bottom: 15px;
-		height: 3px;
-		left: 5px;
-		transform: translateY(7px);
+	.navSmMenuItem.active a,
+	.navSmMenuItem.active,
+	.navSmMenuItem:hover,
+	.navSmMenuItem:hover a {
+		color: #1d7a8c;
 	}
 
-	.verticalNavbar.open .hamburger::after {
-		transform: translateY(-2px) rotate(-45deg) !important;
+	.notifications {
+		margin-right: 0;
 	}
 
-	.serviceHistoryTableContainer {
-		padding-left: 35px;
+	.navSm {
+		background: #525252;
 	}
 
 	.hamburger {
@@ -509,42 +581,6 @@ footer hr {
 		background-color: #fff;
 		transform: translateY(10px);
 		transition: all 0.3s;
-	}
-
-	.navMenu.open .hamburger::before,
-	.verticalNavbar.open .hamburger::before {
-		transform: translateY(0) rotate(45deg);
-		box-shadow: none;
-	}
-
-	.navMenu.open .hamburger::after,
-	.verticalNavbar.open .hamburger::after {
-		transform: translateY(0) rotate(-45deg);
-	}
-
-	.navMenu {
-		position: fixed;
-		width: 100vw;
-		top: 64px;
-		flex-direction: column;
-		background: inherit;
-		overflow: hidden;
-		transition: height 0.35s;
-		height: 0px;
-	}
-
-	.navMenu.open {
-		height: 230px;
-	}
-
-	.loggedInMenu {
-		position: fixed;
-		top: 0;
-		right: 0;
-	}
-
-	.navItem {
-		margin: 5px 0;
 	}
 }
 
