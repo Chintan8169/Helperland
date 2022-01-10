@@ -12,7 +12,6 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="stylesheet" href="assets/css/customerServiceHistory.css" />
-		<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" />
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
 		<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon" />
 	</head>
@@ -38,8 +37,11 @@
 						tabindex="0"
 						role="button"
 						data-bs-html="true"
+						data-bs-offset="-75,10"
+						data-bs-trigger="focus"
 						data-bs-toggle="popover"
-						title="<div class='userInfoText'>Welcome,<br />Gaurang Patel</div>"
+						data-bs-custom-class="userInfoPopover"
+						title="<div class='userInfoText'>Welcome,<b class='d-block'>Gaurang Patel</b></div>"
 						data-bs-content="<a class='d-block userInfoItem' href='#'>My Dashboard</a><a class='d-block userInfoItem' href='#'>My Settings</a><a class='d-block userInfoItem' href='#'>Logout</a>"
 					>
 						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
@@ -100,7 +102,7 @@
 		</nav>
 		<h1 class="heading d-flex align-items-center justify-content-center flex-wrap text-break">Welcome,&nbsp;<span>Sandip!</span></h1>
 		<div class="container position-relative d-flex align-items-start justify-content-center">
-			<div class="verticalNavbar d-none d-md-block">
+			<div class="verticalNavbar d-none d-lg-block">
 				<ul class="verticalNavItems p-0 m-0">
 					<li class="verticalNavItem">Dashboard</li>
 					<li class="verticalNavItem">New Service Request</li>
@@ -112,7 +114,42 @@
 				</ul>
 			</div>
 			<div class="serviceHistoryTableContainer">
-				<h2 class="tableHeader">Upcoming History</h2>
+				<h2 class="tableHeader">
+					Upcoming Services
+					<img
+						src="assets/images/filter.png"
+						class="sortingButton d-inline-block d-md-none ms-3"
+						data-bs-toggle="popover"
+						data-bs-offset="0,15"
+						data-bs-placement="bottom"
+						data-bs-custom-class="sortingPopover"
+						data-bs-html="true"
+						data-bs-content="<label class='sortingRadioLabel form-check-label' for='dateDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='1' data-st-type='desc' name='sortingRadio' id='dateDesc' />
+							Service Date: Latest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='dateAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='1' data-st-type='asc' name='sortingRadio' id='dateAsc' />
+							Service Date: Oldest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='custAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='asc' name='sortingRadio' id='custAsc' />
+							Customer: A to Z
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='custDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='desc' name='sortingRadio' id='custDesc' />
+							Customer: Z to A
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='distanceAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='asc' name='sortingRadio' id='distanceAsc' />
+							Distance: Near to Far
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='distanceDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='desc' name='sortingRadio' id='distanceDesc' />
+							Distance: Far to Near
+						</label>"
+					/>
+				</h2>
 				<table id="upcomingHistoryTable">
 					<thead>
 						<tr>
@@ -198,7 +235,6 @@
 		crossorigin="anonymous"
 	></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
-	<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
 	<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>

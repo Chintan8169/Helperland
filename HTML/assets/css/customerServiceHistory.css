@@ -65,8 +65,68 @@ nav {
 	cursor: pointer;
 }
 
-.popover {
+.userInfoPopover.popover {
 	z-index: 2001;
+	width: 198px;
+	color: #646464;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	border: none !important;
+	border-radius: 4px;
+}
+
+.userInfoPopover.popover .popover-header {
+	border-bottom: 1px solid #e1e1e1;
+	padding: 10px 15px !important;
+	margin-bottom: 5px;
+	background: #fff;
+}
+
+.sortingPopover.popover {
+	padding: 15px !important;
+	border: 1px solid rgba(0, 0, 0, 0.15) !important;
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+}
+.sortingPopover.popover .popover-body {
+	padding: 0 !important;
+}
+
+.sortingRadioLabel {
+	cursor: pointer;
+	color: #646464;
+	font-size: 16px;
+}
+
+.sortingRadioLabel:not(.sortingRadioLabel:last-child) {
+	margin-bottom: 12px;
+}
+
+.sortingRadioLabel .form-check-input {
+	margin-right: 8px;
+	height: 18px;
+	width: 18px;
+	box-shadow: none !important;
+}
+.sortingRadioLabel .form-check-input:checked {
+	background-color: #1d7a8c;
+	border-color: #1d7a8c;
+}
+
+.userInfoPopover.popover .popover-body {
+	padding: 0 !important;
+	padding-bottom: 5px;
+}
+
+.userInfoItem {
+	font-size: 16px;
+	line-height: 20px;
+	color: #646464 !important;
+	padding: 10px 15px;
+	text-decoration: none;
+	transition: background 0.3s;
+}
+
+.userInfoItem:hover {
+	background: #f6f6f6;
 }
 
 .userInfo {
@@ -76,6 +136,17 @@ nav {
 
 .userInfo svg:nth-child(2) {
 	margin: 0 14px 0 7px;
+}
+
+.userInfoText {
+	font-size: 16px;
+	line-height: 18px;
+	font-weight: normal;
+}
+
+.userInfoText b {
+	line-height: 18px;
+	font-weight: bold;
 }
 
 .container {
@@ -286,7 +357,7 @@ table.dataTable tbody td {
 }
 
 div.dataTables_info {
-	padding-top: 15px !important;
+	padding-top: 19.5px !important;
 	padding-left: 8px !important;
 }
 
@@ -301,6 +372,11 @@ div.dataTables_paginate {
 	color: #646464 !important;
 }
 
+.dataTables_wrapper .dataTables_length * {
+	font-size: 14px;
+	color: #646464;
+}
+
 .dataTables_wrapper .dataTables_length select {
 	margin: 0 10px !important;
 	font-size: 14px !important;
@@ -308,6 +384,7 @@ div.dataTables_paginate {
 	border: 1px solid #e1e1e1 !important;
 	border-radius: 4px !important;
 	outline: none !important;
+	height: 38px !important;
 }
 
 .dt-button {
@@ -452,7 +529,11 @@ footer hr {
 	border-top-color: #fff !important;
 }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 992px) {
+	.dataTables_wrapper {
+		max-width: 100% !important;
+	}
+
 	div.text-sm-wrap {
 		white-space: normal !important;
 	}
@@ -472,13 +553,68 @@ footer hr {
 	.footerMenuItem {
 		margin-bottom: 10px;
 	}
-
-	table.dataTable tbody tr td:nth-child(1) {
-		padding-left: 35px !important;
-	}
 }
 
 @media screen and (max-width: 767px) {
+	thead {
+		display: none;
+	}
+
+	tbody tr {
+		display: flex;
+		flex-direction: column;
+		margin: 15px 0;
+		padding: 25px;
+		gap: 10px;
+		border-radius: 7px;
+		border: 1px solid #a1a0a0 !important;
+		box-shadow: 3px 5px 5px 5px #c4c2c2;
+	}
+
+	table.dataTable tbody tr td {
+		position: relative;
+		padding: 6px 0 !important;
+		padding-top: 26px !important;
+	}
+
+	table.dataTable tbody tr td::before {
+		content: attr(data-us-title);
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-weight: bold;
+		color: #646464;
+		font-size: 18px;
+	}
+
+	table.dataTable tbody tr td:not(table.dataTable tbody tr td:last-child) {
+		border-bottom: 1px solid #e1e1e1 !important;
+	}
+
+	.serviceProviderName {
+		margin-bottom: 0 !important;
+	}
+
+	.status {
+		margin-top: 5px;
+		display: inline-block;
+	}
+
+	.timing {
+		margin-top: 3px;
+	}
+
+	.sortingButton {
+		cursor: pointer;
+	}
+
+	.cancel,
+	.rate {
+		padding: 6px 10px;
+		border-radius: 4px !important;
+		margin-top: 5px;
+	}
+
 	.rate:hover::before,
 	.cancel:hover::before {
 		opacity: 0;
@@ -504,7 +640,7 @@ footer hr {
 
 	.fullPageHidden {
 		background: rgba(0, 0, 0, 0);
-		width: 50vw;
+		width: 35vw;
 		height: 100vh;
 		transition: background 0.35s;
 	}
@@ -514,7 +650,7 @@ footer hr {
 	}
 
 	.navSmMenu {
-		width: 50vw;
+		width: 65vw;
 		font-size: 17px;
 		color: #646464;
 	}

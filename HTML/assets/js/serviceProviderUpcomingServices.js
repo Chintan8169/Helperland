@@ -3,6 +3,7 @@ const verticalNavbar = document.querySelector(".verticalNavbar");
 const serviceHistoryTableContainer = document.querySelector(".serviceHistoryTableContainer");
 const navMenu = document.querySelector(".fullPage");
 const fullPageHidden = document.querySelector(".fullPageHidden");
+const sortingButton = document.querySelector(".sortingButton");
 const navbarHamburger = document.querySelector(".navSm .hamburger");
 
 verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
@@ -13,7 +14,7 @@ fullPageHidden.addEventListener("click", () => navMenu.classList.remove("open"))
 document.addEventListener("wheel", () => navMenu.classList.remove("open"));
 
 const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
+const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl, { sanitize: false }));
 
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
@@ -25,8 +26,8 @@ window.addEventListener("resize", () => {
 for (let i = 0; i < 55; i++) {
 	tbody.innerHTML += `<tr>
 
-					<td class="serviceId">${Math.floor(Math.random() * 3000 * i)}</td>
-					<td>
+					<td class="serviceId" data-us-title="Service ID :">${Math.floor(Math.random() * 3000 * i)}</td>
+					<td data-us-title="Service Date :">
 								<div class="tdHead d-flex align-items-center justify-content-start">
 									<img src="assets/images/calender.png" />
 									<h5>${new Date(i * 86400000).getDate()}/${new Date(i * 86400000).getMonth() + 1}/${new Date(i * 86400000).getFullYear()}</h5>
@@ -36,15 +37,15 @@ for (let i = 0; i < 55; i++) {
 									<div class="time">12:00 - 18:00</div>
 								</div>
 							</td>
-							<td>
+							<td data-us-title="Customer Details :">
 								<div class="custName text-md-nowrap text-sm-wrap">David Bough</div>
 								<div class="custAddress d-flex text-md-nowrap text-sm-wrap align-items-center justify-content-start">
 									<img src="assets/images/addressIcon.png" />
 									Musterstrabe 5,12345 Bonn
 								</div>
 							</td>
-							<td class="text-start distance">${Math.floor(Math.random() * i * 10)} km</td>
-							<td><button class="rounded-pill position-relative d-flex align-items-center justify-content-center text-nowrap cancel">Cancel</button></td>
+							<td class="text-start distance" data-us-title="Distance :">${Math.floor(Math.random() * i * 10)} km</td>
+							<td data-us-title="Action :"><button class="rounded-pill position-relative d-flex align-items-center justify-content-center text-nowrap cancel" >Cancel</button></td>
 						</tr>`;
 }
 
@@ -60,35 +61,39 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 		return b - a;
 	},
 });
-// jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-// 	"serviceDate-pre": function (a) {
-// 		a = a
-// 			.match(/<h5>.*<\/h5>/)[0]
-// 			.replace("<h5>", "")
-// 			.replace("</h5>", "");
-//
-// const time = a
-// 	.match(/<div class="time">.*<\/div>/)[0]
-// 	.replace(`<div class="time">`, "")
-// 		console.log(new Date(a.split("/")[2], a.split("/")[1] - 1, a.split("/")[0]).getTime());
-// 	.replace("</div>", "");
-// 		return a.toString();
-// 	},
-// 	"serviceDate-asc": function (a, b) {
-// 		const dateA = new Date(a.split("/")[2], a.split("/")[1] - 1, a.split("/")[0]).getTime();
-// 		const dateB = new Date(b.split("/")[2], b.split("/")[1] - 1, b.split("/")[0]).getTime();
-// 		return dateA > dateB;
-// 	},
-// 	"serviceDate-desc": function (a, b) {
-// 		const dateA = new Date(a.split("/")[2], a.split("/")[1] - 1, a.split("/")[0]).getTime();
-// 		const dateB = new Date(b.split("/")[2], b.split("/")[1] - 1, b.split("/")[0]).getTime();
-// 		return dateA < dateB;
-// 	},
-// });
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+	"serviceDate-pre": function (a) {
+		const time = a
+			.match(/<div class="time">.*<\/div>/)[0]
+			.replace(`<div class="time">`, "")
+			.replace("</div>", "");
+		a = a
+			.match(/<h5>.*<\/h5>/)[0]
+			.replace("<h5>", "")
+			.replace("</h5>", "");
+		console.log(time);
+		let d = a.split("/");
+		let day = d[0].length === 1 ? `0${d[0]}` : d[0];
+		let month = d[1].length === 1 ? `0${d[1]}` : d[1];
+		let year = d[2].length === 1 ? `0${d[2]}` : d[2];
+		a = `${month}/${day}/${year}`;
+		return a.toString();
+	},
+	"serviceDate-asc": function (a, b) {
+		const dateA = new Date(a);
+		const dateB = new Date(b);
+		return dateA < dateB;
+	},
+	"serviceDate-desc": function (a, b) {
+		const dateA = new Date(a);
+		const dateB = new Date(b);
+		return dateB > dateA;
+	},
+});
 
 const dt = new DataTable("#upcomingHistoryTable", {
 	dom: "Blfrtip",
-	responsive: true,
+	responsive: false,
 	pagingType: "full_numbers",
 	language: {
 		paginate: {
@@ -110,4 +115,14 @@ const dt = new DataTable("#upcomingHistoryTable", {
 
 let dataTables_length = document.querySelector(".dataTables_length");
 $(".dataTables_length").insertAfter(".dataTable");
-$(".tableHeader").insertAfter(".dt-buttons");
+$(".tableHeader").insertBefore(".dt-buttons");
+
+sortingButton.addEventListener("click", () => {
+	const radioArr = document.querySelectorAll("input[name='sortingRadio']");
+	radioArr.forEach((radioBtn) => {
+		radioBtn.addEventListener("click", () => {
+			dt.order([radioBtn.getAttribute("data-st-col"), radioBtn.getAttribute("data-st-type")]).draw();
+			sortingButton.click();
+		});
+	});
+});
