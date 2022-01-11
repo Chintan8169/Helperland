@@ -166,12 +166,10 @@ let dataTables_length = document.querySelector(".dataTables_length");
 $(".dataTables_length").insertAfter(".dataTable");
 $(".tableHeader").insertAfter(".dt-buttons");
 
-sortingButton.addEventListener("click", () => {
-	const radioArr = document.querySelectorAll("input[name='sortingRadio']");
-	radioArr.forEach((radioBtn) => {
-		radioBtn.addEventListener("click", () => {
-			dt.order([radioBtn.getAttribute("data-st-col"), radioBtn.getAttribute("data-st-type")]).draw();
-			sortingButton.click();
-		});
-	});
-});
+sortingButton.addEventListener("click", () =>
+	document
+		.querySelectorAll("input[name='sortingRadio']")
+		.forEach((radioBtn) =>
+			radioBtn.addEventListener("click", () => dt.order([radioBtn.getAttribute("data-st-col"), radioBtn.getAttribute("data-st-type")]).draw())
+		)
+);

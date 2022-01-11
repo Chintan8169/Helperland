@@ -28,7 +28,7 @@
 				<div class="navItem"><a href="#">Our Guarantee</a></div>
 				<div class="navItem"><a href="#">Blog</a></div>
 				<div class="navItem"><a href="contact.html">Contact us</a></div>
-				<div class="navItem active"><a href="#">Login</a></div>
+				<div class="navItem active loginBtn"><a href="#">Login</a></div>
 				<div class="navItem active"><a href="becomeAProvider.html">Become a Helper</a></div>
 				<div class="dropdown">
 					<div class="d-flex" type="button" id="languageChanger" data-bs-toggle="dropdown" aria-expanded="false">
@@ -195,13 +195,7 @@
 				</div>
 				<div class="row align-items-center justify-content-center justify-content-md-between howItWorksCard">
 					<div
-						class="
-							howItWorksCardImage
-							d-flex
-							align-items-center
-							justify-content-center justify-content-md-start
-							col-12 col-sm-12 col-md-6
-						"
+						class="howItWorksCardImage d-flex align-items-center justify-content-center justify-content-md-start col-12 col-sm-12 col-md-6"
 					>
 						<img src="assets/images/howItWorksCardImage2.png" alt="image2" />
 					</div>
@@ -326,9 +320,15 @@
 		const hamburger = document.querySelector(".hamburger");
 		const scrollDown = document.querySelector("#scrollDown");
 		const howItWorks = document.querySelector(".howItWorks");
+		const loginBtn = document.querySelector(".loginBtn");
 		const navMenu = document.querySelector(".navMenu");
 		const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 		const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
+		loginBtn.addEventListener("click", () => {
+			document.cookie = "isLoginModalOpen=true";
+			document.location.href = "index.html";
+		});
 
 		window.addEventListener("scroll", () => {
 			if (window.scrollY > 70) {

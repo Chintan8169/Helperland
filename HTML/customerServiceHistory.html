@@ -117,13 +117,15 @@
 					<img
 						src="assets/images/filter.png"
 						class="sortingButton d-inline-block d-md-none ms-3"
+						tabindex="0"
 						data-bs-toggle="popover"
 						data-bs-offset="0,15"
+						data-bs-trigger="focus"
 						data-bs-placement="bottom"
 						data-bs-custom-class="sortingPopover"
 						data-bs-html="true"
 						data-bs-content="<label class='sortingRadioLabel form-check-label' for='dateDesc'>
-							<input class='form-check-input box-shadow-none' type='radio' data-st-col='0' data-st-type='desc' name='sortingRadio' id='dateDesc' />
+							<input class='form-check-input box-shadow-none' checked type='radio' data-st-col='0' data-st-type='desc' name='sortingRadio' id='dateDesc' />
 							Service Date: Latest
 						</label>
 						<label class='sortingRadioLabel form-check-label' for='dateAsc'>

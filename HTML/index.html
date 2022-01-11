@@ -28,7 +28,7 @@
 				<div class="navItem"><a href="#">Our Guarantee</a></div>
 				<div class="navItem"><a href="#">Blog</a></div>
 				<div class="navItem"><a href="contact.html">Contact us</a></div>
-				<div class="navItem active"><a href="#">Login</a></div>
+				<div class="navItem active"><a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></div>
 				<div class="navItem active"><a href="becomeAProvider.html">Become a Helper</a></div>
 				<div class="dropdown">
 					<div class="d-flex" type="button" id="languageChanger" data-bs-toggle="dropdown" aria-expanded="false">
@@ -68,6 +68,54 @@
 				</div>
 			</div>
 		</nav>
+		<div class="modal fade" id="loginModal" aria-hidden="true" aria-labelledby="loginModalLabel" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered justify-content-center">
+				<div class="modal-content">
+					<div class="modal-header p-0 border-0 mb-4">
+						<h5 class="modal-title" id="loginModalLabel">Log In to your Account</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-0">
+						<form class="loginModalForm">
+							<input type="email" class="form-control mb-3" name="loginEmail" id="loginEmail" placeholder="Email" />
+							<input type="password" class="form-control mb-3" name="loginPassword" id="loginPassword" placeholder="Password" />
+							<label class="form-check-label mb-2" for="saveLoginInfoCheckBox">
+								<input class="form-check-input" type="checkbox" value="" id="saveLoginInfoCheckBox" />
+								Remember Me
+							</label>
+							<button class="text-white w-100 border-0 rounded-pill d-block" disabled>Login</button>
+						</form>
+						<a href="#" class="d-block mt-4 mb-1 text-center" data-bs-toggle="modal" data-bs-target="#forgetPasswordModal"
+							>Forget Password?</a
+						>
+						<div class="createAccountDiv">
+							Don't have account?
+							<a href="#">Create an account</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="forgetPasswordModal" aria-hidden="true" aria-labelledby="forgetPasswordModalLabel" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered justify-content-center">
+				<div class="modal-content">
+					<div class="modal-header mb-4 p-0 border-0">
+						<h5 class="modal-title" id="forgetPasswordModalLabel">Forget Password</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body p-0">
+						<form class="forgetPasswordModalForm">
+							<input type="email" class="form-control mb-3" name="forgetPasswordEmail" id="forgetPasswordEmail" placeholder="Email" />
+							<button class="text-white w-100 border-0 mb-3 rounded-pill d-block" disabled>Send</button>
+						</form>
+						<a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#loginModal">
+							<img class="me-2" src="assets/images/Shape 2.png" style="transform: rotate(180deg)" />
+							Back to Login</a
+						>
+					</div>
+				</div>
+			</div>
+		</div>
 		<header>
 			<div class="backgroundImage rellax" data-rellax-speed="-1"><img src="assets/images/group-35.png" alt="bg" /></div>
 			<section class="topCrousel rellax container-fluid" data-rellax-speed="3">

@@ -5,6 +5,7 @@ const hamburger = document.querySelector(".hamburger");
 const halfPage = document.querySelector(".halfPage");
 const verticleMenu = document.querySelector(".verticleMenu");
 const toDate = document.querySelector("#toDate");
+const sortingButton = document.querySelector(".sortingButton");
 const tbody = document.querySelector("tbody");
 
 hamburger.addEventListener("click", () => {
@@ -72,105 +73,174 @@ const names = [
 	"Nathan Elena",
 ];
 
-for (let i = 0; i < 55; i++) {
-	let x = Math.floor(Math.random() * 40);
-	let status;
-	if (x <= 10 && x >= 0) {
-		status = "cancelled";
-	} else if (x <= 20 && x > 10) {
-		status = "completed";
-	} else if (x <= 30 && x > 20) {
-		status = "new";
-	} else if (x <= 40 && x > 30) {
-		status = "pending";
-	}
+const poc = [
+	"3040051",
+	"3041563",
+	"290594",
+	"291074",
+	"291696",
+	"292223",
+	"292231",
+	"292239",
+	"292672",
+	"292688",
+	"292878",
+	"292913",
+	"292932",
+	"292953",
+	"292968",
+	"1120985",
+	"1123004",
+	"1125155",
+	"1125444",
+	"1125896",
+	"1127110",
+	"1127628",
+	"1127768",
+	"1128265",
+	"1129516",
+	"1129648",
+	"1130490",
+	"1131316",
+	"1132495",
+	"1133453",
+	"1133574",
+	"1133616",
+	"1134720",
+	"1135158",
+	"1135689",
+	"1136469",
+	"1136575",
+	"1136863",
+	"1137168",
+	"1137807",
+	"1138336",
+	"1138958",
+	"1139715",
+	"1139807",
+	"1140026",
+	"1141089",
+	"1141269",
+	"1141540",
+	"1141857",
+	"1142170",
+];
+
+const cities = [
+	"les Escaldes",
+	"Andorra la Vella",
+	"Umm al Qaywayn",
+	"Ras alKhaimah",
+	"Khawr FakkÄn",
+	"Dubai",
+	"Dibba AlFujairah",
+	"Dibba AlHisn",
+	"Sharjah",
+	"Ar Ruways",
+	"Al Fujayrah",
+	"Al Ain",
+	"Ajman",
+	"Adh Dhayd",
+	"Abu Dhabi",
+	"Zaranj",
+	"Taloqan",
+	"ShÄ«ná¸aná¸",
+	"ShibirghÄn",
+	"Shahrak",
+	"Sare Pul",
+	"Sange ChÄrak",
+	"AÄ«bak",
+	"RustÄq",
+	"QarqÄ«n",
+	"QarÄwul",
+	"Pule KhumrÄ«",
+	"PaghmÄn",
+	"NahrÄ«n",
+	"Maymana",
+	"Mehtar LÄm",
+	"MazÄre SharÄ«f",
+	"Lashkar GÄh",
+	"Kushk",
+	"Kunduz",
+	"KhÅst",
+	"Khulm",
+	"KhÄsh",
+	"Khanabad",
+	"Karukh",
+	"KandahÄr",
+	"Kabul",
+	"JalÄlÄbÄd",
+	"Jabal os Saraj",
+	"HerÄt",
+	"Ghormach",
+	"Ghazni",
+	"Gereshk",
+	"GardÄ“z",
+	"Fayzabad",
+];
+
+const userType = ["Call Center", "Customer", "Service Provider"];
+const role = ["Inquiry Manager", "Content Manager", "Finance Manager"];
+
+for (let i = 0; i < 50; i++) {
+	const ut = userType[Math.floor(Math.random() * userType.length)];
+	const r = ut === "Call Center" ? role[Math.floor(Math.random() * role.length)] : "No Role";
+	const status = Math.random() < 0.5 ? "active" : "inactive";
+	const radius = ut === "Service Provider" ? `${Math.floor(Math.random() * 100)} km` : "No Data";
 	let popoverContent = "";
-	if (status === "pending") {
-		popoverContent = `<a href='#' class='custPopoverAnch'>Edit & Reschedule</a><a href='#' class='custPopoverAnch'>Refund</a><a href='#' class='custPopoverAnch'>Cancel</a><a href='#' class='custPopoverAnch'>Change SP</a><a href='#' class='custPopoverAnch'>Escalate</a><a href='#' class='custPopoverAnch'>History Log</a><a href='#' class='custPopoverAnch'>Download Invoice</a>`;
-	} else if (status === "completed") {
-		popoverContent = `<a href='#' class='custPopoverAnch'>Refund</a><a href='#' class='custPopoverAnch'>Escalate</a><a href='#' class='custPopoverAnch'>History Log</a><a href='#' class='custPopoverAnch'>Download Invoice</a>`;
+	if ((ut === "Service Provider" || ut === "Customer") && status === "active") {
+		popoverContent = `<a href='#' class='custPopoverAnch'>Edit</a><a href='#' class='custPopoverAnch'>Deactivate</a><a href='#' class='custPopoverAnch'>Service History</a>`;
+	} else if (ut === "Call Center" && status === "active") {
+		popoverContent = `<a href='#' class='custPopoverAnch'>Edit</a><a href='#' class='custPopoverAnch'>Deactivate</a>`;
 	}
-	tbody.innerHTML += `<tr>
-					<td class="serviceId">${Math.floor(Math.random() * 3000 * i)}</td>
-					<td>
-						<div class="tdHead d-flex align-items-center justify-content-start">
-							<img src="assets/images/calender.png" />
-							<h5>${new Date(i * 86400000).getDate()}/${new Date(i * 86400000).getMonth() + 1}/${new Date(i * 86400000).getFullYear()}</h5>
-						</div>
-						<div class="timing d-flex align-items-center justify-content-start">
-							<img src="assets/images/clock.png" />
-							<div class="time">12:00 - 18:00</div>
-						</div>
-					</td>
-					<td>
-						<div class="custName text-md-nowrap text-sm-wrap">${names[54 - i]}</div>
-						<div class="custAddress d-flex text-md-nowrap text-sm-wrap align-items-center justify-content-start">
-							<img src="assets/images/addressIcon.png" />
-							Musterstrabe 5,12345 Bonn
-						</div>
-					</td>
-					<td>
-						<div class="serviceProvider d-flex align-items-center justify-content-start">
-							<img class="rounded-circle" src="assets/images/serviceProviderProfileImage.svg" />
-							<div class="serviceProviderInfo">
-								<div class="serviceProviderName">${names[i]}</div>
-								<div class="feedback d-flex align-items-center justify-content-center">
-									<img src="assets/images/starFilled.svg" /><img src="assets/images/starFilled.svg" /><img
-										src="assets/images/starFilled.svg"
-									/><img src="assets/images/starFilled.svg" /><img src="assets/images/starUnfilled.svg" />4
-								</div>
-							</div>
-						</div>
-					</td>
-					<td class="text-center"><span class='status ${status}'>${status}</span></td>
-					<td class="actionTd">
-						<div 
-						class="action rounded-circle d-flex flex-column align-items-center justify-content-center position-relative" 
-						${
-							popoverContent !== ""
-								? 'data-bs-toggle="popover" data-bs-offset="-30,10" data-bs-placement="bottom" data-bs-content="' +
-								  popoverContent +
-								  '" data-bs-html="true"'
-								: ""
-						}
-						>
-							<div class="dot rounded-circle"></div>
-							<div class="dot rounded-circle"></div>
-							<div class="dot rounded-circle"></div>
-						</div>
-					</td>
-				</tr>`;
+	tbody.innerHTML += `
+	<tr class="adminServiceRequestTR">
+		<td data-dt-colName="User Name :">${names[i]}</td>
+		<td data-dt-colName="User Type :">${ut}</td>
+		<td data-dt-colName="Role :">${r}</td>
+		<td data-dt-colName="Postal Code :">${poc[i]}</td>
+		<td data-dt-colName="City :">${cities[i]}</td>
+		<td data-dt-colName="Radius :">${radius}</td>
+		<td data-dt-colName="User Status :">${
+			status === "active" ? '<span class="status completed">Active</span>' : '<span class="status cancelled">Inactive</span>'
+		}</td>
+		<td class="actionTd" data-dt-colName="Action :">
+			<div 
+			class="action rounded-circle d-flex flex-column align-items-center justify-content-center position-relative" 
+			${
+				popoverContent !== ""
+					? 'data-bs-toggle="popover" data-bs-custom-class="actionPopover" data-bs-offset="-45,10" data-bs-placement="bottom" data-bs-content="' +
+					  popoverContent +
+					  '" data-bs-html="true"'
+					: ""
+			}
+			>
+				<div class="dot rounded-circle"></div>
+				<div class="dot rounded-circle"></div>
+				<div class="dot rounded-circle"></div>
+			</div>
+		</td>
+	</tr>
+	`;
 }
 
 const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
+const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl, { sanitize: false }));
 
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-	"serviceDate-pre": function (a) {
-		const time = a
-			.match(/<div class="time">.*<\/div>/)[0]
-			.replace(`<div class="time">`, "")
-			.replace("</div>", "");
-		a = a
-			.match(/<h5>.*<\/h5>/)[0]
-			.replace("<h5>", "")
-			.replace("</h5>", "");
-		let d = a.split("/");
-		let day = d[0].length === 1 ? `0${d[0]}` : d[0];
-		let month = d[1].length === 1 ? `0${d[1]}` : d[1];
-		let year = d[2].length === 1 ? `0${d[2]}` : d[2];
-		a = `${month}/${day}/${year}`;
-		return a.toString();
+	"kmNum-pre": function (a) {
+		a = a.replace(" km", "");
+		console.log(a === "");
+		if (a === "No Data") {
+			a = "999999999";
+		}
+		return parseInt(a);
 	},
-	"serviceDate-asc": function (a, b) {
-		const dateA = new Date(a);
-		const dateB = new Date(b);
-		return dateA < dateB;
+	"kmNum-asc": function (a, b) {
+		return a - b;
 	},
-	"serviceDate-desc": function (a, b) {
-		const dateA = new Date(a);
-		const dateB = new Date(b);
-		return dateB > dateA;
+	"kmNum-desc": function (a, b) {
+		return b - a;
 	},
 });
 
@@ -187,9 +257,12 @@ const dt = new DataTable("#adminUserManagementTable", {
 		lengthMenu: "Show_MENU_Entries",
 	},
 	columnDefs: [
-		{ orderable: false, targets: 5 },
-		// { type: "kmNum", targets: 3 },
-		{ type: "serviceDate", targets: 1 },
+		{ orderable: false, targets: 1 },
+		{ orderable: false, targets: 2 },
+		{ orderable: false, targets: 4 },
+		{ orderable: false, targets: 7 },
+		{ type: "num", targets: 3 },
+		{ type: "kmNum", targets: 5 },
 	],
 });
 
@@ -213,3 +286,11 @@ toDate.addEventListener("focusout", () => {
 		if (toDate.value) toDateOutput.innerHTML = toDate.value;
 	}, 500);
 });
+
+sortingButton.addEventListener("click", () =>
+	document
+		.querySelectorAll("input[name='sortingRadio']")
+		.forEach((radioBtn) =>
+			radioBtn.addEventListener("click", () => dt.order([radioBtn.getAttribute("data-st-col"), radioBtn.getAttribute("data-st-type")]).draw())
+		)
+);

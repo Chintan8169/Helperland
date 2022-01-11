@@ -19,9 +19,90 @@ nav {
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 2000;
+	z-index: 500;
 	width: 100%;
 	transition: background 0.5s;
+}
+
+#loginModal .modal-content,
+#forgetPasswordModal .modal-content {
+	max-width: 358px;
+	padding: 25px;
+}
+
+#loginModal .modal-header .modal-title,
+#forgetPasswordModal .modal-header .modal-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #646464 !important;
+}
+
+.loginModalForm > input,
+.forgetPasswordModalForm input {
+	font-size: 16px;
+	color: #646464;
+	padding: 12px 15px;
+	box-shadow: none !important;
+	border: 1px solid #dedddd;
+	height: 46px;
+}
+
+.loginModalForm > input:focus,
+.forgetPasswordModalForm input:focus {
+	border-color: #1d798c;
+}
+
+.forgetPasswordModalForm button,
+.loginModalForm button {
+	background: #1d7a8c !important;
+	font-size: 18px;
+	padding: 7px 30px;
+	font-weight: bold;
+}
+
+.forgetPasswordModalForm button[disabled],
+.loginModalForm button[disabled] {
+	opacity: 0.65;
+	cursor: not-allowed;
+}
+
+.modal a {
+	text-decoration: none;
+	color: #1d798c;
+	transition: color 0.25s;
+}
+
+.modal a img {
+	transition: transform 0.25s;
+}
+
+.modal a:hover img {
+	transform: translateX(-6px) rotate(180deg) !important;
+}
+
+.modal a:hover {
+	color: #0d3841;
+}
+
+.loginModalForm > input[type="email"],
+.forgetPasswordModalForm input {
+	background: url("../images/user.png") no-repeat center right 0.6em;
+}
+.loginModalForm > input[type="password"] {
+	background: url("../images/password.png") no-repeat center right 0.6em;
+}
+
+.form-check-input {
+	box-shadow: none !important;
+}
+
+.form-check-input:focus[type="checkbox"] {
+	border-color: #1d798c !important;
+}
+
+.form-check-input:checked[type="checkbox"] {
+	border-color: #1d798c !important;
+	background-color: #1d798c;
 }
 
 .backgroundImage {

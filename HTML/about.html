@@ -28,7 +28,7 @@
 				<div class="navItem"><a href="#">Warranty</a></div>
 				<div class="navItem"><a href="#">Blog</a></div>
 				<div class="navItem"><a href="contact.html">Contact</a></div>
-				<div class="navItem highlight"><a href="#">Login</a></div>
+				<div class="navItem highlight loginBtn"><a href="#">Login</a></div>
 				<div class="navItem highlight"><a href="becomeAProvider.html">Become a Helper</a></div>
 			</div>
 		</nav>
@@ -175,6 +175,13 @@
 	<script>
 		const hamburger = document.querySelector(".hamburger");
 		const navMenu = document.querySelector(".navMenu");
+		const loginBtn = document.querySelector(".loginBtn");
+
+		loginBtn.addEventListener("click", () => {
+			document.cookie = "isLoginModalOpen=true";
+			document.location.href = "index.html";
+		});
+
 		hamburger.addEventListener("click", () => {
 			hamburger.classList.toggle("open");
 			navMenu.classList.toggle("open");

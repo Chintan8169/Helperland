@@ -1,11 +1,17 @@
 const hamburger = document.querySelector(".hamburger");
 const navMenu = document.querySelector(".navMenu");
 const forCustomer = document.querySelector(".forCustomer");
+const loginBtn = document.querySelector(".loginBtn");
 const forServiceProvider = document.querySelector(".forServiceProvider");
 const accordion = document.querySelector(".accordion");
 
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
+loginBtn.addEventListener("click", () => {
+	document.cookie = "isLoginModalOpen=true";
+	document.location.href = "index.html";
+});
 
 hamburger.addEventListener("click", () => {
 	hamburger.classList.toggle("open");

@@ -8,7 +8,9 @@ const hamburger = document.querySelector(".hamburger");
 const backgroundImage = document.querySelector(".backgroundImage");
 const topCrousel = document.querySelector(".topCrousel");
 const navMenu = document.querySelector(".navMenu");
+const loginModal = new bootstrap.Modal(document.querySelector("#loginModal"));
 const rellax = new Rellax(".rellax");
+
 const vanila = VanillaTilt.init(document.querySelector(".threeImages"), {
 	max: 25,
 	speed: 400,
@@ -16,6 +18,11 @@ const vanila = VanillaTilt.init(document.querySelector(".threeImages"), {
 	reverse: true,
 	gyroscope: true,
 });
+let cookies = document.cookie;
+if (cookies.includes("isLoginModalOpen=true")) {
+	loginModal.show();
+	document.cookie = "isLoginModalOpen=false";
+}
 
 const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));

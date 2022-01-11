@@ -73,7 +73,8 @@ div.logo a {
 	max-width: 273px;
 }
 
-.menuItem.active {
+.menuItem.active,
+.menuItem.active a {
 	color: #1fb6ff;
 }
 
@@ -87,6 +88,12 @@ div.logo a {
 	border-bottom: 1px solid #e5e5e5 !important;
 	width: 100%;
 	text-align: left !important;
+	transition: color 0.25s;
+}
+
+.menuItem a {
+	text-decoration: none;
+	color: #646464;
 	transition: color 0.25s;
 }
 
@@ -112,7 +119,8 @@ div.logo a {
 }
 
 .collapseAnch:hover,
-.menuItem:hover {
+.menuItem:hover,
+.menuItem:hover a {
 	color: #1fb6ff;
 }
 
@@ -151,6 +159,24 @@ div.logo a {
 	font-weight: bold;
 }
 
+.dataDiv .heading button {
+	padding: 9px 11px;
+	background: #1fb6ff;
+	border-radius: 4px;
+	outline: none;
+	border: none;
+	font-size: 14px;
+	color: #fff;
+	transition: background 0.3s;
+}
+.dataDiv .heading button:hover {
+	background: #0c8ccc;
+}
+
+.dataDiv .heading button img {
+	margin-right: 7px;
+}
+
 .filterForm {
 	padding: 20px 20px 20px 15px;
 	border: 1px solid #e1e1e1;
@@ -176,6 +202,10 @@ div.logo a {
 	background-image: url("../images/admin-arrow.png");
 	background-position: right 5px center;
 	background-size: 14px 8px;
+}
+
+.input-group {
+	max-width: 219px;
 }
 
 .search,
@@ -222,7 +252,12 @@ div.logo a {
 #status {
 	max-width: 120px;
 }
-
+#userName {
+	max-width: 205px;
+}
+#userRole {
+	max-width: 215px;
+}
 footer {
 	font-size: 14px;
 	color: #a2a6a8;
@@ -249,8 +284,21 @@ footer {
 	background: #f4f4f4;
 }
 
-.popover {
-	width: 146px;
+.sortingPopover.popover {
+	display: none;
+}
+
+.sortingButton {
+	cursor: pointer;
+	margin-left: 25px;
+}
+
+.tableFilterSm {
+	color: #646464;
+	font-size: 20px;
+}
+
+.actionPopover.popover {
 	padding: 15px 8px 7px;
 	z-index: 3000;
 	height: max-content;
@@ -258,7 +306,7 @@ footer {
 	border-radius: 4px;
 }
 
-.popover-body {
+.actionPopover .popover-body {
 	padding: 0 !important;
 }
 .custPopover.open .custPopoverArrow {
@@ -307,11 +355,16 @@ table {
 
 thead tr {
 	background: #f9f9f9 !important;
+	color: #646464;
+	font-size: 16px;
+	font-weight: bold;
 }
 
 tbody tr {
 	border-bottom: 1px solid #e1e1e1 !important;
 	border-top: 1px solid #e1e1e1 !important;
+	color: #646464;
+	font-size: 16px;
 }
 
 .tdHead svg,
@@ -484,13 +537,84 @@ div.dataTables_paginate {
 	height: 40px;
 }
 
-@media screen and (max-width: 1100px) {
-	table.dataTable tbody tr td:nth-child(1) {
-		padding-left: 35px !important;
-	}
-}
-
 @media screen and (max-width: 767px) {
+	.sortingPopover.popover {
+		display: block;
+		padding: 15px !important;
+		border: 1px solid rgba(0, 0, 0, 0.15) !important;
+		width: 235px;
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	}
+	.sortingPopover.popover .popover-body {
+		padding: 0 !important;
+	}
+
+	.sortingRadioLabel {
+		cursor: pointer;
+		color: #646464;
+		font-size: 16px;
+	}
+
+	.sortingRadioLabel:not(.sortingRadioLabel:last-child) {
+		margin-bottom: 12px;
+	}
+
+	.sortingRadioLabel .form-check-input {
+		margin-right: 8px;
+		height: 18px;
+		width: 18px;
+		box-shadow: none !important;
+	}
+	.sortingRadioLabel .form-check-input:checked {
+		background-color: #1d7a8c;
+		border-color: #1d7a8c;
+	}
+
+	thead {
+		display: none;
+	}
+
+	tbody tr {
+		display: flex;
+		flex-direction: column;
+		border-radius: 7px;
+		margin: 15px 0;
+		border: 1px solid #a1a0a0 !important;
+		box-shadow: 3px 5px 5px 5px #c4c2c2;
+		padding: 25px;
+		gap: 10px;
+	}
+
+	table.dataTable tbody tr td {
+		position: relative;
+		padding: 6px 0 !important;
+		padding-top: 28px !important;
+	}
+	table.dataTable tbody tr td::before {
+		content: attr(data-dt-colName);
+		position: absolute;
+		left: 0;
+		top: 0;
+		font-size: 17px;
+		font-weight: bold;
+	}
+
+	table.dataTable tbody tr td:not(table.dataTable tbody tr td:last-child) {
+		border-bottom: 1px solid #e1e1e1 !important;
+	}
+
+	.timing {
+		margin-top: 5px;
+	}
+
+	.serviceProviderName {
+		margin-bottom: 0 !important;
+	}
+
+	.status {
+		margin-top: 5px;
+	}
+
 	div.logo a {
 		font-size: 30px;
 	}
@@ -567,6 +691,11 @@ div.dataTables_paginate {
 		transform: translateY(0) rotate(-45deg);
 	}
 
+	.dataTables_wrapper {
+		background: initial !important;
+		border: 1px solid transparent !important;
+	}
+
 	.dataTables_wrapper .dataTables_paginate,
 	.dataTables_wrapper .dataTables_length {
 		clear: both !important;
@@ -578,7 +707,8 @@ div.dataTables_paginate {
 
 @media screen and (max-width: 576px) {
 	.form-control,
-	.form-select {
+	.form-select,
+	.input-group {
 		max-width: 100% !important;
 	}
 
