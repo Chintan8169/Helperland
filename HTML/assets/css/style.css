@@ -213,7 +213,7 @@ header {
 
 .crouselInfo {
 	padding-top: 190px;
-	margin-left: 55px;
+	margin: 0 55px;
 }
 
 .crouselHeader {
@@ -279,6 +279,7 @@ header {
 	margin-bottom: 85px;
 	font-size: 40px;
 	font-weight: bold;
+	color: #4f4f4f;
 }
 
 .whycards {
@@ -290,6 +291,7 @@ header {
 .whycard {
 	max-width: 320px;
 	margin-bottom: 25px;
+	color: #565656;
 }
 
 .whyCardHeader {
@@ -316,8 +318,14 @@ header {
 	margin-top: 156px;
 }
 
+.info .row {
+	max-width: 1161px;
+	margin: auto;
+}
+
 .rightInfo {
 	order: 1;
+	color: #4f4f4f;
 }
 
 .threeImages {
@@ -369,6 +377,7 @@ header {
 }
 
 .blogHeader {
+	color: #4f4f4f;
 	font-size: 40px;
 	font-weight: bold;
 	margin-bottom: 64px;
@@ -403,6 +412,7 @@ header {
 	margin-top: 16px;
 	font-size: 20px;
 	font-weight: bold;
+	color: #3d4046;
 }
 
 .blogDate {
@@ -732,7 +742,7 @@ footer {
 	}
 }
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 991px) {
 	footer {
 		padding: 25px;
 		justify-content: space-evenly !important;
@@ -763,7 +773,11 @@ footer {
 	}
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 576px) {
+	.crouselHeader {
+		font-size: 40px;
+	}
+
 	.info {
 		margin-top: 0px !important;
 		overflow: hidden;
@@ -831,7 +845,7 @@ footer {
 	}
 
 	.crouselInfo {
-		margin-left: 20px;
+		margin: 0 20px;
 		padding-top: 20px;
 	}
 

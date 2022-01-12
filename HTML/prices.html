@@ -81,7 +81,7 @@
 			</div>
 			<div class="services d-flex flex-wrap align-items-center justify-content-center">
 				<div class="service">
-					<div class="serviceImage rounded-circle d-flex align-items-center justify-content-center">
+					<div class="serviceImage circle rounded-circle d-flex align-items-center justify-content-center">
 						<img src="assets/images/InsideCabinets.svg" alt="InsideCabinets" />
 					</div>
 					<div class="serviceText text-center">Inside Cabinets</div>
@@ -335,12 +335,22 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"
 	></script>
+	<script src="assets/js/vanilla-tilt.min.js"></script>
 	<script>
 		const hamburger = document.querySelector(".hamburger");
 		const navMenu = document.querySelector(".navMenu");
 		const loginBtn = document.querySelector(".loginBtn");
 		const scrollToTop = document.querySelector("#scrollToTop");
 		const cleaningServicesCardsDescriptionItem = document.querySelectorAll(".cleaningServicesCardsDescriptionItem");
+
+		const vanila = VanillaTilt.init(document.querySelector(".priceCard"), {
+			max: 25,
+			speed: 1000,
+			glare: true,
+			scale: 1.07,
+			"max-glare": 0.6,
+			gyroscope: false,
+		});
 		hamburger.addEventListener("click", () => {
 			hamburger.classList.toggle("open");
 			navMenu.classList.toggle("open");

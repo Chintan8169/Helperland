@@ -104,11 +104,6 @@ nav {
 	margin: auto;
 	border: 1px solid #b0c9ce;
 	padding-bottom: 10px;
-	transition: transform 0.35s;
-}
-
-.priceCard:hover {
-	transform: scale(1.07);
 }
 
 .priceCardHeader {
@@ -163,6 +158,27 @@ nav {
 	width: 108px;
 	height: 108px;
 	margin: auto;
+	transition: background 0.35s;
+}
+
+.service:hover .serviceImage {
+	background: #f6f6f6;
+	animation: gelatine 0.4s;
+}
+@keyframes gelatine {
+	from,
+	to {
+		transform: scale(1, 1);
+	}
+	25% {
+		transform: scale(0.9, 1.1);
+	}
+	50% {
+		transform: scale(1.1, 0.9);
+	}
+	75% {
+		transform: scale(0.95, 1.05);
+	}
 }
 
 .serviceText {

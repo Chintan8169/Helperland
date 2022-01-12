@@ -574,7 +574,7 @@ div.dataTables_paginate {
 		display: none;
 	}
 
-	tbody tr {
+	table.dataTable tbody tr {
 		display: flex;
 		flex-direction: column;
 		border-radius: 7px;
