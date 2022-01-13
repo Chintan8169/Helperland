@@ -18,6 +18,7 @@ const vanila = VanillaTilt.init(document.querySelector(".threeImages"), {
 	reverse: true,
 	gyroscope: true,
 });
+AOS.init();
 let cookies = document.cookie;
 if (cookies.includes("isLoginModalOpen=true")) {
 	loginModal.show();
