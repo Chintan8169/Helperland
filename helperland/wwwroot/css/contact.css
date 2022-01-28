@@ -1,0 +1,146 @@
+.contactusCarousel img {
+	width: 100%;
+	height: auto;
+}
+
+.contactUsHeaderText {
+	font-size: 36px;
+	margin: 39px 0px 9px 0px;
+	font-weight: 700;
+	color: #4f4f4f;
+}
+
+.contactUsFormHeader {
+	font-size: 28px;
+	color: #4f4f4f;
+	margin-bottom: 23px;
+	font-weight: bold;
+}
+
+.contactUsHeaderDecoration span,
+.contactUsFormDecoration span {
+	width: 62px;
+	height: 1px;
+	margin: 0 8px;
+	background: #cccccc;
+}
+
+.contactUsHeaderDecoration,
+.contactUsFormDecoration {
+	margin-bottom: 52px;
+}
+
+.contactUsHeader {
+	max-width: 1140px;
+}
+
+.contactUsHeader hr {
+	height: 3px;
+	color: #e1e1e1;
+	margin-bottom: 74px;
+}
+
+.address,
+.phone,
+.email {
+	margin: 0 102px;
+	margin-bottom: 80px;
+}
+
+.address svg,
+.phone svg,
+.email img {
+	margin-bottom: 23px;
+}
+.address div a,
+.phone div a,
+.email div a {
+	text-decoration: none;
+	font-size: 16px;
+	color: #4f4f4f;
+}
+
+.contactUsForm {
+	max-width: 641px;
+}
+
+.form-item {
+	margin-bottom: 15px;
+}
+
+.form-select:not(.form-select:focus) {
+	background-image: url("../images/downArrow.svg");
+	color: #a0a0a0 !important;
+}
+.form-control,
+.form-select {
+	height: 46px;
+	padding: 0px 15px;
+	font-size: 16px;
+	color: #646464;
+}
+
+.input-group-text {
+	outline: none;
+}
+
+.form-control:active,
+.form-control:focus,
+.form-select:active,
+.form-select:focus,
+.input-group-text:active,
+.input-group-text:focus {
+	color: #646464;
+	border: 1.5px solid #1d7a8c;
+	box-shadow: none !important;
+}
+
+textarea.form-control {
+	height: 146px;
+	padding: 10px 15px;
+}
+
+.submit {
+	font-size: 20px;
+	color: #fff;
+	padding: 10px 50px;
+	background: #1d7a8c;
+	width: 163px;
+	margin-bottom: 80px;
+}
+
+.form-control::placeholder {
+	color: #a0a0a0;
+}
+
+.map {
+	height: 400px;
+}
+
+.map iframe {
+	height: 100%;
+	width: 100%;
+	border: 0;
+}
+
+@media screen and (max-width: 1024px) {
+	.address,
+	.phone,
+	.email {
+		margin: 0 50px;
+		margin-bottom: 65px;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.address,
+	.phone,
+	.email {
+		margin: 0 15px;
+		margin-bottom: 50px;
+	}
+
+	.contactUsHeader hr {
+		margin-bottom: 30px;
+	}
+}

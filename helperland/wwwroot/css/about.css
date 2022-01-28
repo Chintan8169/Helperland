@@ -1,0 +1,39 @@
+.aboutCarousel img {
+	width: 100%;
+	height: auto;
+}
+
+.about {
+	max-width: 982px;
+}
+
+.aboutHeader {
+	font-size: 36px;
+	margin: 39px 0px 9px 0px;
+	font-weight: 700;
+	color: #4f4f4f;
+}
+
+.ourStory {
+	margin-top: 43px !important;
+}
+
+.aboutText {
+	font-size: 16px;
+	color: #646464;
+}
+
+.aboutInnerText {
+	margin-bottom: 35px;
+}
+
+.aboutHeaderDecoration span {
+	width: 62px;
+	height: 1px;
+	margin: 0 8px;
+	background: #cccccc;
+}
+
+.aboutHeaderDecoration {
+	margin-bottom: 41px;
+}

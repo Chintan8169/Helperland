@@ -1,0 +1,274 @@
+.pricesCarousel img {
+	width: 100%;
+	height: auto;
+}
+
+.pricesHeader {
+	max-width: 1140px;
+}
+
+.pricesHeader hr {
+	height: 3px;
+	color: #dcdcdc;
+	margin: 51px 0 47px;
+}
+
+.pricesHeaderText,
+.cleaningServicesHeaderText,
+.whyHelperlandHeaderText {
+	font-size: 36px;
+	margin: 39px 0px 9px 0px;
+	font-weight: 700;
+	color: #4f4f4f;
+}
+
+.pricesHeaderDecoration span,
+.cleaningServicesHeaderDecoration span,
+.whyHelperlandHeaderDecoration span {
+	width: 62px;
+	height: 1px;
+	margin: 0 8px;
+	background: #cccccc;
+}
+
+.pricesHeaderDecoration,
+.cleaningServicesHeaderDecoration,
+.whyHelperlandHeaderDecoration {
+	margin-bottom: 42px;
+}
+
+.priceCard {
+	max-width: 553px;
+	margin: auto;
+	border: 1px solid #b0c9ce;
+	padding-bottom: 10px;
+}
+
+.priceCardHeader {
+	font-size: 28px;
+	font-weight: bold;
+	color: #fff;
+	padding: 12px 0 13px;
+	background: #1d7a8c;
+}
+
+.priceCardText {
+	position: relative;
+	font-size: 48px;
+	font-weight: bold;
+	color: #646464;
+	line-height: 48px;
+	margin: 18px 0 30px;
+}
+
+.priceCardText::before {
+	content: "\20AC";
+	margin-right: 8px;
+}
+
+.priceCardText::after {
+	content: "/hr";
+	font-size: 30px;
+	font-weight: normal;
+	align-self: flex-end;
+	line-height: 38px;
+}
+
+.priceCardDescriptionItem {
+	max-width: 553px;
+	margin: auto;
+	font-size: 17px;
+	margin-bottom: 24px;
+	color: #646464;
+}
+
+.priceCardDescriptionItem img {
+	margin-right: 9px;
+}
+
+.service {
+	margin: 0 54px;
+	margin-bottom: 56px;
+}
+
+.serviceImage {
+	border: 1px solid #b0c9ce;
+	width: 108px;
+	height: 108px;
+	margin: auto;
+	transition: background 0.35s;
+}
+
+.service:hover .serviceImage {
+	background: #f6f6f6;
+	animation: gelatine 0.4s;
+}
+@keyframes gelatine {
+	from,
+	to {
+		transform: scale(1, 1);
+	}
+	25% {
+		transform: scale(0.9, 1.1);
+	}
+	50% {
+		transform: scale(1.1, 0.9);
+	}
+	75% {
+		transform: scale(0.95, 1.05);
+	}
+}
+
+.serviceText {
+	font-size: 16px;
+	margin: 17px 0 9px;
+	color: #646464;
+}
+
+.serviceTime {
+	font-size: 18px;
+	color: #1d7a8c;
+	font-weight: bold;
+}
+
+.cleaningServices {
+	background: #f6f6f6;
+	padding-bottom: 41px;
+	padding-top: 73px;
+}
+
+.cleaningServicesHeaderText {
+	margin-top: 0 !important;
+}
+
+.cleaningServicesCard {
+	margin: 0 10px;
+	max-width: 360px;
+	margin-bottom: 40px;
+}
+
+.cleaningServicesCardHeader {
+	margin: 20px 0 20px;
+	font-size: 20px;
+	font-weight: bold;
+	color: #4f4f4f;
+}
+
+.cleaningServicesCardsDescriptionItem {
+	font-size: 16px;
+	color: #4f4f4f;
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.cleaningServicesCardsDescriptionItem img {
+	height: 22px;
+	width: 22px;
+	margin-right: 9px;
+}
+
+.bestCleaningServiceSvg {
+	margin: 0 46px;
+	width: 329px;
+}
+
+.whyDescriptionItemHeader {
+	font-size: 20px;
+	font-weight: bold;
+	color: #646464;
+	margin-bottom: 10px;
+}
+
+.whyDescriptionItemText {
+	font-size: 14px;
+	color: #646464;
+	margin-bottom: 47px;
+}
+
+.whyHelperlandHeaderText {
+	margin-top: 71px;
+}
+
+.whyDescriptionItem {
+	max-width: 337px;
+}
+
+#scrollToTop {
+	position: fixed;
+	bottom: 70px;
+	left: 70px;
+	height: 48px;
+	width: 48px;
+	background: #525252;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	opacity: 1;
+	transition: opacity 0.5s, background 0.5s;
+}
+
+#scrollToTop:hover {
+	background: #006072;
+}
+
+.messageBot {
+	position: fixed;
+	bottom: 70px;
+	right: 71px;
+}
+
+.hidden {
+	opacity: 0 !important;
+	pointer-events: none !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+@media screen and (max-width: 992px) {
+	.whyDescription {
+		flex-direction: column;
+	}
+
+	.whyDescriptionItem {
+		max-width: 100%;
+	}
+
+	.bestCleaningServiceSvg {
+		align-self: center;
+	}
+
+	#scrollToTop {
+		bottom: 45px;
+		left: 45px;
+	}
+
+	.messageBot {
+		bottom: 45px;
+		right: 45px;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.bestCleaningServiceSvg {
+		width: 100%;
+		height: auto;
+	}
+
+	.cleaningServicesCard img,
+	.cleaningServicesCard {
+		max-width: 100%;
+	}
+
+	#scrollToTop {
+		bottom: 30px;
+		left: 30px;
+	}
+
+	.messageBot {
+		bottom: 30px;
+		right: 30px;
+	}
+}

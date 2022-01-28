@@ -1,0 +1,69 @@
+@{
+	ViewBag.PageTitle = "About";
+}
+@section CustomCss
+{
+<link rel="stylesheet" href="~/css/about.css" />
+}
+<section class="aboutCarousel">
+	<img src="~/images/aboutTopImage.png" alt="aboutHeaderImage" />
+</section>
+
+<section class="about container">
+	<div class="flex-column d-flex align-items-center justify-content-center">
+		<div class="aboutHeader text-center">A Few words about us</div>
+		<div class="aboutHeaderDecoration w-100 d-flex align-items-center justify-content-center">
+			<span></span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25">
+				<path fill-rule="evenodd" fill="#1D7A8C"
+					d="M22.93 13.616c.575 0 1.068-.481 1.068-1.122 0-.56-.493-1.041-1.068-1.041-.987 0-9.26-.321-9.26-10.053 0-.921-1.096-1.3-1.671-1.3-.576 0-1.069.379-1.069 1.3 0 9.732-8.39 10.053-9.26 10.053H.985c-.575.08-.985.481-.985 1.041 0 1.056.492 1.041 1.67 1.041.466 0 9.26.321 9.26 10.414 0 .56.493 1.041 1.069 1.041.493.71.986-.401.986-.71 0-10.344 8.876-10.664 9.863-10.664h.082z" />
+			</svg>
+			<span></span>
+		</div>
+		<div class="aboutText text-center">
+			<div class="aboutInnerText">
+				We are providers of professional home cleaning services, offering hourly based house cleaning options,
+				which mean that you
+				don’t have to fret about getting your house cleaned anymore. We will handle everything for you, so that
+				you can focus on
+				spending your precious time with your family members.
+			</div>
+			<div class="aboutInnerText">
+				We have a number of experienced cleaners to help you make cleaning out or shifting your home an easy
+				affair.
+			</div>
+		</div>
+	</div>
+	<div class="flex-column d-flex align-items-center justify-content-center">
+		<div class="aboutHeader text-center ourStory">Our Story</div>
+		<div class="aboutHeaderDecoration w-100 d-flex align-items-center justify-content-center">
+			<span></span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25">
+				<path fill-rule="evenodd" fill="#1D7A8C"
+					d="M22.93 13.616c.575 0 1.068-.481 1.068-1.122 0-.56-.493-1.041-1.068-1.041-.987 0-9.26-.321-9.26-10.053 0-.921-1.096-1.3-1.671-1.3-.576 0-1.069.379-1.069 1.3 0 9.732-8.39 10.053-9.26 10.053H.985c-.575.08-.985.481-.985 1.041 0 1.056.492 1.041 1.67 1.041.466 0 9.26.321 9.26 10.414 0 .56.493 1.041 1.069 1.041.493.71.986-.401.986-.71 0-10.344 8.876-10.664 9.863-10.664h.082z" />
+			</svg>
+			<span></span>
+		</div>
+		<div class="aboutText text-center">
+			<div class="aboutInnerText">
+				A cleaner is a type of industrial or domestic worker who cleans homes or commercial premises for
+				payment. Cleaners may
+				specialise in cleaning particular things or places, such as window cleaners. Cleaners often work when
+				the people who otherwise
+				occupy the space are not around. They may clean offices at night or houses during the workday.
+			</div>
+		</div>
+	</div>
+</section>
+
+@section CustomScripts
+{
+<script>
+	const loginBtn = document.querySelector(".loginBtn");
+
+	loginBtn.addEventListener("click", () => {
+		document.cookie = "isLoginModalOpen=true; path=/";
+		document.location.href = "/";
+	});
+</script>
+}

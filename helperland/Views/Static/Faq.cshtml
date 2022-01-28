@@ -1,0 +1,112 @@
+@{
+ViewBag.PageTitle = "Faq";
+string[] faqQuestionForCustomer = new string[]{
+	"What's included in a cleaning?",
+	"Which Helperland professional will come to my place?",
+	"Can I skip or reschedule bookings?",
+	"Do I need to be home for the booking?"
+};
+string[] faqAnswerForCustomer = new string[]{
+	"Bedroom, Living Room & Common Areas, Bathrooms, Kitchen, Extras",
+	"Helperland has a vast network of experienced, top-rated cleaners. Based on the time and date of your request, we work to assign the best professional available. Like working with a specific pro? Add them to your Pro Team from the mobile app and they'll be requested first for all future bookings. You will receive an email with details about your professional prior to your appointment.",
+	"You can reschedule any booking for free at least 24 hours in advance of the scheduled start time. If you need to skip a booking within the minimum commitment, we’ll credit the value of the booking to your account. You can use this credit on future cleanings and other Helperland services.",
+	"We strongly recommend that you are home for the first clean of your booking to show your cleaner around. Some customers choose to give a spare key to their cleaner, but this decision is based on individual preferences."
+};
+string[] faqQuestionForSP = new string[]{
+	"How much do service providers earn?",
+	"What support do you provide to the service providers?"
+};
+string[] faqAnswerForSP = new string[]{
+	"The self-employed service providers working with Helperland set their own payouts, this means that they decide how much they earn per hour.",
+	"Our call-centre is available to assist the service providers with all queries or issues in regards to their bookings during office hours. Before a service provider starts receiving jobs, every individual partner receives an orientation session to familiarise with the online platform and their profile."
+};
+}
+@section CustomCss
+{
+<link rel="stylesheet" href="~/css/faq.css" />
+}
+<section class="faqCarousel">
+	<img src="~/images/group-16.png" alt="faqHeaderImage" />
+</section>
+<section class="faqTop container">
+	<div class="flex-column d-flex align-items-center justify-content-center">
+		<div class="faqHeader">FAQs</div>
+		<div class="faHeaderDecoration w-100 d-flex align-items-center justify-content-center">
+			<span></span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25">
+				<path fill-rule="evenodd" fill="#1D7A8C"
+					d="M22.93 13.616c.575 0 1.068-.481 1.068-1.122 0-.56-.493-1.041-1.068-1.041-.987 0-9.26-.321-9.26-10.053 0-.921-1.096-1.3-1.671-1.3-.576 0-1.069.379-1.069 1.3 0 9.732-8.39 10.053-9.26 10.053H.985c-.575.08-.985.481-.985 1.041 0 1.056.492 1.041 1.67 1.041.466 0 9.26.321 9.26 10.414 0 .56.493 1.041 1.069 1.041.493.71.986-.401.986-.71 0-10.344 8.876-10.664 9.863-10.664h.082z" />
+			</svg>
+			<span></span>
+		</div>
+		<div class="faqHeaderText text-center">
+			Whether you are Customer or Service provider, We have tried our best to solve all your queries and
+			questions.
+		</div>
+	</div>
+</section>
+<section class="faq container">
+	<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+		<li class="p-0 col-12 col-md-6" role="presentation">
+			<button class="faqToggleBtn forCustomer active text-center w-100 h-100" id="forCustomerTab"
+				data-bs-toggle="pill" data-bs-target="#forCustomer" type="button" role="tab" aria-controls="forCustomer"
+				aria-selected="true">FOR CUSTOMER</button>
+		</li>
+		<li class="p-0 col-12 col-md-6" role="presentation">
+			<button class="faqToggleBtn forServiceProvider text-center w-100 h-100" id="forServiceProviderTab"
+				data-bs-toggle="pill" data-bs-target="#forServiceProvider" type="button" role="tab"
+				aria-controls="forServiceProvider" aria-selected="false">FOR SERVICE
+				PROVIDER</button>
+		</li>
+	</ul>
+	<div class="tab-content" id="pills-tabContent">
+		<div class="tab-pane fade show active" id="forCustomer" role="tabpanel" aria-labelledby="forCustomerTab">
+			<div class="accordion" id="faqAccordionForCustomer">
+				@for (int i = 0; i < faqQuestionForCustomer.Count(); i++)
+				{
+				<div class="accordion-item">
+					<div class="accordion-header" id="faqCust-@i">
+						<div class="accordion-btn collapsed" type="button" data-bs-toggle="collapse"
+							data-bs-target="#collapseCust-@i" aria-expanded="false" aria-controls="collapseCust-@i">
+							<img src="~/images/vector-smart-object-copy.png" alt="expandImage" />
+							<span class="question">@faqQuestionForCustomer[i]</span>
+						</div>
+					</div>
+					<div id="collapseCust-@i" class="accordion-collapse collapse" aria-labelledby="faqCust-@i"
+						data-bs-parent="#faqAccordionForCustomer">
+						<div class="accordion-body">@faqAnswerForCustomer[i]</div>
+					</div>
+				</div>
+				}
+			</div>
+		</div>
+		<div class="tab-pane fade" id="forServiceProvider" role="tabpanel" aria-labelledby="forServiceProviderTab">
+			<div class="accordion" id="faqAccordionForSP">
+				@for (int i = 0; i < faqQuestionForSP.Count(); i++)
+				{
+				<div class="accordion-item">
+					<div class="accordion-header" id="faqSP-@i">
+						<div class="accordion-btn collapsed" type="button" data-bs-toggle="collapse"
+							data-bs-target="#collapseSP-@i" aria-expanded="false" aria-controls="collapseSP-@i">
+							<img src="~/images/vector-smart-object-copy.png" alt="expandImage" />
+							<span class="question">@faqQuestionForCustomer[i]</span>
+						</div>
+					</div>
+					<div id="collapseSP-@i" class="accordion-collapse collapse" aria-labelledby="faqSP-@i"
+						data-bs-parent="#faqAccordionForSP">
+						<div class="accordion-body">@faqAnswerForCustomer[i]</div>
+					</div>
+				</div>
+				}
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	const loginBtn = document.querySelector(".loginBtn");
+
+	loginBtn.addEventListener("click", () => {
+		document.cookie = "isLoginModalOpen=true; path=/";
+		document.location.href = "/";
+	});
+</script>

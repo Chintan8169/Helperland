@@ -1,0 +1,86 @@
+.faqToggleBtn {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	background: #f6f6f6;
+	color: #646464;
+	font-size: 24px;
+	cursor: pointer;
+	transition: color 0.3s, box-shadow 0.3s;
+	overflow: hidden;
+	box-shadow: inset 0 -4px 0 #1d7a8c;
+	border: 0;
+}
+
+.forCustomer.active,
+.forServiceProvider.active {
+	box-shadow: inset 0 -100px 0 0 #1d7a8c;
+	color: #fff !important;
+}
+.faq {
+	max-width: 946px;
+	margin: auto;
+}
+
+.faq .nav {
+	margin-bottom: 48px !important;
+}
+
+.faqHeader {
+	font-size: 36px;
+	margin: 32px 0px 9px 0px;
+	font-weight: 700;
+	color: #4f4f4f;
+}
+
+.faqHeaderText {
+	font-size: 18px;
+	color: #646464;
+	margin: 34px 0 36px 0;
+	max-width: 500px;
+}
+
+.faqCarousel img {
+	width: 100%;
+	height: auto;
+}
+
+.faHeaderDecoration span {
+	width: 62px;
+	height: 1px;
+	margin: 0 8px;
+	background: #cccccc;
+}
+
+.accordion-item {
+	border: 0 !important;
+}
+
+.accordion-btn {
+	font-size: 16px;
+	font-weight: bold;
+	color: #646464;
+}
+
+.question {
+	display: inline;
+	margin-left: 15px;
+}
+
+.accordion-btn.collapsed img {
+	transform: rotate(0);
+}
+
+.accordion-btn img {
+	transform: rotate(90deg);
+	transition: transform 0.4s;
+}
+
+.accordion-body {
+	padding: 10px 0 0 40px;
+	font-size: 16px;
+	color: #646464;
+}
+
+.accordion-item {
+	margin-bottom: 30px;
+}
