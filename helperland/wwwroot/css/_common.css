@@ -7,11 +7,9 @@
 	font-family: "Roboto", sans-serif !important;
 }
 
-html {
-	scroll-behavior: smooth;
-}
-
+html,
 body {
+	scroll-behavior: smooth;
 	max-width: 100vw;
 	overflow-x: hidden;
 }
@@ -174,6 +172,49 @@ nav {
 .navSm .navItem a:hover,
 .navSm .navItem button:hover {
 	color: #fff;
+}
+
+#successModal.show img,
+#errorModal.show img {
+	animation: tick 0.7s 0.5s;
+}
+@keyframes tick {
+	0%,
+	100% {
+		transform: rotate(0deg);
+	}
+
+	50% {
+		transform: rotate(-55deg);
+	}
+}
+
+#successModal,
+#errorModal {
+	color: #646464;
+}
+
+#successModal .modal-dialog,
+#errorModal .modal-dialog {
+	max-width: 400px;
+	margin: auto;
+}
+
+#successModal img {
+	padding: 25px;
+	background-color: #67b644;
+}
+
+#errorModal img {
+	padding: 15px;
+	height: 75px;
+	width: 75px;
+	background-color: red;
+}
+
+#successModal button,
+#errorModal button {
+	background: #1d7a8c;
 }
 
 .newsletterHeader {

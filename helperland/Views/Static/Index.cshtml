@@ -1,3 +1,5 @@
+@inject SignInManager<User> signInManager;
+@model LoginViewModel;
 @{
 	ViewBag.isLoggedIn = "false";
 	ViewBag.PageTitle = "Home";
@@ -61,8 +63,35 @@
 	</div>
 	</div>
 	</nav> *@
-
-@if (ViewBag.isLoggedIn != "true")
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 flex-column align-items-center justify-content-center border-0">
+				<img class="rounded-circle my-4" src="~/images/closeBtn.png" asp-append-version="true">
+				<h5 class="modal-title" id="errorModalLabel"></h5>
+			</div>
+			<div class="modal-footer p-0 my-3 border-0 align-items-center justify-content-center">
+				<button type="button" class="text-white rounded-pill py-2 px-4 border-0" data-bs-dismiss="modal">OK
+					!</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 flex-column align-items-center justify-content-center border-0">
+				<img class="rounded-circle my-4" src="~/images/tickBig.png" asp-append-version="true">
+				<h5 class="modal-title text-center" id="successModalLabel">Succesfully Logged In !!</h5>
+			</div>
+			<div class="modal-footer p-0 my-3 border-0 align-items-center justify-content-center">
+				<button type="button" class="text-white rounded-pill py-2 px-4 border-0" data-bs-dismiss="modal">OK
+					!</button>
+			</div>
+		</div>
+	</div>
+</div>
+@if (!signInManager.IsSignedIn(User))
 {
 	<div class="modal fade" id="loginModal" aria-hidden="true" aria-labelledby="loginModalLabel" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered justify-content-center">
@@ -72,22 +101,22 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body p-0">
-					<form class="loginModalForm">
-						<input type="email" class="form-control mb-3" name="loginEmail" id="loginEmail"
-						placeholder="Email" />
-						<input type="password" class="form-control mb-3" name="loginPassword" id="loginPassword"
-						placeholder="Password" />
-						<label class="form-check-label mb-2" for="saveLoginInfoCheckBox">
-							<input class="form-check-input" type="checkbox" value="" id="saveLoginInfoCheckBox" />
+					<form class="loginModalForm" method="post" asp-controller="Account" asp-action="Login">
+						<input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+						<span class="text-danger d-block mt-1 mb-2 px-1" asp-validation-for="Email"></span>
+						<input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+						<span class="text-danger d-block mt-1 mb-2 px-1" asp-validation-for="Password"></span>
+						<label class="form-check-label mb-2" asp-for="RememberMe">
+							<input class="form-check-input" type="checkbox" asp-for="RememberMe" />
 							Remember Me
 						</label>
-						<button class="text-white w-100 border-0 rounded-pill d-block" disabled>Login</button>
+						<button class="text-white w-100 border-0 rounded-pill d-block">Login</button>
 					</form>
 					<a href="#" class="d-block mt-4 mb-1 text-center" data-bs-toggle="modal"
 					data-bs-target="#forgetPasswordModal">Forget Password?</a>
 					<div class="createAccountDiv">
 						Don't have account?
-						<a href="#">Create an account</a>
+						<a asp-controller="Account" asp-action="CustomerSignUp">Create an Account</a>
 					</div>
 				</div>
 			</div>
@@ -102,10 +131,11 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body p-0">
-					<form class="forgetPasswordModalForm">
-						<input type="email" class="form-control mb-3" name="forgetPasswordEmail" id="forgetPasswordEmail"
-						placeholder="Email" />
-						<button class="text-white w-100 border-0 mb-3 rounded-pill d-block" disabled>Send</button>
+					<form class="forgetPasswordModalForm" asp-controller="Account"
+					asp-action="SendForgetPasswordEmailToken">
+						<input type="email" class="form-control" asp-for="Email" placeholder="Email" />
+						<span class="d-block text-danger mt-1 mb-3 px-1" asp-validation-for="Email"></span>
+						<button class="text-white w-100 border-0 mb-3 rounded-pill d-block">Send</button>
 					</form>
 					<a href="#" class="d-block text-center" data-bs-toggle="modal" data-bs-target="#loginModal">
 						<img class="me-2" src="~/images/Shape 2.png" style="transform: rotate(180deg)" />
@@ -414,8 +444,8 @@
 </div>
 <div class="cookieConsent atBottom d-flex align-items-center justify-content-between">
 	<div class="cookieConsentText">
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut feugiat nunc libero, ac malesuada ligula aliquam
-		ac.
+		We use cookies to ensure that we give you the best experience on our website. If you continue to access the
+		website, we'll assume that you are happy to receive all cookies on the Helperland website.
 		<a href="#">Privacy Policy</a>
 	</div>
 	<button class="cookieAgree d-flex align-items-center justify-content-center rounded-pill">OK!</button>
@@ -429,8 +459,15 @@
 
 @section CustomScripts
 {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"
+	integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
 <script src="~/js/vanilla-tilt.min.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="~/js/index.js"></script>
+<script src="~/js/index.js" asp-append-version="true"></script>
 }

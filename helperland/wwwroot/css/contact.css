@@ -60,7 +60,8 @@
 	color: #4f4f4f;
 }
 
-.contactUsForm {
+.contactUsForm,
+.resetPasswordForm {
 	max-width: 641px;
 }
 
@@ -68,8 +69,8 @@
 	margin-bottom: 15px;
 }
 
-.form-select:not(.form-select:focus) {
-	background-image: url("../images/downArrow.svg");
+.form-select {
+	background-image: url("../images/downArrow.svg") !important;
 	color: #a0a0a0 !important;
 }
 .form-control,
@@ -109,8 +110,44 @@ textarea.form-control {
 	margin-bottom: 80px;
 }
 
+input[type="file"] {
+	position: absolute;
+	z-index: -10;
+	pointer-events: none;
+	opacity: 0;
+}
+
 .form-control::placeholder {
 	color: #a0a0a0;
+}
+
+.formFile {
+	color: #646464;
+}
+
+.fileLabel {
+	cursor: pointer;
+	font-size: 16px;
+	padding: 10px 25px;
+	color: #666;
+	border: 1px solid #c6c6c6;
+	transition: color 0.3s, border 0.3s;
+}
+
+.fileLabel:hover {
+	color: #1d7a8c;
+	border: 1px solid #1d7a8c;
+}
+
+.loginDiv {
+	font-size: 16px;
+	color: #646464;
+}
+
+.loginDiv button {
+	outline: none;
+	background: transparent;
+	color: #1d7a8c;
 }
 
 .map {

@@ -16303,6 +16303,16 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\ResetPassword.cshtml",
+      "TargetPath": "Views\\Account\\ResetPassword.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\CustomerSignup.cshtml",
+      "TargetPath": "Views\\Account\\CustomerSignup.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Static\\About.cshtml",
       "TargetPath": "Views\\Static\\About.cshtml",
       "FileKind": "mvc"
@@ -16335,6 +16345,11 @@
     {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Static\\Prices.cshtml",
       "TargetPath": "Views\\Static\\Prices.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\ServiceProviderSignup.cshtml",
+      "TargetPath": "Views\\Account\\ServiceProviderSignup.cshtml",
       "FileKind": "mvc"
     }
   ],

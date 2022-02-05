@@ -1,0 +1,98 @@
+@model SignUpViewModel;
+@{
+	ViewBag.PageTitle = "Create New Account";
+}
+@section CustomCss
+{
+<link rel="stylesheet" href="~/css/contact.css">
+}
+
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 flex-column align-items-center justify-content-center border-0">
+				<img class="rounded-circle my-4" src="~/images/tickBig.png" asp-append-version="true">
+				<h5 class="modal-title text-center" id="successModalLabel"><button class="loginButton">Click
+						Here</button> To Login !</h5>
+			</div>
+			<div class="modal-footer p-0 my-3 border-0 align-items-center justify-content-center">
+				<button type="button" class="text-white rounded-pill py-2 px-4 border-0" data-bs-dismiss="modal">OK
+					!</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="contactUsHeaderText text-center">
+	Create an account
+</div>
+<div class="contactUsHeaderDecoration w-100 d-flex align-items-center justify-content-center">
+	<span></span>
+	<svg xmlns="http://www.w3.org/2000/svg" width="24" height="25">
+		<path fill-rule="evenodd" fill="#1D7A8C"
+			d="M22.93 13.616c.575 0 1.068-.481 1.068-1.122 0-.56-.493-1.041-1.068-1.041-.987 0-9.26-.321-9.26-10.053 0-.921-1.096-1.3-1.671-1.3-.576 0-1.069.379-1.069 1.3 0 9.732-8.39 10.053-9.26 10.053H.985c-.575.08-.985.481-.985 1.041 0 1.056.492 1.041 1.67 1.041.466 0 9.26.321 9.26 10.414 0 .56.493 1.041 1.069 1.041.493.71.986-.401.986-.71 0-10.344 8.876-10.664 9.863-10.664h.082z">
+		</path>
+	</svg>
+	<span></span>
+</div>
+
+<div class="contactUsForm container">
+	<form method="post" asp-controller="Account" asp-action="CustomerSignup">
+		<div class="row align-items-start justify-content-center g-2">
+			<input type="number" asp-for="UserTypeId" hidden value="1">
+			<div class="form-item col-12 col-sm-6">
+				<input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" />
+				<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="FirstName"></span>
+			</div>
+			<div class="form-item col-12 col-sm-6">
+				<input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" />
+				<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="LastName"></span>
+			</div>
+			<div class="form-item col-12 col-sm-6">
+				<input type="email" class="form-control" asp-for="Email" placeholder="Email Address" />
+				<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="Email"></span>
+			</div>
+			<div class="form-item col-12 col-sm-6">
+				<div class="input-group mx-0 row">
+					<div class="input-group-text col-2 px-0 align-items-center justify-content-center">+91</div>
+					<input type="number" class="form-control col-10" asp-for="PhoneNumber" placeholder="Mobile Number"
+						aria-label="Mobile Number" aria-describedby="basic-addon1" />
+					<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="PhoneNumber"></span>
+				</div>
+			</div>
+			<div class="form-item col-12 col-sm-6">
+				<input type="password" class="form-control" asp-for="Password" placeholder="Password" />
+				<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="Password"></span>
+			</div>
+			<div class="form-item col-12 col-sm-6">
+				<input type="password" class="form-control" asp-for="CPassword" placeholder="Confirm Password" />
+				<span class="p-0 px-1 mt-1 text-danger d-block" asp-validation-for="CPassword"></span>
+			</div>
+			<button class="submit rounded-pill border-0 outline-0">Submit</button>
+		</div>
+	</form>
+	<div class="text-center loginDiv">
+		Already registered? <button class="loginButton border-0">Login now</button>
+	</div>
+</div>
+
+@section CustomScripts
+{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"
+	integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+	const loginButtons = document.querySelectorAll(".loginButton");
+	const successModal = new bootstrap.Modal(document.querySelector("#successModal"));
+	loginButtons.forEach(loginButton => loginButton.addEventListener("click", () => document.querySelector(".loginBtn button").click()));
+	let cookies = document.cookie;
+	if (cookies.includes("isSuccessModalOpen=true")) {
+		successModal.show();
+		document.cookie = "isSuccessModalOpen=false; path=/";
+	}
+</script>
+}

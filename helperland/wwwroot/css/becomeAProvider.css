@@ -1,0 +1,266 @@
+nav {
+	background: transparent !important;
+	transition: background 0.5s;
+}
+
+nav.bg-grey {
+	background: #646464 !important;
+}
+
+.navItem a:not(.navSm .navItem a),
+.navItem button:not(.navSm .navItem button) {
+	background: transparent;
+}
+
+.logoDiv a img {
+	transition: width 0.5s, height 0.5s;
+	height: 130px;
+	width: 175px;
+}
+
+nav.bg-grey {
+	background: #646464 !important;
+}
+
+nav.bg-grey .navItem a:hover,
+nav.bg-grey .navItem button:hover,
+nav.bg-grey .navItem.highlight a,
+nav.bg-grey .navItem.highlight button {
+	background: #006072;
+}
+
+.bg-grey .logoDiv a img {
+	width: 106px;
+	height: 78px;
+}
+
+header {
+	position: relative;
+	padding-top: 152px;
+	background: rgba(0, 0, 0, 0.4);
+	padding-bottom: 30px;
+	overflow: hidden;
+}
+
+header::before {
+	content: "";
+	z-index: -10;
+	position: absolute;
+	top: 0;
+	max-width: 100vw;
+	width: 100%;
+	height: 100%;
+	background: url("../images/becomeAProviderHeaderImage.jpg") no-repeat center center;
+	background-size: cover;
+}
+
+header > svg {
+	cursor: pointer;
+	margin-top: 44px;
+}
+
+header form {
+	max-width: 430px;
+	width: 100%;
+	padding: 19px 34px;
+	background-color: #fff;
+	box-shadow: 0 0 16px #00000026;
+	border-radius: 4px;
+}
+
+.formHeader {
+	color: #4f4f4f;
+	font-weight: bold;
+	font-size: 24px;
+	margin-bottom: 24px;
+}
+
+form .form-control {
+	box-shadow: none !important;
+	border-radius: 4px;
+	padding: 13px 15px 14px 15px;
+	height: 46px;
+}
+form .form-control:focus,
+form .form-control:active {
+	border-color: #1d7a8c;
+}
+
+form > span {
+	display: block;
+	margin: 3px 5px 12px;
+}
+
+#countryCode {
+	background: #f4f4f4;
+	outline: none;
+	border-right: transparent;
+	height: 46px;
+}
+
+#countryCode::placeholder {
+	color: #4f4f4f;
+}
+
+#phone {
+	border-left: transparent;
+}
+
+form .form-control::placeholder {
+	color: #a0a0a0;
+	font-size: 16px;
+}
+
+form .form-check {
+	margin-bottom: 10px;
+}
+
+form .form-check .form-check-input {
+	margin-right: 7px;
+	box-shadow: none !important;
+}
+
+form .form-check .form-check-input:focus,
+form .form-check .form-check-input:active,
+form .form-check .form-check-input:checked {
+	border-color: #1d7a8c;
+}
+
+form .form-check .form-check-input:checked {
+	background-color: #1d7a8c;
+}
+
+form .form-check .form-check-label {
+	color: #4f4f4f;
+	font-size: 16px;
+}
+
+form .form-check .form-check-label a {
+	color: #1fb6ff;
+	text-decoration: none;
+}
+
+form img {
+	margin: 5px 0 20px;
+	max-width: 100%;
+	height: auto;
+}
+
+form .become {
+	outline: none;
+	border: none;
+	background: #1d7a8c;
+	color: #fff;
+	font-weight: bold;
+	font-size: 16px;
+	padding: 13px 19px 14px 27px;
+}
+
+form .become svg {
+	margin-left: 8px;
+	transition: transform 0.3s;
+}
+
+form .become:hover svg {
+	transform: translateX(7px);
+}
+
+.howItWorksCard {
+	max-width: 748px;
+	width: 100%;
+	color: #4f4f4f;
+	margin-bottom: 20px;
+}
+
+.howItWorksHeader {
+	font-size: 40px;
+	color: #4f4f4f;
+	margin: 68px auto 73px;
+}
+
+.howItWorksCardHeader {
+	font-size: 36px;
+	margin-bottom: 16px;
+}
+
+.howItWorksCardText {
+	font-size: 18px;
+	margin-bottom: 48px;
+}
+
+.info .readMore {
+	text-decoration: none;
+	font-size: 18px;
+	color: #4f4f4f;
+}
+
+.info .readMore svg {
+	margin-left: 10px;
+	transition: transform 0.3s;
+}
+
+.info .readMore:hover svg {
+	transform: translateX(7px);
+}
+
+.howItWorks > svg {
+	position: absolute;
+	z-index: -50;
+}
+
+.howItWorks > svg:nth-child(odd) {
+	left: 0;
+}
+
+.howItWorks > svg:nth-child(even) {
+	right: 0;
+}
+
+.howItWorks > svg:nth-child(1) {
+	top: 27px;
+}
+.howItWorks > svg:nth-child(2) {
+	top: 20px;
+}
+.howItWorks > svg:nth-child(3) {
+	top: 461px;
+}
+.howItWorks > svg:nth-child(4) {
+	top: 426px;
+}
+.howItWorks > svg:nth-child(5) {
+	top: 866px;
+}
+.howItWorks > svg:nth-child(6) {
+	top: 962px;
+}
+
+@media screen and (max-width: 576px) {
+	form {
+		padding: 15px 10px !important;
+	}
+
+	.howItWorksCardImage img {
+		width: 100%;
+		height: auto;
+	}
+
+	.howItWorks > svg {
+		display: none;
+		pointer-events: none;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.howItWorksCardText {
+		margin-bottom: 10px;
+	}
+
+	.readMore {
+		margin-bottom: 30px;
+	}
+
+	.howItWorksCardImage {
+		margin-bottom: 25px;
+	}
+}

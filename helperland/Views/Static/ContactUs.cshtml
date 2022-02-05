@@ -1,3 +1,4 @@
+@model ContactUsViewModel
 @{
 	ViewBag.PageTitle = "Contact Us";
 }
@@ -5,6 +6,35 @@
 {
 <link rel="stylesheet" href="~/css/contact.css" />
 }
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 flex-column align-items-center justify-content-center border-0">
+				<img class="rounded-circle my-4" src="~/images/closeBtn.png" asp-append-version="true">
+				<h5 class="modal-title" id="errorModalLabel"></h5>
+			</div>
+			<div class="modal-footer p-0 my-3 border-0 align-items-center justify-content-center">
+				<button type="button" class="text-white rounded-pill py-2 px-4 border-0" data-bs-dismiss="modal">OK
+					!</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header p-0 flex-column align-items-center justify-content-center border-0">
+				<img class="rounded-circle my-4" src="~/images/tickBig.png" asp-append-version="true">
+				<h5 class="modal-title" id="successModalLabel">Form Submitted Succesfully</h5>
+				@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> *@
+			</div>
+			<div class="modal-footer p-0 my-3 border-0 align-items-center justify-content-center">
+				<button type="button" class="text-white rounded-pill py-2 px-4 border-0" data-bs-dismiss="modal">OK
+					!</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <section class="contactusCarousel">
 	<img src="~/images/contactUsImage.png" alt="aboutHeaderImage" />
@@ -26,7 +56,7 @@
 				<path fill-rule="evenodd" fill="#1D7A8C"
 					d="M17.1.2c4.584 0 8.85 1.713 12.7 4.9 3.06 3.8 4.194 7.252 4.194 12.53 0 4.203-3.059 9.95-5.726 14.975-.819 1.525-1.598 2.991-1.788 4.3L18.237 53.23c-.331.685-.357.978-1.831.645a1.378 1.378 0 0 1-.643-.645L7.952 36.905c-.623-1.309-1.403-2.775-2.202-4.3C3.63 27.581.5 21.833.5 17.63c0-5.278 1.413-8.74 4.491-12.53C8.7 1.913 12.316.2 17.1.2zm0 8.496c2.208 0 4.292.939 5.791 2.444 1.5 1.505 2.435 3.598 2.435 6.49 0 1.74-.935 3.831-2.435 5.337-1.499 1.505-3.583 2.444-5.791 2.444-2.389 0-4.473-.939-5.992-2.444-1.499-1.505-2.435-3.597-2.435-5.337 0-2.894.936-4.985 2.435-6.49 1.519-1.505 3.603-2.444 5.992-2.444zm3.844 5.264c-1.013-1.16-2.395-2.506-3.844-2.506-1.649 0-2.42 1.346-3.54 2.506-1.13.152-2.14 1.54-2.14 3.68 0 .968 1.01 2.357 2.14 3.48 1.12 1.17 1.891 1.534 3.54 1.534 1.449 0 2.831-.364 3.844-1.534 1.012-1.123 1.636-2.512 1.636-3.48.001-2.14-.622-3.528-1.636-3.68zM27.8 6.957c-3.311-2.6-6.856-4.203-10.7-4.203-3.35 0-7.59 1.603-10.161 4.203-2.59 2.58-4.188 6.159-4.188 10.683 0 3.529 2.883 8.925 5.414 13.675.819 1.545 1.598 3.03 2.26 4.398L17.8 49.456l5.772-13.743c.663-1.368 1.568-2.853 2.26-4.398 2.531-4.75 5.414-10.146 5.414-13.675.002-4.524-1.595-8.103-3.446-10.683z" />
 			</svg>
-			<div class="text-center">1111 Lorem ipsum text 100,<br />Lorem ipsum AB</div>
+			<div class="text-center">TatvaSoft House,<br />Rajpath Rangoli Rd,<br />Ahmedabad,<br />Gujarat 380054</div>
 		</div>
 		<div class="phone d-flex flex-column align-items-center justify-content-center">
 			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="46" height="52">
@@ -48,40 +78,47 @@
 
 <div class="contactUsForm container">
 	<div class="contactUsFormHeader text-center">Get in touch with us</div>
-	<form method="post">
-		<div class="row align-items-center justify-content-center g-2">
+	<form method="post" enctype="multipart/form-data">
+		<div class="row align-items-start justify-content-center g-2">
 			<div class="form-item col-12 col-sm-6">
-				<input type="text" class="form-control" name="fname" id="fname" placeholder="First Name" />
+				<input type="text" class="form-control" asp-for="FirstName" placeholder="First Name" />
+				<span class="p-0 mt-1 text-danger d-block" asp-validation-for="FirstName"></span>
 			</div>
 			<div class="form-item col-12 col-sm-6">
-				<input type="text" class="form-control" name="fname" id="fname" placeholder="Last Name" />
+				<input type="text" class="form-control" asp-for="LastName" placeholder="Last Name" />
+				<span class="p-0 mt-1 text-danger d-block" asp-validation-for="LastName"></span>
 			</div>
 			<div class="form-item col-12 col-sm-6">
 				<div class="input-group mx-0 row">
-					<input type="text" class="input-group-text col-2 px-0" id="countryCode" placeholder="+91" />
-					<input type="text" class="form-control col-10" placeholder="Mobile Number"
+					<div class="input-group-text col-2 px-0 align-items-center justify-content-center">+91</div>
+					<input type="number" class="form-control col-10" asp-for="PhoneNumber" placeholder="Mobile Number"
 						aria-label="Mobile Number" aria-describedby="basic-addon1" />
+					<span class="p-0 mt-1 text-danger d-block" asp-validation-for="PhoneNumber"></span>
 				</div>
 			</div>
 			<div class="form-item col-12 col-sm-6">
-				<input type="email" class="form-control" name="email" id="email" placeholder="Email Address" />
+				<input type="email" class="form-control" asp-for="Email" placeholder="Email Address" />
+				<span class="p-0 mt-1 text-danger d-block" asp-validation-for="Email"></span>
 			</div>
 			<div class="form-item col-12">
-				<select class="form-select" aria-label="Subect">
-					<option selected>Subject</option>
-					<option value="1">
-						General</option>
-					<option value="2">
-						Inquiry</option>
-					<option value="3">
-						renewal</option>
-					<option value="4">
-						revocation</option>
+				<select class="form-select" aria-label="Subect" asp-for="Subject">
+					<option value="General" selected>General</option>
+					<option value="Inquiry">Inquiry</option>
+					<option value="Revocation">Revocation</option>
+					<option value="Renewal">Renewal</option>
 				</select>
 			</div>
 			<div class="form-item col-12">
-				<textarea name="message" class="form-control" id="message" cols="30" rows="10"
-					placeholder="Message"></textarea>
+				<textarea class="form-control" asp-for="Message" cols="30" rows="10" placeholder="Message"></textarea>
+				<span class="p-0 mt-1 text-danger d-block" asp-validation-for="Message"></span>
+			</div>
+			<div class="form-item formFile col-12">
+				<h5>Attachment</h5>
+				<input type="file" asp-for="File">
+				<div class="d-flex flex-wrap align-items-center">
+					<label class="fileLabel rounded-pill" asp-for="File">Upload</label>
+					<div class="fileName ms-3">No File Selected</div>
+				</div>
 			</div>
 			<button class="submit rounded-pill border-0 outline-0">Submit</button>
 		</div>
@@ -96,12 +133,40 @@
 
 @section CustomScripts
 {
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"
+	integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-	const loginBtn = document.querySelector(".loginBtn");
-	loginBtn.addEventListener("click", () => {
-		document.cookie = "isLoginModalOpen=true; path=/";
-		document.location.href = "/";
-	});
+	const fileName = document.querySelector(".fileName");
+	const fileIp = document.querySelector("input[type='file']");
+	const errorModal = new bootstrap.Modal(document.querySelector("#errorModal"));
+	const successModal = new bootstrap.Modal(document.querySelector("#successModal"));
+
+	let cookiesString = document.cookie;
+	let cookiesArr = cookiesString.split(";");
+	let cookies = [];
+	if (cookiesArr.length > 0) {
+		cookiesArr.forEach((coo) => {
+			cookies.push({ key: decodeURI(coo.split("=")[0].trim()), value: decodeURI(coo.split("=")[1].trim()) });
+		});
+		const successIndex = cookies.findIndex((c) => c.key === "isSuccessModalOpen");
+		if (successIndex >= 0 && cookies[successIndex].value === "true") {
+			successModal.show();
+			document.querySelector("#successModalLabel").innerHTML = cookies[cookies.findIndex((c) => c.key === "isSuccessModalContent")].value;
+			document.cookie = "isSuccessModalOpen=false; path=/";
+		}
+		const errorIndex = cookies.findIndex((c) => c.key === "isErrorModalOpen");
+		if (errorIndex >= 0 && cookies[errorIndex].value === "true") {
+			errorModal.show();
+			document.querySelector("#errorModalLabel").innerHTML = cookies[cookies.findIndex((c) => c.key === "errorModalContent")].value;
+			document.cookie = "isErrorModalOpen=false; path=/";
+		}
+	}
+	fileIp.addEventListener("focusout", () => fileName.innerHTML = (fileIp.files.length > 0) ? fileIp.files[0].name : "No File Selected");
+	fileIp.addEventListener("change", () => fileName.innerHTML = (fileIp.files.length > 0) ? fileIp.files[0].name : "No File Selected");
 </script>
 }
