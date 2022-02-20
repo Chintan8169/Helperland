@@ -22,6 +22,28 @@ namespace helperland.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("helperland.Models.City", b =>
+                {
+                    b.Property<int>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CityId"), 1L, 1);
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CityId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("helperland.Models.ContactUs", b =>
                 {
                     b.Property<int>("ContactUsId")
@@ -63,6 +85,177 @@ namespace helperland.Migrations
                     b.ToTable("ContactUs");
                 });
 
+            modelBuilder.Entity("helperland.Models.ServiceRequest", b =>
+                {
+                    b.Property<int>("ServiceRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceRequestId"), 1L, 1);
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Discount")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<decimal>("Distance")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<double?>("ExtraHours")
+                        .HasColumnType("float");
+
+                    b.Property<bool?>("HasIssue")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("HasPets")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("PaymentDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("PaymentDue")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PaymentTransactionRefNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("RecordVersion")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("RefundedAmount")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<decimal?>("ServiceHourlyRate")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<double>("ServiceHours")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceProviderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ServiceStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SpacceptedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ServiceRequestId");
+
+                    b.HasIndex("ServiceProviderId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ServiceRequests");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequestAddress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AddressLine1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ServiceRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.ToTable("ServiceRequestAddresses");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequestExtra", b =>
+                {
+                    b.Property<int>("ServiceRequestExtraId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceRequestExtraId"), 1L, 1);
+
+                    b.Property<int>("ServiceExtraId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceRequestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ServiceRequestExtraId");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.ToTable("ServiceRequestExtras");
+                });
+
+            modelBuilder.Entity("helperland.Models.State", b =>
+                {
+                    b.Property<int>("StateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StateId"), 1L, 1);
+
+                    b.Property<string>("StateName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StateId");
+
+                    b.ToTable("States");
+                });
+
             modelBuilder.Entity("helperland.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -101,8 +294,8 @@ namespace helperland.Migrations
                     b.Property<bool>("IsRegisteredUser")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LanguageId")
-                        .HasColumnType("int");
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -120,8 +313,8 @@ namespace helperland.Migrations
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("NationalityId")
-                        .HasColumnType("int");
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -176,6 +369,76 @@ namespace helperland.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("helperland.Models.UserAddress", b =>
+                {
+                    b.Property<int>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
+
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserAddresses");
+                });
+
+            modelBuilder.Entity("helperland.Models.ZipCode", b =>
+                {
+                    b.Property<int>("ZipCodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ZipCodeId"), 1L, 1);
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ZipCodeValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ZipCodeId");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("ZipCodes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -311,6 +574,74 @@ namespace helperland.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("helperland.Models.City", b =>
+                {
+                    b.HasOne("helperland.Models.State", "State")
+                        .WithMany("City")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequest", b =>
+                {
+                    b.HasOne("helperland.Models.User", "ServiceProvider")
+                        .WithMany("ServiceRequest")
+                        .HasForeignKey("ServiceProviderId");
+
+                    b.HasOne("helperland.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceProvider");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequestAddress", b =>
+                {
+                    b.HasOne("helperland.Models.ServiceRequest", "ServiceRequest")
+                        .WithMany("ServiceRequestAddress")
+                        .HasForeignKey("ServiceRequestId");
+
+                    b.Navigation("ServiceRequest");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequestExtra", b =>
+                {
+                    b.HasOne("helperland.Models.ServiceRequest", "SerivceRequest")
+                        .WithMany("ServiceRequestExtra")
+                        .HasForeignKey("ServiceRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SerivceRequest");
+                });
+
+            modelBuilder.Entity("helperland.Models.UserAddress", b =>
+                {
+                    b.HasOne("helperland.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("helperland.Models.ZipCode", b =>
+                {
+                    b.HasOne("helperland.Models.City", "City")
+                        .WithMany("ZipCode")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -360,6 +691,28 @@ namespace helperland.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("helperland.Models.City", b =>
+                {
+                    b.Navigation("ZipCode");
+                });
+
+            modelBuilder.Entity("helperland.Models.ServiceRequest", b =>
+                {
+                    b.Navigation("ServiceRequestAddress");
+
+                    b.Navigation("ServiceRequestExtra");
+                });
+
+            modelBuilder.Entity("helperland.Models.State", b =>
+                {
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("helperland.Models.User", b =>
+                {
+                    b.Navigation("ServiceRequest");
                 });
 #pragma warning restore 612, 618
         }

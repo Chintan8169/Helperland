@@ -3,25 +3,62 @@ using helperland.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
-
+using System.Text.Json;
 
 namespace helperland.Controllers;
 public class StaticController : Controller
 {
 	private readonly HelperlandContext context;
 	private readonly IWebHostEnvironment webHostEnvironment;
+	private readonly IHttpClientFactory httpClientFactory;
 
-	public StaticController(HelperlandContext context, IWebHostEnvironment webHostEnvironment)
+	public StaticController(HelperlandContext context, IWebHostEnvironment webHostEnvironment, IHttpClientFactory httpClientFactory)
 	{
 		this.context = context;
 		this.webHostEnvironment = webHostEnvironment;
+		this.httpClientFactory = httpClientFactory;
 	}
 	public IActionResult Index()
 	{
 		return View();
 	}
-	public IActionResult About()
+	public IActionResult About(string zipcode)
 	{
+		// var zipcodes = (
+		// 		from z in context.ZipCodes
+		// 		where z.ZipCodeValue != zipcode
+		// 		select z.ZipCodeValue
+		// ).ToList();
+		// var temp = context.ZipCodes.Where(z => z.ZipCodeValue == zipcode).FirstOrDefault();
+		// var temp2 = context.Cities.Where(c => c.CityId == temp.CityId).FirstOrDefault();
+		// foreach (var c in temp2)
+		// {
+		// Console.WriteLine($"{temp.ZipCodeValue} : {temp2.CityName}");
+		// }
+		// int countOfZipcodes = zipcodes.Count();
+		// string uri = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=";
+		// for (int i = 0; i < countOfZipcodes; i++)
+		// {
+		// 	if (i == countOfZipcodes - 1)
+		// 		uri += $"{zipcodes[i]},german";
+		// 	else
+		// 		uri += $"{zipcodes[i]},german|";
+		// }
+		// uri += $"&origins={zipcode},german&key=AIzaSyDJoNGnE5O0yAs9r0ECBlqLRBBpP9HvE9A";
+
+		// var httpClient = httpClientFactory.CreateClient();
+		// var responseMessage = await httpClient.GetAsync(uri);
+		// var contentStream = await responseMessage.Content.ReadAsStreamAsync();
+		// // Console.WriteLine(await responseMessage.Content.ReadAsStringAsync());
+		// var res = await JsonSerializer.DeserializeAsync<GoogleMapApiResult>(contentStream);
+		// foreach (var elements in res.rows)
+		// {
+		// 	foreach (var des in elements.elements)
+		// 	{
+		// 		if (des.status != "ZERO_RESULTS" && des.distance.value <= 25000)
+		// 			Console.WriteLine(des.distance.value);
+		// 	}
+		// }
 		return View();
 	}
 	public IActionResult Faq()
@@ -50,7 +87,7 @@ public class StaticController : Controller
 			ContactUs newMessage = new ContactUs();
 			newMessage.Name = $"{model.FirstName} {model.LastName}";
 			newMessage.Email = model.Email;
-			newMessage.PhoneNumber = model.PhoneNumber;
+			newMessage.PhoneNumber = Convert.ToInt64(model.PhoneNumber);
 			newMessage.Message = model.Message;
 			newMessage.Subject = model.Subject;
 			newMessage.CreatedOn = DateTime.Now;
@@ -105,4 +142,10 @@ public class StaticController : Controller
 			return View();
 		}
 	}
+}
+
+public class ZipCodeViewModel
+{
+#nullable disable
+	public IEnumerable<ZipCode> ZipCodes { get; set; }
 }

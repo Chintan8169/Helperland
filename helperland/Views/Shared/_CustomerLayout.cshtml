@@ -1,0 +1,189 @@
+@inject SignInManager<User> signInManager;
+@inject UserManager<User> userManager;
+@{
+	var loggedInUser = userManager.GetUserAsync(User).Result;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@(ViewBag.PageTitle != null? ViewBag.PageTitle+" | Helperland" : "Helperland")</title>
+	<link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+	@RenderSection("CustomCss",required:false)
+	<link rel="stylesheet" href="~/css/_common.css">
+</head>
+
+<body>
+	<nav class="d-lg-flex sticky-top d-none justify-content-between align-items-center text-white">
+		<div class="logoDiv">
+			<a class="d-block" asp-controller="Static" asp-action="Index">
+				<img src="~/images/logo-small.png" alt="Logo" />
+			</a>
+		</div>
+		<div class="navMenu text-white d-flex align-items-center justify-content-center">
+			<div class="navItem highlight"><a class="d-block text-white rounded-pill" asp-controller="Customer"
+					asp-action="BookService">Book now</a></div>
+			<div class="navItem"><a class="d-block text-white rounded-pill" asp-controller="Static"
+					asp-action="Prices">Prices &
+					Services</a></div>
+			<div class="navItem"><a class="d-block text-white rounded-pill" href="#">Warranty</a></div>
+			<div class="navItem"><a class="d-block text-white rounded-pill" href="#">Blog</a></div>
+			<div class="navItem"><a class="d-block text-white rounded-pill" asp-controller="Static"
+					asp-action="ContactUs">Contact</a>
+			</div>
+			<div class="notifications position-relative">
+				<img src="~/images/icon-notification.png">
+				<span class="position-absolute text-center badge rounded-circle">2</span>
+			</div>
+			<div class="userInfoDropdown d-flex align-items-center justify-content-center" tabindex="0" role="button"
+				data-bs-html="true" data-bs-offset="-80,15" data-bs-toggle="popover"
+				data-bs-custom-class="userInfoPopover" data-bs-trigger="focus"
+				data-bs-content="<a class='d-block userInfoItem' href='/Customer/Dashboard'>My Dashboard</a><a class='d-block userInfoItem' href='/Customer/Index'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
+				data-bs-original-title="<div class='userInfoText'>Welcome,<b class='d-block'>@loggedInUser.FirstName @loggedInUser.LastName</b></div>">
+				<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+					<path fill-rule="evenodd" fill="#FFF"
+						d="M35.999 17.999C35.999 8.75 27.924 0 17.999 0 8.75 0 0 8.75 0 17.999c0 5.243 2.254 9.968 5.842 13.26l-.017.015.584.492c.038.032.079.059.117.09.31.257.631.501.959.738.106.076.212.153.32.228.349.798.708.469 1.075.685.08.048.52.094.24.139.402.229.811 1.254 1.231.642l.093.042a17.834 17.834 0 0 0 4.474 1.399c.474.082.953.147 1.438.191l.177.014c.627.04.972.065 1.466.065.491 0 .974-.025 1.455-.064l.182-.013c.481-.044.957-.108 1.984-.188-.517-.008-.476-.015-.436-.023a17.8 17.8 0 0 0 4.292-1.345c.05-.023.1-.044.15-.068.674-.19.799-.394 1.186-.612.096-.055.488-.11 1.178-.166-.539-.208-.193.44.144-.655.121-.082.239-.169.359-.256.287-.206 1.137-.42.844-.643.061-.049.126-.092.186-.142l.599-.5-.018-.015c3.62-3.159 5.895-8.041 5.895-13.31zm-34.691 0c0-9.203 7.488-16.691 16.691-16.691 9.204 0 16.691 7.488 16.691 16.691 0 4.96-2.176 9.419-5.01 12.478-.804-.133-.998-.252-1.196-.351l-5.542-2.771c-.498-.249-.806-.749-.806-.855v-2.385c.128-.159.263-.338.403-.535a13.327 13.327 0 0 0 1.713-3.353c1.558-.394 1.364-.527 1.364-1.487v-2.986c0-.568-.208-1.118-.256-1.551v-3.055c.34-.339-.17-2.257-1.557-3.838-1.206-1.377-3.159-2.074-5.804-2.074-2.645 0-4.597.697-5.803 2.073-1.387 1.582-1.267 3.499-1.233 3.839v3.054a2.385 2.385 0 0 0-.581 1.551v2.977c0 .064.324.736.878 1.19.53 2.077 1.621 3.649 2.024 4.182v1.894c0 .534-.291 1.214-.761 1.282l-5.175 2.823c-.165.089-.158.194-.492.311-3.403-3.058-5.548-7.489-5.548-12.413zm26.483 13.505c-.229.166-.462.327.129.481-.936.575-1.044.141-1.155.21a16.35 16.35 0 0 1-.944.543c-.07.038-.142.073-.213.11-.737.377-1.5.702-2.283.966l-.083.028c-.411.136-.826 1.148-1.247.361l-.004.001c-.424.105-.853.192-1.285.263l-.035.007c-.407.066-.817.114-1.228.15l-.218.016c-.407.031-.815.05-1.226.05-.415 0-.828-.02-1.24-.051l-.213-.016a16.98 16.98 0 0 1-1.292-.163 16.582 16.582 0 0 1-2.547-.635l-.077-.026c-.412-.14-.819-.295-1.219-.467l-.008-.004c-.153-.163-.75-.343-1.116-.534-.048-.025-.096-.048-.143-.074a17.284 17.284 0 0 1-.985-.573c.481.713-.19.113-.285-.183a16.32 16.32 0 0 1-.875-.611c-.03-.022-.058-.045-.087-.068l.062-.035 5.176-2.823c1.25-.486 1.443-1.327 1.443-2.431v-2.358l-.151-.182c-.014-.016-1.322-1.737-1.964-4.068l-.06-.26-.223-.144c-.315-.204-.503-.544-.503-.254v-2.978c0-.304.129-.587.868-.8l-.288-.195v-3.646l-.006.139c-.002.65.444-1.815.914-3.079.946-.241 2.568-1.626 4.819-1.626 2.243 0 3.86 1.335 4.809 1.614 1.107 1.251.926 2.971.925 3.101l-.006 3.498.216.195c.235.212.364.496.364.801v2.986c0-.199-.317.224-.773.365l-.325.1-.105.324a12.1 12.1 0 0 1-1.634 3.294c-.171.827-.338.457-.481.621l-.163.185V26.5c0 .605.587 2.04 1.531 2.026l5.542 2.77c.035.018.07.036.501.055-.467.053-.539.102-.609.153z">
+					</path>
+				</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" width="11" height="6">
+					<path fill-rule="evenodd" fill="#FFF"
+						d="M.113.674C.37.597 0 .5 0 .394 0 .287.37.191.113.113c.152.297.399.297.55 0L5.499 5.43 10.336.113c.151.297.398.297.55 0 .484.155.484.406 0 .561l-5.112 5.21c-.151.506-.398.506-.55 0L.113.674z">
+					</path>
+				</svg>
+			</div>
+		</div>
+	</nav>
+	<nav class="navSm d-lg-none sticky-top d-block text-white">
+		<div class="logoDiv d-flex align-items-center justify-content-between">
+			<a class="d-block" asp-controller="Static" asp-action="Index">
+				<img src="~/images/logo-small.png" alt="Logo" />
+			</a>
+			<div class="notifications position-relative">
+				<img src="~/images/icon-notification.png">
+				<span class="position-absolute text-center badge rounded-circle">2</span>
+			</div>
+			<div class="hamburger h1 me-3"></div>
+		</div>
+		<div class="fullPage d-flex">
+			<div class="halfPageBlack"></div>
+			<div class="navMenu bg-white d-flex flex-column pt-1 justify-content-start">
+				<div class="userInfo border-bottom border-2">
+					Hello,
+					<strong class="d-block">@loggedInUser.FirstName @loggedInUser.LastName</strong>
+				</div>
+				<hr class="my-1" />
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
+						asp-action="Dashboard">Dashboard</a></div>
+				<div class="navItem"><a class="d-block" href="#">Service History</a></div>
+				<div class="navItem"><a class="d-block" href="#">Service Schedule</a></div>
+				<div class="navItem"><a class="d-block" href="#">Favourite Providers</a></div>
+				<div class="navItem"><a class="d-block" href="#">Invoices</a></div>
+				<div class="navItem"><a class="d-block" href="#">Notifications</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Index">My
+						Settings</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="Account" asp-action="Logout">Logout</a></div>
+				<hr class="my-1" />
+				<div class="navItem"><a class="d-block" asp-controller="Static" asp-action="Prices">Plans & Services</a>
+				</div>
+				<div class="navItem"><a class="d-block" href="#">Warranty</a></div>
+				<div class="navItem"><a class="d-block" href="#">Blog</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="Static" asp-action="ContactUs">Contact Us</a>
+				</div>
+				<hr class="my-1" />
+			</div>
+		</div>
+	</nav>
+	<h1 class="heading d-flex align-items-center justify-content-center flex-wrap text-break">
+		Welcome,&nbsp;<span>@loggedInUser.FirstName @loggedInUser.LastName</span></h1>
+	<div class="container-fluid position-relative d-flex align-items-start ">
+		<div class="verticalNavbar d-none d-lg-block" style="min-height: 630px;">
+			<ul class="verticalNavItems p-0 m-0">
+				<li class="verticalNavItem"><a href="#">Dashboard</a></li>
+				<li class="verticalNavItem active"><a href="#">Service History</a></li>
+				<li class="verticalNavItem"><a href="#">Service Schedule</a></li>
+				<li class="verticalNavItem"><a href="#">Favourite Providers</a></li>
+				<li class="verticalNavItem"><a href="#">Invoices</a></li>
+				<li class="verticalNavItem"><a href="#">Notifications</a></li>
+			</ul>
+		</div>
+		@RenderBody()
+	</div>
+	<footer>
+		<div class="footerMain d-flex align-items-center justify-content-between">
+			<div class="footerLogo">
+				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="106"
+					height="78">
+					<image width="106" height="78"
+						xlink:href="data:img/png;base64,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" />
+				</svg>
+			</div>
+			<div class="footerMenu d-flex flex-wrap align-items-center justify-content-center">
+				<div class="footerMenuItem"><a asp-controller="Static" asp-action="Index">HOME</a></div>
+				<div class="footerMenuItem"><a asp-controller="Static" asp-action="About">ABOUT</a></div>
+				<div class="footerMenuItem"><a href="#">TESTIMONIALS</a></div>
+				<div class="footerMenuItem"><a asp-controller="Static" asp-action="Faq">FAQS</a></div>
+				<div class="footerMenuItem"><a href="#">INSURANCE POLICY</a></div>
+				<div class="footerMenuItem"><a href="#">IMPRESSUM</a></div>
+			</div>
+			<div class="socialMedia d-flex flex-nowrap align-items-center justify-content-center">
+				<a class="d-flex align-items-center justify-content-center rounded-circle"
+					href="https://facebook.com/helperDE" target="_blank" data-bs-toggle="tooltip"
+					data-bs-placement="top" data-bs-custom-class="footerTooltip" title="Like Us on Facebook">
+					<svg xmlns="http://www.w3.org/2000/svg" width="9" height="18">
+						<path fill-rule="evenodd" fill="#CCC"
+							d="M1.947 3.48v2.481H0v3.033h1.947V18.1h4.001V8.995h2.685S8.885 7.541 9.7 5.95H5.963V3.876c0-.31.437-.728.868-.728H9.11V.9H6.46C1.848.9 1.947 3.27 1.947 3.48z" />
+					</svg>
+				</a>
+				<a class="d-flex align-items-center justify-content-center rounded-circle"
+					href="https://www.instagram.com/helperlandde/" target="_blank" data-bs-toggle="tooltip"
+					data-bs-placement="top" data-bs-custom-class="footerTooltip" title="Follow Us on Instagram">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+						<path fill-rule="evenodd" fill="#CCC"
+							d="M14.48 20H5.519A5.524 5.524 0 0 1 0 14.482V5.52C0 2.477 2.475.2 5.519.2h8.961c3.043 0 5.519 2.277 5.519 5.32v8.962A5.525 5.525 0 0 1 14.48 20zm3.744-5.518V5.52a3.748 3.748 0 0 0-3.744-3.744H5.519A3.749 3.749 0 0 0 1.774 5.52v8.962a3.749 3.749 0 0 0 3.745 3.744h8.961a3.748 3.748 0 0 0 3.744-3.744zm-2.855-8.536c-.099 0-.678-.14-.92-.381-.242-.243.221-.578.221-.921 0-.342-.463-.678-.221-.92.242-.242.821-.381.92-.381.343 0 1.111.139.92.381.242.242.381.578.381.92 0 .342-.139.678-.381.921.171.241-.577.381-.92.381zm-5.37 9.208c-2.841 0-5.153-2.312-5.153-5.054 0-2.941 2.312-5.252 5.153-5.252 2.842 0 5.153 2.311 5.153 5.252 0 2.742-2.311 5.054-5.153 5.054zm0-8.532c-1.863 0-3.379 1.516-3.379 3.478 0 1.764 1.516 3.28 3.379 3.28s3.379-1.516 3.379-3.28c0-1.962-1.516-3.478-3.379-3.478z" />
+					</svg>
+				</a>
+			</div>
+		</div>
+		@if (!string.IsNullOrEmpty(ViewBag.PageTitle) && ViewBag.PageTitle != "Home")
+		{
+			<hr />
+			<div class="terms text-center">
+				©2018 Helperland. All rights reserved. <a href="#">Terms and Conditions</a> | <a href="#">Privacy
+					Policy</a>
+			</div>
+		}
+	</footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+	crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+	const hamburger = document.querySelector(".hamburger");
+	const halfPageBlack = document.querySelector(".halfPageBlack");
+	const navMenu = document.querySelector(".fullPage");
+	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	const verticalNavbar = document.querySelector(".verticalNavbar");
+	const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+
+	const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+	const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
+	hamburger.addEventListener("click", () => {
+		hamburger.classList.toggle("open");
+		navMenu.classList.toggle("open");
+	});
+	verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+	halfPageBlack.addEventListener("click", () => hamburger.click());
+	window.addEventListener("resize", () => {
+		verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+	});
+</script>
+@RenderSection("CustomScripts",required:false)
+
+</html>

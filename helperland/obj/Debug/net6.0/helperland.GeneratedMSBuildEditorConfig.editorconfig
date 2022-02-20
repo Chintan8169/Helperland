@@ -8,53 +8,77 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = helperland
 build_property.RootNamespace = helperland
-build_property.ProjectDir = h:\TatvaSoft\Projects\Helperland\helperland\
+build_property.ProjectDir = H:\TatvaSoft\Projects\Helperland\helperland\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = h:\TatvaSoft\Projects\Helperland\helperland
+build_property.MSBuildProjectDirectory = H:\TatvaSoft\Projects\Helperland\helperland
 build_property._RazorSourceGeneratorDebug = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Account/CustomerSignup.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Account/CustomerSignup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDdXN0b21lclNpZ251cC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Account/ResetPassword.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Account/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Account/ServiceProviderSignup.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Account/ServiceProviderSignup.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxTZXJ2aWNlUHJvdmlkZXJTaWdudXAuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Shared/_Layout.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Customer/BookService.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcQm9va1NlcnZpY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Customer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/ServiceProvider/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VydmljZVByb3ZpZGVyXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Shared/_CustomerLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DdXN0b21lckxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Static/About.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Shared/_ServiceProviderLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TZXJ2aWNlUHJvdmlkZXJMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Static/About.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGljXEFib3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Static/ContactUs.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Static/ContactUs.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGljXENvbnRhY3RVcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Faq.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Faq.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGljXEZhcS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Index.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGljXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Prices.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/Static/Prices.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RhdGljXFByaWNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/_ViewImports.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[h:/TatvaSoft/Projects/Helperland/helperland/Views/_ViewStart.cshtml]
+[H:/TatvaSoft/Projects/Helperland/helperland/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

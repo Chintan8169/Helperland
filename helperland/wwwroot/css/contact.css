@@ -150,6 +150,10 @@ input[type="file"] {
 	color: #1d7a8c;
 }
 
+.loginButton {
+	cursor: pointer;
+}
+
 .map {
 	height: 400px;
 }

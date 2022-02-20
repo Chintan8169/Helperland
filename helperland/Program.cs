@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc();
 builder.Services.AddLogging();
+builder.Services.AddHttpClient();
 builder.Services.AddDbContextPool<HelperlandContext>(option =>
 	option.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"))
 );
@@ -16,13 +17,12 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 
 
+
 var app = builder.Build();
 
-
-app.UseFileServer();
-
-
-
+app.UseHttpsRedirection();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

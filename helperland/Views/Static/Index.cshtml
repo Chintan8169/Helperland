@@ -101,7 +101,11 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body p-0">
-					<form class="loginModalForm" method="post" asp-controller="Account" asp-action="Login">
+					<form class="loginModalForm" method="post">
+						<div class="errorAlert alert fade d-none alert-danger px-3 py-2 d-flex align-items-center"
+						role="alert">
+							<div class="errorMessage"></div>
+						</div>
 						<input type="email" class="form-control" asp-for="Email" placeholder="Email" />
 						<span class="text-danger d-block mt-1 mb-2 px-1" asp-validation-for="Email"></span>
 						<input type="password" class="form-control" asp-for="Password" placeholder="Password" />
@@ -110,7 +114,7 @@
 							<input class="form-check-input" type="checkbox" asp-for="RememberMe" />
 							Remember Me
 						</label>
-						<button class="text-white w-100 border-0 rounded-pill d-block">Login</button>
+						<button type="submit" class="text-white w-100 border-0 rounded-pill d-block">Login</button>
 					</form>
 					<a href="#" class="d-block mt-4 mb-1 text-center" data-bs-toggle="modal"
 					data-bs-target="#forgetPasswordModal">Forget Password?</a>
@@ -181,7 +185,7 @@
 			</div>
 		</div>
 		<div class="d-flex align-items-center justify-content-center bookCleaner">
-			<a href="#" class="rounded-pill">Let's Book a Cleaner</a>
+			<a asp-controller="Customer" asp-action="BookService" class="rounded-pill">Let's Book a Cleaner</a>
 		</div>
 		<div class="steps d-flex align-items-center justify-content-center text-white">
 			<div class="twostep d-flex">
@@ -456,6 +460,10 @@
 			d="M19.802 8.855c.132.129.197.29.197.466a.633.633 0 0 1-.197.466c-.262.653-.689.653-.951 0l-8.365-8.195L2.12 9.787c-.262.653-.689.653-.951 0a.65.65 0 0 1 0-.932L10.1.195c.172.425.599.425.861 0l8.841 8.66z" />
 	</svg>
 </button>
+
+<div class="loaderContainer">
+	<div class="loader rounded-circle"></div>
+</div>
 
 @section CustomScripts
 {

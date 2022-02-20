@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using helperland.Models;
 using helperland.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +13,15 @@ public class AccountController : Controller
 	private readonly UserManager<User> userManager;
 	private readonly SignInManager<User> signInManager;
 	private readonly ILogger<AccountController> logger;
+	private readonly RoleManager<IdentityRole> roleManager;
 
-	public AccountController(HelperlandContext context, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger)
+	public AccountController(HelperlandContext context, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<AccountController> logger, RoleManager<IdentityRole> roleManager)
 	{
 		this.context = context;
 		this.userManager = userManager;
 		this.signInManager = signInManager;
 		this.logger = logger;
+		this.roleManager = roleManager;
 	}
 
 	[AcceptVerbs("Get", "Post")]
@@ -57,8 +60,10 @@ public class AccountController : Controller
 		var result = await userManager.CreateAsync(newUser, model.Password);
 		if (result.Succeeded)
 		{
+			var user = await userManager.FindByEmailAsync(model.Email);
+			await userManager.AddToRoleAsync(user, "Customer");
 			Response.Cookies.Append("isSuccessModalOpen", "true");
-			RedirectToAction("CustomerSignup", "Account");
+			return RedirectToAction("CustomerSignup", "Account");
 		}
 		ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast  1 special character and atleast 1 number with atleast 1 Uppercase character !!");
 		return View(model);
@@ -92,31 +97,53 @@ public class AccountController : Controller
 		var result = await userManager.CreateAsync(newUser, model.Password);
 		if (result.Succeeded)
 		{
+			var user = await userManager.FindByEmailAsync(model.Email);
+			await userManager.AddToRoleAsync(user, "ServiceProvider");
 			Response.Cookies.Append("isSuccessModalOpen", "true");
-			RedirectToAction("ServiceProviderSignup", "Account");
+			return RedirectToAction("ServiceProviderSignup", "Account");
 		}
 		ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast  1 special character and atleast 1 number with atleast 1 Uppercase character !!");
 		return View(model);
 	}
 
-	[HttpPost]
-	public async Task<IActionResult> Login(LoginViewModel model)
+	[HttpGet]
+	public IActionResult Login(string? ReturnUrl)
 	{
-		if (!ModelState.IsValid)
-		{
-			Response.Cookies.Append("isLoginModalOpen", "true");
-			return View("../Static/Index", model);
-		}
-		var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-		if (result.Succeeded)
-		{
-			Response.Cookies.Append("isSuccessModalOpen", "true");
-			Response.Cookies.Append("isSuccessModalContent", "Logged in successfully !!");
-			return RedirectToAction("Index", "Static");
-		}
 		Response.Cookies.Append("isLoginModalOpen", "true");
-		ModelState.AddModelError("Email", "Authentication Failed !!");
-		return View("../Static/Index", model);
+		if (ReturnUrl != null)
+		{
+			return RedirectToAction("Index", "Static", new { ReturnUrl = ReturnUrl });
+		}
+		return RedirectToAction("Index", "Static");
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+	{
+		try
+		{
+			if (!ModelState.IsValid)
+			{
+				return Json(new { error = "Authentication Failed !" });
+			}
+			var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+			if (result.Succeeded)
+			{
+				var user = await userManager.FindByEmailAsync(model.Email);
+				if (user.UserTypeId == 1)
+					return Json(new { success = "Logged In !", userType = "Customer" });
+				else if (user.UserTypeId == 2)
+					return Json(new { success = "Logged In !", userType = "ServiceProvider" });
+				else
+					return Json(new { success = "Logged In !", userType = "Admin" });
+			}
+			return Json(new { error = "Authentication Failed !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { error = "Internal Server Error !" });
+		}
 	}
 
 	[HttpPost]
@@ -204,6 +231,12 @@ public class AccountController : Controller
 		return View();
 	}
 
+	public IActionResult AccessDenied()
+	{
+		return View();
+	}
+
+	[Authorize]
 	public async Task<IActionResult> Logout()
 	{
 		await signInManager.SignOutAsync();

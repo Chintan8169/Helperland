@@ -20,10 +20,12 @@ public class User : IdentityUser
 	public int ModifiedBy { get; set; }
 	public bool IsApproved { get; set; }
 
+	public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }
+
 #nullable enable
 	public int? Gender { get; set; }
 	public DateTime? DateOfBirth { get; set; }
-	public int? LanguageId { get; set; }
-	public int? NationalityId { get; set; }
+	public string? Language { get; set; }
+	public string? Nationality { get; set; }
 	public int? Status { get; set; }
 }
