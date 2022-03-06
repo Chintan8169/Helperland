@@ -15,7 +15,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
 	@RenderSection("CustomCss",required:false)
-	<link rel="stylesheet" href="~/css/_common.css">
+	<link rel="stylesheet" href="~/css/_common.css" asp-append-version="true">
 </head>
 
 <body>
@@ -43,7 +43,7 @@
 			<div class="userInfoDropdown d-flex align-items-center justify-content-center" tabindex="0" role="button"
 				data-bs-html="true" data-bs-offset="-80,15" data-bs-toggle="popover"
 				data-bs-custom-class="userInfoPopover" data-bs-trigger="focus"
-				data-bs-content="<a class='d-block userInfoItem' href='/Customer/Dashboard'>My Dashboard</a><a class='d-block userInfoItem' href='/Customer/Index'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
+				data-bs-content="<a class='d-block userInfoItem' href='/Customer/Dashboard'>My Dashboard</a><a class='d-block userInfoItem' href='/Customer/Profile'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
 				data-bs-original-title="<div class='userInfoText'>Welcome,<b class='d-block'>@loggedInUser.FirstName @loggedInUser.LastName</b></div>">
 				<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
 					<path fill-rule="evenodd" fill="#FFF"
@@ -72,19 +72,20 @@
 		<div class="fullPage d-flex">
 			<div class="halfPageBlack"></div>
 			<div class="navMenu bg-white d-flex flex-column pt-1 justify-content-start">
-				<div class="userInfo border-bottom border-2">
+				<div class="userInfo">
 					Hello,
 					<strong class="d-block">@loggedInUser.FirstName @loggedInUser.LastName</strong>
 				</div>
 				<hr class="my-1" />
-				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
-						asp-action="Dashboard">Dashboard</a></div>
-				<div class="navItem"><a class="d-block" href="#">Service History</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="Dashboard">Dashboard</a>
+				</div>
+				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="ServiceHistory">Service
+						History</a></div>
 				<div class="navItem"><a class="d-block" href="#">Service Schedule</a></div>
 				<div class="navItem"><a class="d-block" href="#">Favourite Providers</a></div>
 				<div class="navItem"><a class="d-block" href="#">Invoices</a></div>
 				<div class="navItem"><a class="d-block" href="#">Notifications</a></div>
-				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Index">My
+				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="Index">My
 						Settings</a></div>
 				<div class="navItem"><a class="d-block" asp-controller="Account" asp-action="Logout">Logout</a></div>
 				<hr class="my-1" />
@@ -103,10 +104,19 @@
 	<div class="container-fluid position-relative d-flex align-items-start ">
 		<div class="verticalNavbar d-none d-lg-block" style="min-height: 630px;">
 			<ul class="verticalNavItems p-0 m-0">
-				<li class="verticalNavItem"><a href="#">Dashboard</a></li>
-				<li class="verticalNavItem active"><a href="#">Service History</a></li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Dashboard")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="Customer" asp-action="Dashboard">Dashboard</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Service History")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="Customer" asp-action="ServiceHistory">Service History</a>
+				</li>
 				<li class="verticalNavItem"><a href="#">Service Schedule</a></li>
-				<li class="verticalNavItem"><a href="#">Favourite Providers</a></li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Favourite Providers")?"active verticalNavItem":"verticalNavItem")'>
+					<a href="#">Favourite Providers</a>
+				</li>
 				<li class="verticalNavItem"><a href="#">Invoices</a></li>
 				<li class="verticalNavItem"><a href="#">Notifications</a></li>
 			</ul>
@@ -173,11 +183,8 @@
 	const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 
 	const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-	const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
-	hamburger.addEventListener("click", () => {
-		hamburger.classList.toggle("open");
-		navMenu.classList.toggle("open");
-	});
+	const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl, { sanitize: false }));
+	hamburger.addEventListener("click", () => document.querySelector("body").classList.toggle("navOpen"));
 	verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
 	halfPageBlack.addEventListener("click", () => hamburger.click());
 	window.addEventListener("resize", () => {

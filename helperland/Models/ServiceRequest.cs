@@ -41,6 +41,7 @@ public class ServiceRequest
 	public virtual User ServiceProvider { get; set; }
 	public virtual ICollection<ServiceRequestExtra> ServiceRequestExtra { get; set; }
 	public virtual ICollection<ServiceRequestAddress> ServiceRequestAddress { get; set; }
+	public virtual ICollection<Rating> RatingNavigation { get; set; }
 #nullable enable
 	public string? ServiceProviderId { get; set; }
 	[Column(TypeName = "decimal(16,2)")]

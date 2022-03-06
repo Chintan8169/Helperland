@@ -4,6 +4,13 @@ namespace helperland.ViewModels;
 public class BookServiceViewModel
 {
 #nullable disable
+	public BookServiceSubmitViewModel bookServiceSubmitViewModel { get; set; }
+	public AddNewAddressViewModel addNewAddressViewModel { get; set; }
+}
+
+public class BookServiceSubmitViewModel
+{
+#nullable disable
 	[Required(ErrorMessage = "ZipCode is required !")]
 	[RegularExpression(@"[0-9]{5}", ErrorMessage = "Enter Valid ZipCode !")]
 	public string ZipCode { get; set; }
@@ -19,22 +26,4 @@ public class BookServiceViewModel
 #nullable enable
 	public IEnumerable<int>? ExtraServices { get; set; }
 	public string? Comments { get; set; }
-	public AddNewAddressViewModel? addNewAddressViewModel { get; set; }
-}
-
-public class AddNewAddressViewModel
-{
-#nullable disable
-	[Required]
-	public string StreetName { get; set; }
-	[Required]
-	public string HouseNumber { get; set; }
-	[Required]
-	public string PostalCode { get; set; }
-	[Required]
-	public string City { get; set; }
-	[Required]
-	[RegularExpression(@"^([+]\d{2}[ ])?\d{10}$", ErrorMessage = "Enter Proper Mobile Number")]
-	public string PhoneNumber { get; set; }
-
 }

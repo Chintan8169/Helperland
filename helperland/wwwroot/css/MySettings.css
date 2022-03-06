@@ -1,0 +1,110 @@
+form label {
+	color: #646464;
+	font-size: 16px;
+}
+
+.form-control,
+.form-select {
+	background-color: #fff;
+	font-size: 16px;
+	line-height: 20px;
+	color: #646464 !important;
+	outline: 0 !important;
+	padding: 12px 15px;
+	box-shadow: none !important;
+	border: 1px solid #dedddd;
+	height: 46px;
+	resize: none;
+	border-radius: 4px;
+	transition: border-color 0.25s;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+	box-shadow: none !important;
+	border-color: #1d7a8c;
+	color: #646464 !important;
+}
+
+.form-check-input:checked {
+	border-color: #1d7a8c !important;
+	background-color: #1d7a8c !important;
+}
+
+.form-select {
+	padding-right: 30px;
+}
+
+.save {
+	background: #1d7a8c;
+	border: none;
+	outline: 0 !important;
+	box-shadow: none !important;
+	color: #fff !important;
+	font-size: 16px;
+	line-height: 24px;
+	transition: background 0.3s ease;
+	padding: 11px 25px;
+}
+
+.save:hover {
+	background: #146371 !important;
+}
+
+hr {
+	margin: 30px 0 15px 0;
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #eee;
+}
+
+*[disabled] {
+	cursor: not-allowed;
+}
+
+.addressesTable thead td {
+	padding: 10px 15px;
+	font-size: 16px;
+	color: #646464;
+}
+.addressesTable tbody td {
+	padding: 15px;
+	vertical-align: middle;
+	font-size: 16px;
+	color: #646464;
+}
+
+.addressline {
+	font-size: 16px;
+	color: #646464;
+}
+
+.actions {
+	column-gap: 3px;
+}
+
+.actions button {
+	height: 37px;
+	width: 37px;
+	transition: background 0.35s;
+}
+
+.actions button:hover {
+	background-color: #dbdada !important;
+}
+
+@media screen and (max-width: 767px) {
+	.addressesTable td {
+		padding: 0 !important;
+	}
+}
+
+#deleteAddressModal .modal-dialog {
+	max-width: 400px;
+}
+
+#updateAddressModal .modal-dialog,
+#addAddressModal .modal-dialog {
+	max-width: 600px;
+}

@@ -1,0 +1,185 @@
+@model IEnumerable<CustomerServiceHistoryViewModel>;
+@{
+	ViewBag.PageTitle = "Dashboard";
+	Layout = "_CustomerLayout";
+}
+@section CustomCss
+{
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
+<link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
+}
+<div class="position-fixed toastContainer bottom-0 end-0 p-3">
+	<div class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body py-3 px-4 fs-6"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="cancelService" tabindex="-1" aria-labelledby="cancelServiceLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title" id="cancelServiceLabel">Cancel Service Request</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-2">
+					<label class="fw-bold mb-2" for="cancelReason">Why you want to cancel the service request?</label>
+					<textarea class="form-control" name="cancelReason" id="cancelReason"
+						placeholder="Reason"></textarea>
+					<div id="cancelReasonError" class="mt-1 text-danger"></div>
+				</div>
+				<button id="cancelBtn" class="rate border-0 rounded-pill w-100 text-white">Cancel Now</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="serviceHistoryTableContainer">
+	<h2 class="tableHeader d-flex flex-wrap align-items-center justify-content-between w-100">
+		<div class="d-flex flex-nowrap align-items-center">
+			Current Service Requests
+			<img src="~/images/filter.png" class="sortingButton d-inline-block d-md-none ms-3" type="button"
+				tabindex="0" data-bs-toggle="popover" data-bs-offset="0,15" data-bs-trigger="focus"
+				data-bs-placement="bottom" data-bs-custom-class="sortingPopover" data-bs-html="true" data-bs-content="<label class='sortingRadioLabel form-check-label' for='dateDesc'>
+							<input class='form-check-input box-shadow-none' checked type='radio' data-st-col='1' data-st-type='desc' name='sortingRadio' id='dateDesc' />
+							Service Date: Latest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='dateAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='1' data-st-type='asc' name='sortingRadio' id='dateAsc' />
+							Service Date: Oldest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='spAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='asc' name='sortingRadio' id='spAsc' />
+							Service Provider: A to Z
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='spDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='desc' name='sortingRadio' id='spDesc' />
+							Service Provider: Z to A
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='paymentAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='asc' name='sortingRadio' id='paymentAsc' />
+							Payment: Low to High
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='paymentDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='desc' name='sortingRadio' id='paymentDesc' />
+							Payment: High to Low
+						</label>" />
+
+		</div>
+		<a asp-controller="Customer" asp-action="BookService"
+			class="rate position-relative d-flex align-items-center justify-content-center rounded-pill text-nowrap">Add
+			New Service Request</a>
+	</h2>
+	<table id="dashboardTable">
+		<thead>
+			<tr>
+				<th class="text-nowrap"><span class="d-inline-block">ServiceId</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Service Date</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Service Provider</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Payment</span><span></span></th>
+				<th class="text-nowrap text-center"><span class="d-inline-block">Actions</span><span></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (Model != null && Model.Any())
+			{
+				@foreach (var service in Model)
+				{
+					<tr id="service_@service.ServiceId">
+						<td class="serviceId" data-us-title="Service ID :">@service.ServiceId</td>
+						<td data-us-title="Service Date :">
+							@{
+								var st = service.ServiceStartTime.ToString("HH:mm");
+								var et = service.ServiceStartTime.AddHours(service.ServiceHours).ToString("HH:mm");
+							}
+							<div class="tdHead d-flex align-items-center justify-content-start">
+								<img src="~/images/calender.png">
+								<h5>@service.ServiceStartTime.ToString("dd/MM/yyyy").Replace("-","/")</h5>
+							</div>
+							<div class="timing d-flex align-items-center justify-content-start">
+								<img src="~/images/clock.png">
+								<div class="time text-nowrap">@st - @et</div>
+							</div>
+						</td>
+						<td data-us-title="Service Provider :">
+							@if (service.ServiceProviderId != null)
+							{
+								<div class="serviceProvider d-flex align-items-center justify-content-start">
+									<img class="rounded-circle" src="/images/@service.ServiceProviderProfilePicture" />
+									<div class="serviceProviderInfo">
+										<div class="serviceProviderName">@service.ServiceProviderName</div>
+										<div class="feedback d-flex align-items-center justify-content-start">
+											<div class="stars position-relative d-flex align-items-center justify-content-center">
+												<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+													<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+												</svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+													<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+												</svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+													<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+												</svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+													<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+												</svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+													<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+												</svg>
+												<div class="cover position-absolute top-0 end-0 h-100"
+										style="width: @(100-service.AvgRating*20)%;"></div>
+											</div>
+											<span class="lh-sm ms-1">@service.AvgRating</span>
+										</div>
+									</div>
+								</div>
+							}
+							else
+							{
+								<span class="text-danger">No Service Provider</span>
+							}
+						</td>
+						<td data-us-title="Payment :"><span class="paymentAmount "><span
+							class="paymentSign">€</span>@service.Payment</span>
+						</td>
+						<td data-us-title="Rate Service Provider :" class="text-start text-md-center text-nowrap">
+							<button
+						class="rate position-relative mx-md-auto me-xl-1 mb-xl-0 mb-1 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap">
+								Reschedule
+							</button>
+							<button
+						class="cancel position-relative mx-md-auto mx-xl-0 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap"
+						onclick='openCancelModal("@service.ServiceId")'>
+								Cancel
+							</button>
+						</td>
+					</tr>
+				}
+			}
+			else
+			{
+				<tr>
+					<td colspan="5">There Are No New or Accepted Service !</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+<div class="loaderContainer">
+	<div class="loader rounded-circle"></div>
+</div>
+@section CustomScripts
+{
+<script type="text/javascript"
+	src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<script src="~/js/CustomerDashboard.js" asp-append-version="true"></script>
+}

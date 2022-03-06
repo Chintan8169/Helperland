@@ -1,11 +1,9 @@
 helperland/wwwroot/css/adminUserManagement.css
-helperland/wwwroot/css/customerServiceHistory.css
 helperland/wwwroot/css/SwitzeraADF-Bold.woff
 helperland/wwwroot/css/SwitzeraADF-Regular.woff
 helperland/wwwroot/js/adminServiceRequest.js
 helperland/wwwroot/js/adminUserManagement.js
-helperland/wwwroot/js/customerServiceHistory.js
 helperland/wwwroot/js/serviceProviderUpcomingServices.js
 helperland/bin
-helperland/obj
 helperland/wwwroot/images/ContactUsUploadedImages
+helperland/.vscode

@@ -90,6 +90,7 @@ label {
 	padding-top: 11px;
 	padding-bottom: 11px;
 	max-height: 46px;
+	float: right;
 }
 
 .continueBtn {
@@ -209,7 +210,7 @@ input[type="checkbox"]:checked + label .imgDiv svg path {
 	fill: #1d7a8c;
 }
 
-#ServiceDate {
+#bookServiceSubmitViewModel_ServiceDate {
 	padding-left: 40px;
 	cursor: pointer;
 	background: #fff;
@@ -229,13 +230,15 @@ input[type="checkbox"]:checked + label .imgDiv svg path {
 
 .summaryContainer {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	margin-bottom: 25px;
+}
+
+.summaryContainerToggleButton {
+	outline: none !important;
 }
 
 .summaryContainerRow {
 	height: fit-content;
 	top: 75px;
-	z-index: 10;
 }
 
 .summaryTitle {
@@ -346,10 +349,21 @@ input[type="checkbox"]:checked + label .imgDiv svg path {
 	padding: 14px 0;
 	display: block;
 	border-bottom: 1px solid #e1e1e1;
+	transition: opacity 0.3s;
+}
+
+.accordion-btn:hover {
+	opacity: 0.7;
 }
 
 .accordion-btn img {
 	margin-right: 8px;
+	transform: rotate(0deg);
+	transition: transform 0.35s;
+}
+
+.accordion-btn img:not(.accordion-btn.collapsed img) {
+	transform: rotate(90deg);
 }
 
 .accordion-body {
@@ -399,37 +413,29 @@ input[type="checkbox"]:checked + label .imgDiv svg path {
 	.checkAvailabilityBtn {
 		width: auto !important;
 	}
-
-	.summaryContainer {
-		width: 70%;
-		position: fixed;
-		transform: translateX(-50%);
-		left: 50vw;
-		margin-bottom: 0;
-		transition: bottom 0.5s;
-	}
-
-	.summaryContainer.show {
-		bottom: 0 !important;
-	}
-
-	.summaryContainerToggleButton {
-		transform: translate(-50%, calc(-1rem - 20px));
-		position: absolute;
-		left: 50%;
-		font-size: 15px;
-		line-height: 20px;
-	}
-}
-@media (max-width: 576px) {
-	.summaryContainer {
-		width: 90%;
-	}
 }
 
 @media (min-width: 991px) {
 	.col-lg-2point4 {
 		flex: 0 0 auto;
 		width: 20%;
+	}
+}
+
+@media (min-width: 767px) {
+	.summaryContainerRow {
+		z-index: 10;
+	}
+
+	#paymentSummaryModal {
+		display: block !important;
+		position: static;
+		opacity: 1 !important;
+		overflow: visible !important;
+	}
+
+	#paymentSummaryModal .modal-dialog {
+		transform: none !important;
+		margin: 0 !important;
 	}
 }

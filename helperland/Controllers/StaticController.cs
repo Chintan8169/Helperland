@@ -24,41 +24,6 @@ public class StaticController : Controller
 	}
 	public IActionResult About(string zipcode)
 	{
-		// var zipcodes = (
-		// 		from z in context.ZipCodes
-		// 		where z.ZipCodeValue != zipcode
-		// 		select z.ZipCodeValue
-		// ).ToList();
-		// var temp = context.ZipCodes.Where(z => z.ZipCodeValue == zipcode).FirstOrDefault();
-		// var temp2 = context.Cities.Where(c => c.CityId == temp.CityId).FirstOrDefault();
-		// foreach (var c in temp2)
-		// {
-		// Console.WriteLine($"{temp.ZipCodeValue} : {temp2.CityName}");
-		// }
-		// int countOfZipcodes = zipcodes.Count();
-		// string uri = "https://maps.googleapis.com/maps/api/distancematrix/json?destinations=";
-		// for (int i = 0; i < countOfZipcodes; i++)
-		// {
-		// 	if (i == countOfZipcodes - 1)
-		// 		uri += $"{zipcodes[i]},german";
-		// 	else
-		// 		uri += $"{zipcodes[i]},german|";
-		// }
-		// uri += $"&origins={zipcode},german&key=AIzaSyDJoNGnE5O0yAs9r0ECBlqLRBBpP9HvE9A";
-
-		// var httpClient = httpClientFactory.CreateClient();
-		// var responseMessage = await httpClient.GetAsync(uri);
-		// var contentStream = await responseMessage.Content.ReadAsStreamAsync();
-		// // Console.WriteLine(await responseMessage.Content.ReadAsStringAsync());
-		// var res = await JsonSerializer.DeserializeAsync<GoogleMapApiResult>(contentStream);
-		// foreach (var elements in res.rows)
-		// {
-		// 	foreach (var des in elements.elements)
-		// 	{
-		// 		if (des.status != "ZERO_RESULTS" && des.distance.value <= 25000)
-		// 			Console.WriteLine(des.distance.value);
-		// 	}
-		// }
 		return View();
 	}
 	public IActionResult Faq()
@@ -140,6 +105,34 @@ public class StaticController : Controller
 			Response.Cookies.Append("isErrorModalOpen", "true");
 			Response.Cookies.Append("errorModalContent", "Internal Server Error");
 			return View();
+		}
+	}
+
+	[HttpGet]
+	public IActionResult GetCityByPostalCode(string PostalCode)
+	{
+		try
+		{
+			if (PostalCode != null)
+			{
+				var city = (
+					from z in context.ZipCodes
+					join c in context.Cities
+					on z.CityId equals c.CityId
+					where z.ZipCodeValue == PostalCode
+					select c.CityName
+				).FirstOrDefault();
+				if (city != null)
+				{
+					return Json(new { cityName = city });
+				}
+			}
+			return Json(new { err = "City Not Found !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
 		}
 	}
 }

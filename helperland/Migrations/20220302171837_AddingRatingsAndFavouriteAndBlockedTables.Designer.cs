@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using helperland.Models;
 
@@ -11,9 +12,10 @@ using helperland.Models;
 namespace helperland.Migrations
 {
     [DbContext(typeof(HelperlandContext))]
-    partial class HelperlandContextModelSnapshot : ModelSnapshot
+    [Migration("20220302171837_AddingRatingsAndFavouriteAndBlockedTables")]
+    partial class AddingRatingsAndFavouriteAndBlockedTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

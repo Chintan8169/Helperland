@@ -21,6 +21,10 @@ public class User : IdentityUser
 	public bool IsApproved { get; set; }
 
 	public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }
+	public virtual ICollection<Rating> RatingFromUser { get; set; }
+	public virtual ICollection<Rating> RatingToUser { get; set; }
+	public virtual ICollection<FavoriteAndBlocked> FromUser { get; set; }
+	public virtual ICollection<FavoriteAndBlocked> TargetUser { get; set; }
 
 #nullable enable
 	public int? Gender { get; set; }

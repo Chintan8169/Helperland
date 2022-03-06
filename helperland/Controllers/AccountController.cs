@@ -102,7 +102,7 @@ public class AccountController : Controller
 			Response.Cookies.Append("isSuccessModalOpen", "true");
 			return RedirectToAction("ServiceProviderSignup", "Account");
 		}
-		ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast  1 special character and atleast 1 number with atleast 1 Uppercase character !!");
+		ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast 1 special character and atleast 1 number with atleast 1 Uppercase character !!");
 		return View(model);
 	}
 
@@ -145,12 +145,46 @@ public class AccountController : Controller
 			return Json(new { error = "Internal Server Error !" });
 		}
 	}
+	[Authorize]
+	[HttpPost]
+	public async Task<IActionResult> ChangePassword([FromBody] PasswordChange model)
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+				if (result.Succeeded)
+				{
+					return Json(new { success = "Password Changed Successfully !" });
+				}
+				else
+				{
+					for (int i = 0; i < result.Errors.Count(); i++)
+					{
+						if (result.Errors.ToList()[i].Code.ToString().Contains("PasswordMismatch"))
+							return Json(new { err = "Current Password is not correct !" });
+						else if (result.Errors.ToList()[i].Code.ToString().Contains("PasswordTooShort") || result.Errors.ToList()[i].Code.ToString().Contains("PasswordRequiresNonAlphanumeric") || result.Errors.ToList()[i].Code.ToString().Contains("PasswordRequiresLower") || result.Errors.ToList()[i].Code.ToString().Contains("PasswordRequiresUpper"))
+							return Json(new { err = "Password Must be minimum length of 6 character and must contain atleast 1 special character and atleast 1 number with atleast 1 Uppercase character !!" });
+					}
+				}
+			}
+			throw new Exception();
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
+	}
 
 	[HttpPost]
 	public async Task<IActionResult> SendForgetPasswordEmailToken(LoginViewModel model)
 	{
 		try
 		{
+			Console.WriteLine(model.Email);
 			var emailField = ModelState.FirstOrDefault(k => k.Key == "Email");
 			if (emailField.Value != null && emailField.Value.ValidationState.ToString() == "Valid")
 			{
@@ -223,8 +257,17 @@ public class AccountController : Controller
 				Response.Cookies.Append("isSuccessModalContent", "Password successfully Reset !!");
 				return View();
 			}
-			ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast  1 special character and atleast 1 number with atleast 1 Uppercase character !!");
-			return View(model);
+			else if (result.Errors.Where(e => e.Code.ToString().Contains("InvalidToken")).FirstOrDefault() != null)
+			{
+				Response.Cookies.Append("isErrorModalOpen", "true");
+				Response.Cookies.Append("errorModalContent", "Reset Link in not valid !");
+				return View();
+			}
+			else if (result.Errors.Where(e => e.Code.ToString().Contains("PasswordTooShort") || e.Code.ToString().Contains("PasswordRequiresNonAlphanumeric") || e.Code.ToString().Contains("PasswordRequiresLower") || e.Code.ToString().Contains("PasswordRequiresUpper")).FirstOrDefault() != null)
+			{
+				ModelState.AddModelError("Password", "Password Must be minimum length of 6 character and must contain atleast  1 special character and atleast 1 number with atleast 1 Uppercase character !!");
+				return View(model);
+			}
 		}
 		Response.Cookies.Append("isErrorModalOpen", "true");
 		Response.Cookies.Append("errorModalContent", "Reset Link in not valid !");

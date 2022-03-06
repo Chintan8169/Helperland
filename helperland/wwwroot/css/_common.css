@@ -79,7 +79,7 @@ nav {
 	transition: left 0.3s ease-in-out;
 }
 
-.fullPage.open {
+body.navOpen .fullPage {
 	left: 0;
 }
 
@@ -90,6 +90,8 @@ nav {
 
 .navSm .navMenu {
 	width: 65%;
+	height: 100vh;
+	overflow-y: auto;
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.7);
 }
 
@@ -200,9 +202,9 @@ body.loading .loaderContainer {
 	justify-content: center;
 }
 .loaderContainer .loader {
-	height: 100px;
-	width: 100px;
-	border: 10px solid transparent;
+	height: 80px;
+	width: 80px;
+	border: 8px solid transparent;
 	border-top-color: #1d7a8c;
 	border-bottom-color: #1d7a8c;
 }
@@ -218,6 +220,11 @@ body.loading .loaderContainer .loader {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid #eee;
 }
 
 #successModal.show img,
@@ -292,6 +299,11 @@ body.loading .loaderContainer .loader {
 
 .input-validation-error {
 	border: 1px solid var(--bs-danger) !important;
+	color: var(--bs-danger) !important;
+}
+
+.input-validation-error::placeholder {
+	color: var(--bs-danger) !important;
 }
 
 hr {
@@ -387,16 +399,21 @@ footer hr {
 	transition: all 0.3s;
 }
 
-.hamburger.open::before {
+body.navOpen .hamburger::before {
 	transform: translateY(0) rotate(45deg);
 	box-shadow: none;
 }
 
-.hamburger.open::after {
+body.navOpen .hamburger::after {
 	transform: translateY(0) rotate(-45deg);
 }
 
 @media screen and (max-width: 991px) {
+	body.navOpen {
+		height: 100vh;
+		overflow: hidden;
+	}
+
 	footer {
 		padding: 25px;
 	}

@@ -135,8 +135,8 @@ if (loginModalForm) {
 						const ReturnUrl = params.find((par) => (par.key = "ReturnUrl"));
 						if (ReturnUrl && ReturnUrl.value) return (window.location.href = decodeURIComponent(ReturnUrl.value));
 					}
-					if (jsonRes.userType == "Customer") return (window.location.href = "/Customer/Index");
-					else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Index");
+					if (jsonRes.userType == "Customer") return (window.location.href = "/Customer/Dashboard");
+					else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Dashboard");
 					else return (window.location.href = "/Admin/Index");
 				}
 			}

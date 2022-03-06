@@ -1,9 +1,9 @@
 const nowDate = new Date();
-if (nowDate.getHours() >= 21 && nowDate.getMinutes() > 0) {
+if (nowDate.getHours() >= 18 && nowDate.getMinutes() > 0) {
 	nowDate.setDate(nowDate.getDate() + 1);
 }
 
-$("#ServiceDate").datepicker({
+$("#bookServiceSubmitViewModel_ServiceDate").datepicker({
 	changeMonth: true,
 	changeYear: true,
 	showButtonPanel: true,
@@ -12,7 +12,7 @@ $("#ServiceDate").datepicker({
 	dateFormat: "dd/mm/yy",
 });
 
-$("#ServiceDate").datepicker("setDate", nowDate);
+$("#bookServiceSubmitViewModel_ServiceDate").datepicker("setDate", nowDate);
 const body = document.querySelector("body");
 const successModalHtml = document.querySelector("#successModal");
 const successModal = new bootstrap.Modal(successModalHtml);
@@ -20,9 +20,7 @@ const tab1Btn = document.querySelector(".nav > button:nth-child(1)");
 const tab2Btn = document.querySelector(".nav > button:nth-child(2)");
 const tab3Btn = document.querySelector(".nav > button:nth-child(3)");
 const tab4Btn = document.querySelector(".nav > button:nth-child(4)");
-const summaryContainerToggleButton = document.querySelector(".summaryContainerToggleButton");
 const addresses = document.querySelector(".addresses");
-const summaryContainer = document.querySelector(".summaryContainer");
 const PostalCode = document.querySelector("#addNewAddressViewModel_PostalCode");
 const City = document.querySelector("#addNewAddressViewModel_City");
 const save = document.querySelector(".save");
@@ -35,12 +33,12 @@ const scheduleAndPlanFormBtn = document.querySelector("#scheduleAndPlanFormBtn")
 const ZipCodeForm = document.querySelector("#ZipCodeForm");
 const scheduleAndPlanForm = document.querySelector("#scheduleAndPlanForm");
 const addNewAddressForm = document.querySelector("#addNewAddressForm");
-const ZipCode = document.querySelector("#ZipCode");
-const ServiceDate = document.querySelector("#ServiceDate");
-const ServiceStartTime = document.querySelector("#ServiceStartTime");
+const ZipCode = document.querySelector("#bookServiceSubmitViewModel_ZipCode");
+const ServiceDate = document.querySelector("#bookServiceSubmitViewModel_ServiceDate");
+const ServiceStartTime = document.querySelector("#bookServiceSubmitViewModel_ServiceStartTime");
 const serviceDateAndTimeSummaryDate = document.querySelector("#serviceDateAndTimeSummaryDate");
 const serviceDateAndTimeSummaryTime = document.querySelector("#serviceDateAndTimeSummaryTime");
-const ServiceBasicHours = document.querySelector("#ServiceBasicHours");
+const ServiceBasicHours = document.querySelector("#bookServiceSubmitViewModel_ServiceBasicHours");
 const ServiceBasicHoursText = document.querySelector("#ServiceBasicHoursText");
 const extraServicesCheckBoxs = document.querySelectorAll(".extraServicesCheckBox");
 const ServiceBasicHoursError = document.querySelector("#ServiceBasicHoursError");
@@ -49,15 +47,6 @@ const tab1 = bootstrap.Tab.getOrCreateInstance(tab1Btn);
 const tab2 = bootstrap.Tab.getOrCreateInstance(tab2Btn);
 const tab3 = bootstrap.Tab.getOrCreateInstance(tab3Btn);
 const tab4 = bootstrap.Tab.getOrCreateInstance(tab4Btn);
-
-summaryContainerToggleButton.addEventListener("click", () => summaryContainer.classList.toggle("show"));
-
-setTimeout(() => {
-	if (window.innerWidth <= 767) summaryContainer.style.bottom = `${-summaryContainer.offsetHeight}px`;
-}, 150);
-window.addEventListener("resize", () => {
-	if (window.innerWidth <= 767) summaryContainer.style.bottom = `${-summaryContainer.offsetHeight}px`;
-});
 
 const tabsBtns = [tab1Btn, tab2Btn, tab3Btn, tab4Btn];
 const handleTabsClick = (tabNumber) => {
@@ -77,11 +66,14 @@ checkAvailabilityBtn.addEventListener("click", async (e) => {
 		const zipCodeValidator = $("#ZipCodeForm").validate();
 		if (zipCodeValidator.form()) {
 			e.preventDefault();
-			const isZipCodeValid = zipCodeValidator.element("#ZipCode");
+			const isZipCodeValid = zipCodeValidator.element("#bookServiceSubmitViewModel_ZipCode");
 			if (isZipCodeValid) {
 				document.querySelector("#checkAvailbilityError").innerHTML = "";
 				body.classList.add("loading");
 				const res = await fetch(`/Customer/CheckAvailability?ZipCode=${ZipCode.value}`, { method: "GET" });
+				if (res.redirected) {
+					window.location.href = res.url;
+				}
 				const jsonData = await res.json();
 				body.classList.remove("loading");
 				if (jsonData.cityName) {
@@ -97,6 +89,7 @@ checkAvailabilityBtn.addEventListener("click", async (e) => {
 			}
 		}
 	} catch (err) {
+		body.classList.remove("loading");
 		document.querySelector("#checkAvailbilityError").innerHTML = "Internal Server Error !";
 	}
 });
@@ -134,9 +127,9 @@ const checkExtremeHours = () => {
 
 const checkTimeIsPassed = () => {
 	const now = new Date();
-	const selectedDate = $("#ServiceDate").datepicker("getDate");
+	const selectedDate = $("#bookServiceSubmitViewModel_ServiceDate").datepicker("getDate");
 	if (
-		now.getDate() >= selectedDate.getDate() &&
+		now.getTime() >= selectedDate.getTime() &&
 		parseFloat(ServiceStartTime.options[ServiceStartTime.options.selectedIndex].value) < now.getHours()
 	) {
 		document.querySelector(".ServiceStartTimeError").innerHTML = "This time is passed";
@@ -149,7 +142,7 @@ const checkTimeIsPassed = () => {
 calculateTotalPrice();
 ServiceDate.onchange = () => {
 	const scheduleAndPlanFormValidator = $("#scheduleAndPlanForm").validate();
-	scheduleAndPlanFormValidator.element("#ServiceDate");
+	scheduleAndPlanFormValidator.element("#bookServiceSubmitViewModel_ServiceDate");
 	if (ServiceDate.value.trim() === "") serviceDateAndTimeSummaryDate.innerHTML = "No Date Selected";
 	else serviceDateAndTimeSummaryDate.innerHTML = ServiceDate.value;
 	checkTimeIsPassed();
@@ -186,20 +179,27 @@ scheduleAndPlanFormBtn.addEventListener("click", async (e) => {
 		if (checkExtremeHours() && scheduleAndPlanFormValidator.form() && !checkTimeIsPassed()) {
 			body.classList.add("loading");
 			const res = await fetch(`/Customer/GetAddresses?ZipCode=${ZipCode.value}`, { method: "GET" });
+			if (res.redirected) {
+				window.location.href = res.url;
+			}
 			const adds = await res.json();
 			body.classList.remove("loading");
 			if (adds.length > 0) {
 				addresses.innerHTML = "";
 				adds.forEach((a) => {
-					addresses.innerHTML += `<label
-			class="addressLabel d-flex align-items-center justify-content-start py-2 py-md-3 px-2 px-md-3 mb-2 mb-md-3 form-check"
-			for="address${a.addressId}">
-			<input class="form-check-input mx-0" type="radio" name="addressRadio" id="address${a.addressId}" data-addressid="${a.addressId}"/>
-			<div class="form-check-label">
-				<div class="address"><strong>Address:</strong> ${a.addressLine1} ${a.addressLine2}, ${a.city} ${a.postalCode}</div>
-				<div class="phoneNumber"><strong>Phone Number:</strong> ${a.phoneNumber}</div>
-			</div>
-		</label>`;
+					addresses.innerHTML += `
+					<label
+						class="addressLabel d-flex align-items-center justify-content-start py-2 py-md-3 px-2 px-md-3 mb-2 mb-md-3 form-check"
+						for="address${a.addressId}">
+						<input class="form-check-input mx-0" type="radio" name="addressRadio" id="address${a.addressId}" data-addressid="${a.addressId}" ${
+						a.isDefault ? "checked" : ""
+					}/>
+						<div class="form-check-label">
+							<div class="address"><strong>Address:</strong> ${a.addressLine1} ${a.addressLine2}, ${a.city} ${a.postalCode}</div>
+							<div class="phoneNumber"><strong>Phone Number:</strong> ${a.phoneNumber}</div>
+						</div>
+					</label>
+					`;
 				});
 			} else {
 				addresses.innerHTML = "There Are No Addresses.Please Add Some !";
@@ -266,6 +266,9 @@ save.addEventListener("click", async (e) => {
 				},
 				body: JSON.stringify(data),
 			});
+			if (res.redirected) {
+				window.location.href = res.url;
+			}
 			const jsonData = await res.json();
 			body.classList.remove("loading");
 			if (addresses.innerHTML === "There Are No Addresses.Please Add Some !") {
@@ -307,25 +310,22 @@ const generateExtraServices = () => {
 			`;
 		});
 	}
-	if (window.innerWidth <= 767) summaryContainer.style.bottom = `${-summaryContainer.offsetHeight}px`;
 };
 
 extraServicesCheckBoxs.forEach((extraServicesCheckBox, index) => {
 	extraServicesCheckBox.addEventListener("click", () => {
-		if (selectedCheckBoxs.length <= 0) {
-			selectedCheckBoxs.push({ index: index + 1, text: extraServicesCheckBox.getAttribute("data-extra-service-name") });
-			totalServiceTime.innerHTML = `${parseFloat(totalServiceTime.innerHTML.replace(" Hrs.")) + 0.5} Hrs.`;
-		} else {
+		if (selectedCheckBoxs.length > 0) {
 			if (!extraServicesCheckBox.checked) {
-				const i = selectedCheckBoxs.findIndex((s) => s.index === index);
-				if (i >= 0) {
-					selectedCheckBoxs.splice(i, 1);
-				}
+				const i = selectedCheckBoxs.findIndex((s) => s.index === index + 1);
+				if (i >= 0) selectedCheckBoxs.splice(i, 1);
 				totalServiceTime.innerHTML = `${parseFloat(totalServiceTime.innerHTML.replace(" Hrs.")) - 0.5} Hrs.`;
 			} else {
 				selectedCheckBoxs.push({ index: index + 1, text: extraServicesCheckBox.getAttribute("data-extra-service-name") });
 				totalServiceTime.innerHTML = `${parseFloat(totalServiceTime.innerHTML.replace(" Hrs.")) + 0.5} Hrs.`;
 			}
+		} else {
+			selectedCheckBoxs.push({ index: index + 1, text: extraServicesCheckBox.getAttribute("data-extra-service-name") });
+			totalServiceTime.innerHTML = `${parseFloat(totalServiceTime.innerHTML.replace(" Hrs.")) + 0.5} Hrs.`;
 		}
 		generateExtraServices();
 		calculateTotalPrice();
@@ -343,10 +343,10 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 			data.ExtraServices = [];
 			selectedCheckBoxs.forEach((s) => data.ExtraServices.push(s.index));
 		}
-		if (document.querySelector("#Comments").value) {
-			data.Comments = document.querySelector("#Comments").value;
+		if (document.querySelector("#bookServiceSubmitViewModel_Comments").value) {
+			data.Comments = document.querySelector("#bookServiceSubmitViewModel_Comments").value;
 		}
-		data.HasPets = document.querySelector("#HasPets").checked;
+		data.HasPets = document.querySelector("#bookServiceSubmitViewModel_HasPets").checked;
 		const addressCheckboxes = document.querySelectorAll("input[name='addressRadio'");
 		for (let i = 0; i < addressCheckboxes.length; i++) {
 			if (addressCheckboxes[i].checked) {
@@ -362,6 +362,9 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 			},
 			body: JSON.stringify(data),
 		});
+		if (res.redirected) {
+			window.location.href = res.url;
+		}
 		const jsonData = await res.json();
 		body.classList.remove("loading");
 		if (jsonData.serviceId) {
