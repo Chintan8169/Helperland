@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace helperland.Controllers;
 
-[Authorize(Roles = "Customer")]
+[Authorize(Roles = "Admin,Customer")]
 public class CustomerController : Controller
 {
 	private readonly HelperlandContext context;
@@ -63,7 +63,7 @@ public class CustomerController : Controller
 				ServiceId = s.ServiceId,
 				ServiceStartTime = s.ServiceStartDate,
 				ServiceHours = s.ServiceHours,
-				ServiceProviderId = sr.Id,
+				ServiceProviderId = s.ServiceProviderId,
 				ServiceProviderName = sr.FirstName + " " + sr.LastName,
 				ServiceProviderProfilePicture = sr.UserProfilePhoto,
 				Payment = s.TotalCost,
@@ -121,6 +121,101 @@ public class CustomerController : Controller
 		}
 	}
 
+	[HttpPost]
+	public async Task<IActionResult> RescheduleService([FromBody] RescheduleServiceViewModel model)
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			if (user != null)
+			{
+
+				var service = context.ServiceRequests.Where(s => s.UserId == user.Id && s.ServiceId == model.ServiceId).FirstOrDefault();
+				if (service != null)
+				{
+					DateTime newServiceDate = DateTime.Parse(model.NewServiceDate).AddHours((double)model.NewServiceStartTime);
+					if (newServiceDate.CompareTo(service.ServiceStartDate) == 0)
+					{
+						return Json(new { err = "This selected time is same !" });
+					}
+					DateTime newServiceEnd = newServiceDate.AddHours(service.ServiceHours);
+					var services = context.ServiceRequests.Where(s => s.ServiceProviderId == service.ServiceProviderId && s.Status == 2 && s.ServiceRequestId != service.ServiceRequestId && s.ServiceStartDate.Date == newServiceDate.Date && s.ServiceStartDate.Month == newServiceDate.Month && s.ServiceStartDate.Year == newServiceDate.Year).ToList();
+					if (services.Count() > 0)
+					{
+						foreach (var s in services)
+						{
+							var tempServiceStart = s.ServiceStartDate;
+							var tempServiceEnd = s.ServiceStartDate.AddHours((double)(service.ServiceHours + 1));
+							if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
+							{
+								return Json(new
+								{
+									err = "Another service request has been assigned to the service provider on " + tempServiceStart.ToString("dd/MM/yyyy") +
+								" from " + tempServiceStart.ToString("HH/mm") + " to " + tempServiceEnd.AddHours(-1).ToString("HH/mm") + ". Either choose another date or pick up a different time slot."
+								});
+							}
+						}
+					}
+					service.ServiceStartDate = newServiceDate;
+					context.ServiceRequests.Attach(service);
+					context.SaveChanges();
+					return Json(new { success = "Successfully Rescheduled Service !!" });
+				}
+			}
+			return Json(new { err = "Service Not Found !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
+	}
+
+	[HttpGet]
+	public async Task<IActionResult> GetServiceDetails(int serviceId)
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			if (user != null)
+			{
+				var service = (
+					from s in context.ServiceRequests
+					join sa in context.ServiceRequestAddresses
+					on s.ServiceRequestId equals sa.ServiceRequestId
+					where s.ServiceId == serviceId
+					select new { s, sa }
+				).FirstOrDefault();
+				if (service != null)
+				{
+
+					var serviceExtra = context.ServiceRequestExtras.Where(se => se.ServiceRequestId == service.s.ServiceRequestId).Select(sea => sea.ServiceExtraId).ToArray();
+					var jsonData = new
+					{
+						Extras = serviceExtra,
+						Duration = service.s.ServiceHours,
+						ServiceStreetName = service.sa.AddressLine1,
+						ServiceHouseNumber = service.sa.AddressLine2,
+						PostalCode = service.sa.PostalCode,
+						City = service.sa.City,
+						PhoneNumber = service.sa.Mobile,
+						Email = service.sa.Email,
+						Comments = service.s.Comments,
+						HasPets = service.s.HasPets,
+						TotalCleaning = context.ServiceRequests.Where(s => s.ServiceProviderId == service.s.ServiceProviderId && s.Status == 3).Count()
+					};
+					return Json(jsonData);
+				}
+			}
+			return Json(new { err = "Service Not Found !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
+	}
+
 	[HttpGet]
 	public async Task<IActionResult> ServiceHistory()
 	{
@@ -136,7 +231,7 @@ public class CustomerController : Controller
 				ServiceId = s.ServiceId,
 				ServiceStartTime = s.ServiceStartDate,
 				ServiceHours = s.ServiceHours,
-				ServiceProviderId = sr.Id,
+				ServiceProviderId = s.ServiceProviderId,
 				ServiceProviderName = sr.FirstName + " " + sr.LastName,
 				ServiceProviderProfilePicture = sr.UserProfilePhoto,
 				Payment = s.TotalCost,
@@ -181,7 +276,7 @@ public class CustomerController : Controller
 				user.DateOfBirth = new DateTime(model.Year, model.Month, model.Day);
 				user.Language = model.Language;
 				user.ModifiedDate = DateTime.Now;
-				user.ModifiedBy = 1;
+				user.ModifiedBy = user.Id;
 				await userManager.UpdateAsync(user);
 				return Json(new { success = "Details Updated Successfully !" });
 			}
@@ -498,6 +593,15 @@ public class CustomerController : Controller
 		}
 	}
 
+	[HttpGet]
+	public async Task<IActionResult> FavouriteAndBlocked()
+	{
+		var user = await userManager.GetUserAsync(User);
+		// var result = (
+		// 	from u in context.Users
+		// );
+		return View();
+	}
 	public async Task<IActionResult> GetAddresses(string? ZipCode)
 	{
 		var user = await userManager.GetUserAsync(User);
@@ -549,4 +653,13 @@ public class RatingViewModel
 	public string ServiceProviderId { get; set; }
 #nullable enable
 	public string? Comments { get; set; }
+}
+
+public class RescheduleServiceViewModel
+{
+#nullable disable
+	public int ServiceId { get; set; }
+	public string NewServiceDate { get; set; }
+	public decimal NewServiceStartTime { get; set; }
+
 }

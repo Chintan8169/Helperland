@@ -26,5 +26,5 @@ public class ContactUs
 	public string? UploadedFileName { get; set; }
 
 	public DateTime? CreatedOn { get; set; }
-	public int? CreatedBy { get; set; }
+	public string? CreatedBy { get; set; }
 }

@@ -19,6 +19,17 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade px-3" id="serviceDetails" tabindex="-1" aria-labelledby="serviceDetailsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="serviceDetailsLabel">Service Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body row gy-0 gx-2"></div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
@@ -205,7 +216,16 @@
 				@foreach (var service in Model)
 				{
 					<tr>
-						<td data-us-title="Service Details :">
+						<td class="clickable" data-us-title="Service Details :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.ServiceProviderName",
+							"@service.ServiceProviderProfilePicture",
+							"@service.AvgRating",
+							"@service.ServiceStartTime.ToString("dd/MM/yyyy").Replace("-","/")",
+							 "@service.ServiceStartTime.ToString("HH:mm")",
+							 "@service.ServiceStartTime.AddHours(service.ServiceHours).ToString("HH:mm")",
+							"@service.Payment"
+							)'>
 							<div class="tdHead d-flex align-items-center justify-content-start">
 								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
 									<path fill-rule="evenodd" fill="#646464"
@@ -251,7 +271,7 @@
 												<div class="cover position-absolute top-0 end-0 h-100"
 										style="width: @(100-service.AvgRating*20)%;"></div>
 											</div>
-											<span class="lh-sm ms-1">@service.AvgRating</span>
+											<span class="lh-sm ms-1">@Math.Round(service.AvgRating,2)</span>
 										</div>
 									</div>
 								</div>
@@ -298,12 +318,6 @@
 						</td>
 					</tr>
 				}
-			}
-			else
-			{
-				<tr>
-					<td colspan="5">There Are No Service Completed or Cancelled !</td>
-				</tr>
 			}
 		</tbody>
 	</table>

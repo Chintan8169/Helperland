@@ -7,6 +7,7 @@
 {
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
 <link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
 }
 <div class="position-fixed toastContainer bottom-0 end-0 p-3">
@@ -19,8 +20,8 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="cancelService" tabindex="-1" aria-labelledby="cancelServiceLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
+<div class="modal fade px-3" id="cancelService" tabindex="-1" aria-labelledby="cancelServiceLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
 		<div class="modal-content">
 			<div class="modal-header pb-0 border-0">
 				<h5 class="modal-title" id="cancelServiceLabel">Cancel Service Request</h5>
@@ -34,6 +35,66 @@
 					<div id="cancelReasonError" class="mt-1 text-danger"></div>
 				</div>
 				<button id="cancelBtn" class="rate border-0 rounded-pill w-100 text-white">Cancel Now</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="serviceDetails" tabindex="-1" aria-labelledby="serviceDetailsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="serviceDetailsLabel">Service Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body row gy-0 gx-2"></div>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="rescheduleService" tabindex="-1" aria-labelledby="rescheduleServiceLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title" id="rescheduleServiceLabel">Reschedule Service Request</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-2">
+					<label class="fw-bold mb-2" for="cancelReason">Select New Date & Time</label>
+					<div class="row g-2">
+						<div class="datePicker position-relative col-12 col-md-6">
+							<input type="text" id="NewServiceDate" name="NewServiceDate" class="form-control" readonly
+								placeholder="DD/MM/YYYY" />
+						</div>
+						<div class="col-12 col-md-6">
+							<select type="text" id="NewServiceStartTime" name="NewServiceStartTime" class="form-select">
+								<option value="8">8:00</option>
+								<option value="8.5">8:30</option>
+								<option value="9">9:00</option>
+								<option value="9.5">9:30</option>
+								<option value="10">10:00</option>
+								<option value="10.5">10:30</option>
+								<option value="11">11:00</option>
+								<option value="11.5">11:30</option>
+								<option value="12">12:00</option>
+								<option value="12.5">12:30</option>
+								<option value="13">13:00</option>
+								<option value="13.5">13:30</option>
+								<option value="14">14:00</option>
+								<option value="14.5">14:30</option>
+								<option value="15">15:00</option>
+								<option value="15.5">15:30</option>
+								<option value="16">16:00</option>
+								<option value="16.5">16:30</option>
+								<option value="17">17:00</option>
+								<option value="17.5">17:30</option>
+								<option value="18">18:00</option>
+							</select>
+						</div>
+					</div>
+					<div id="rescheduleError" class="mt-1 text-danger"></div>
+				</div>
+				<button id="rescheduleBtn" class="rate border-0 rounded-pill w-100 text-white">Update</button>
 			</div>
 		</div>
 	</div>
@@ -90,8 +151,28 @@
 				@foreach (var service in Model)
 				{
 					<tr id="service_@service.ServiceId">
-						<td class="serviceId" data-us-title="Service ID :">@service.ServiceId</td>
-						<td data-us-title="Service Date :">
+						<td class="serviceId clickable" data-us-title="Service ID :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.ServiceProviderName",
+							"@service.ServiceProviderProfilePicture",
+							"@service.AvgRating",
+							"@service.ServiceStartTime.ToString("dd/MM/yyyy").Replace("-","/")",
+							"@service.ServiceStartTime.ToString("MM/dd/yyyy")",
+							 "@service.ServiceStartTime.ToString("HH:mm")",
+							 "@service.ServiceStartTime.AddHours(service.ServiceHours).ToString("HH:mm")",
+							"@service.Payment"
+							)'>@service.ServiceId</td>
+						<td class="clickable" data-us-title="Service Date :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.ServiceProviderName",
+							"@service.ServiceProviderProfilePicture",
+							"@service.AvgRating",
+							"@service.ServiceStartTime.ToString("dd/MM/yyyy").Replace("-","/")",
+							"@service.ServiceStartTime.ToString("MM/dd/yyyy")",
+							 "@service.ServiceStartTime.ToString("HH:mm")",
+							 "@service.ServiceStartTime.AddHours(service.ServiceHours).ToString("HH:mm")",
+							"@service.Payment"
+							)'>
 							@{
 								var st = service.ServiceStartTime.ToString("HH:mm");
 								var et = service.ServiceStartTime.AddHours(service.ServiceHours).ToString("HH:mm");
@@ -137,7 +218,7 @@
 												<div class="cover position-absolute top-0 end-0 h-100"
 										style="width: @(100-service.AvgRating*20)%;"></div>
 											</div>
-											<span class="lh-sm ms-1">@service.AvgRating</span>
+											<span class="lh-sm ms-1">@Math.Round(service.AvgRating,2)</span>
 										</div>
 									</div>
 								</div>
@@ -152,23 +233,17 @@
 						</td>
 						<td data-us-title="Rate Service Provider :" class="text-start text-md-center text-nowrap">
 							<button
+						onclick='openRescheduleModal("@service.ServiceId","@service.ServiceStartTime.ToString("MM/dd/yyyy")","@service.ServiceStartTime.ToString("HH:mm")")'
 						class="rate position-relative mx-md-auto me-xl-1 mb-xl-0 mb-1 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap">
 								Reschedule
 							</button>
-							<button
-						class="cancel position-relative mx-md-auto mx-xl-0 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap"
-						onclick='openCancelModal("@service.ServiceId")'>
+							<button onclick='openCancelModal("@service.ServiceId")'
+						class="cancel position-relative mx-md-auto mx-xl-0 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap">
 								Cancel
 							</button>
 						</td>
 					</tr>
 				}
-			}
-			else
-			{
-				<tr>
-					<td colspan="5">There Are No New or Accepted Service !</td>
-				</tr>
 			}
 		</tbody>
 	</table>
@@ -181,5 +256,6 @@
 {
 <script type="text/javascript"
 	src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="~/js/CustomerDashboard.js" asp-append-version="true"></script>
 }

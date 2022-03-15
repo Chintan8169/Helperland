@@ -53,7 +53,7 @@ public class ServiceRequest
 	public string? PaymentTransactionRefNo { get; set; }
 	public DateTime? SpacceptedDate { get; set; }
 	public int? Status { get; set; }
-	public int? ModifiedBy { get; set; }
+	public string? ModifiedBy { get; set; }
 	[Column(TypeName = "decimal(16,2)")]
 	public decimal? RefundedAmount { get; set; }
 

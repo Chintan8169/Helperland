@@ -64,12 +64,12 @@ postalCodes.forEach((p, i) => {
 	p.addEventListener("focusout", async () => {
 		const data = await getCityByPostalCode(p.value);
 		if (data.city) {
-			const addAddressModalFormValidator = $("#addAddressModalForm").validate();
-			addAddressModalFormValidator.element("#" + cities[i].id);
 			cities[i].value = data.city;
 		} else {
 			cities[i].value = "";
 		}
+		const addAddressModalFormValidator = $("#addAddressModalForm").validate();
+		addAddressModalFormValidator.element("#" + cities[i].id);
 	});
 });
 

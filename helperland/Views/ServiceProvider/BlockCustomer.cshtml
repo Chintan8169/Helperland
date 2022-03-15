@@ -1,0 +1,65 @@
+@model IEnumerable<BlockCustomerViewModel>
+@{
+	ViewBag.PageTitle = "Block Customer";
+	Layout = "_ServiceProviderLayout";
+}
+@section CustomCss
+{
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
+<link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
+}
+<div class="position-fixed toastContainer bottom-0 end-0 p-3">
+	<div class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body py-3 px-4 fs-6"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+<div class="serviceHistoryTableContainer">
+	<table id="blockCustomerTable" class="border-0">
+		<thead class="d-none">
+			<tr>
+				<th class="text-nowrap"><span class="d-inline-block">Customer Details</span><span></span></th>
+			</tr>
+		</thead>
+		<tbody class="row g-4">
+			@if (Model != null && Model.Any())
+			{
+				@foreach (var blockCustomerViewModel in Model)
+				{
+					<tr class="col-12 col-md-4" id="user_@blockCustomerViewModel.UserId">
+						<td data-us-title="Service ID :"
+					class="w-100 h-100 d-flex align-items-center justify-content-evenly flex-column">
+							<img src="~/images/avatar-hat.png" class="mt-4">
+							<div class="fw-bold mt-3 mb-2 fs-4">@blockCustomerViewModel.CustomerName</div>
+							@if (blockCustomerViewModel.IsBlocked)
+							{
+								<input type="checkbox" id="@blockCustomerViewModel.UserId" checked hidden
+						onclick='blockOrUnblock("@blockCustomerViewModel.UserId")'>
+								<label role="button" for="@blockCustomerViewModel.UserId"
+						class="rounded-pill blocked cancel mb-4 fs-6">Unblock</label>
+							}
+							else
+							{
+								<input type="checkbox" id="@blockCustomerViewModel.UserId" hidden
+						onclick='blockOrUnblock("@blockCustomerViewModel.UserId")'>
+								<label role="button" for="@blockCustomerViewModel.UserId"
+						class="rounded-pill unblocked cancel mb-4 fs-6">Block</label>
+							}
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+</div>
+@section CustomScripts
+{
+<script type="text/javascript"
+	src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<script src="~/js/blockCustomer.js" asp-append-version="true"></script>
+}

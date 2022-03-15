@@ -108,3 +108,16 @@ hr {
 #addAddressModal .modal-dialog {
 	max-width: 600px;
 }
+
+#UpdateDetailsForm {
+	color: #646464;
+	font-size: 16px;
+}
+
+.avatar label {
+	width: 85px;
+}
+
+.avatar input[type="radio"]:checked + label {
+	border: 3px solid #1d7a8c;
+}

@@ -1,0 +1,456 @@
+@model SPMySettings
+@{
+	ViewBag.PageTitle = "My Settings";
+	Layout = "_ServiceProviderLayout";
+}
+@section CustomCss
+{
+<link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
+<link rel="stylesheet" href="~/css/MySettings.css" asp-append-version="true">
+}
+<div class="position-fixed bottom-0 end-0 p-3">
+	<div class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body py-3 px-4 fs-6"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+<div class="w-100">
+	<div class="nav mb-3" id="settingsTabs" role="tablist">
+		<div id="detailsTabBtn" class="col-6 settingsTab active" data-bs-toggle="tab" data-bs-target="#details"
+			role="tab" aria-selected="false" aria-controls="details">
+			<div class="fw-bold d-none d-md-block">My Details</div>
+			<img src="~/images/my-account-details.png" class="d-block d-md-none">
+		</div>
+		<div id="changePasswordTabBtn" class="col-6 settingsTab" data-bs-toggle="tab" data-bs-target="#password"
+			role="tab" aria-selected="false" aria-controls="password">
+			<div class="fw-bold d-none d-md-block">Change Password</div>
+			<img src="~/images/my-account-password.png" class="d-block d-md-none">
+		</div>
+	</div>
+	<div class="tab-content" id="settingsTabsContent">
+		<div role="tabpanel" aria-labelledby="detailsTabBtn" id="details" class="tab-pane fade show active">
+			<form id="UpdateDetailsForm">
+				<div class="accountStatus fw-bold fs-4">Account Status: <span class="text-success">Active</span></div>
+				<div class="fw-bold">
+					<div class="d-inline-block border-bottom pb-2 fs-5" style="width: calc(100% - 110px);">Basic Details
+					</div>
+					<div class="d-inline-block">
+						@if (Model != null && Model.SPDetails.Profile != null)
+						{
+							<img src="~/images/@Model.SPDetails.Profile">
+						}
+						else
+						{
+							<img src="~/images/avatar-hat.png">
+						}
+					</div>
+				</div>
+				<div class="row mb-3 g-2">
+					<div class="col-12 col-md-4">
+						<label asp-for="SPDetails.FirstName" class="fw-bold mb-1">First Name</label>
+						<input asp-for="SPDetails.FirstName" class="form-control" placeholder="First Name">
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.FirstName"></span>
+					</div>
+					<div class="col-12 col-md-4">
+						<label asp-for="SPDetails.LastName" class="fw-bold mb-1">Last Name</label>
+						<input asp-for="SPDetails.LastName" type="text" class="form-control" placeholder="Last Name">
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.LastName"></span>
+					</div>
+					<div class="col-12 col-md-4">
+						<label asp-for="SPDetails.Email" class="fw-bold mb-1">E-mail Address</label>
+						<input type="text" asp-for="SPDetails.Email" class="form-control" readonly placeholder="Email">
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.Email"></span>
+					</div>
+				</div>
+				<div class="row g-2 mb-3">
+					<div class="col-12 col-md-4">
+						<label asp-for="SPDetails.PhoneNumber" class="fw-bold mb-1">Mobile Number</label>
+						<div class="input-group flex-nowrap">
+							<span class="d-flex align-items-center justify-content-center input-group-text"
+								id="addon-wrapping">+91</span>
+							<input asp-for="SPDetails.PhoneNumber" type="text" class="form-control"
+								placeholder="Mobile Number" aria-label="Mobile Number"
+								aria-describedby="addon-wrapping">
+						</div>
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.PhoneNumber"></span>
+					</div>
+					<div class="col-12 col-md-5 col-xl-4">
+						<label class="fw-bold mb-1">Date Of Birth</label>
+						<div class="row g-1">
+							<div class="col-3">
+								<select class="form-select" asp-for="SPDetails.Day">
+									<option value="">Day</option>
+									@{
+										for (int i = 1; i <= 31; i++)
+										{
+											<option value="@i">@(i.ToString().Length==1?"0"+i:i)</option>
+										}
+									}
+								</select>
+							</div>
+							<div class=" col-5">
+								<select class="form-select" asp-for="SPDetails.Month">
+									<option value="">Month</option>
+									@{
+										string[] month = { "January", "February", "March", "April", "May", "June", "July",
+																"August","September","October","November","December" };
+										for (int i = 1; i <= 12; i++)
+										{
+											<option value="@i">@month[i-1]</option>
+										}
+									}
+								</select>
+							</div>
+							<div class="col-4">
+								<select class="form-select" asp-for="SPDetails.Year">
+									<option value="">Year</option>
+									@{
+										for (int i = DateTime.Now.Year - 18; i >= 1913; i--)
+										{
+											<option value="@i">@i</option>
+										}
+									}
+								</select>
+							</div>
+							<span class="d-block text-danger mt-1" id="doberror"></span>
+						</div>
+					</div>
+					<div class="mb-3 col-12 col-md-3 col-xl-4">
+						<label class="fw-bold mb-1" asp-for="SPDetails.Nationality">Nationality</label>
+						<select class="form-select" asp-for="SPDetails.Nationality">
+							<option value="">Nationality</option>
+							<option value="German">German</option>
+							<option value="Afghan">Afghan</option>
+							<option value="Egyptian">Egyptian</option>
+							<option value="Albanian">Albanian</option>
+							<option value="Algerian">Algerian</option>
+							<option value="American">American</option>
+							<option value="andorranisch">andorranisch</option>
+							<option value="angolan">angolan</option>
+							<option value="Antiguan">Antiguan</option>
+							<option value="äquatorialguineisch">äquatorialguineisch</option>
+							<option value="Argentinean">Argentinean</option>
+							<option value="Armenian">Armenian</option>
+							<option value="Azerbaijani">Azerbaijani</option>
+							<option value="Ethiopian">Ethiopian</option>
+							<option value="Australian">Australian</option>
+							<option value="bahamaisch">bahamaisch</option>
+							<option value="bahrainisch">bahrainisch</option>
+							<option value="bangladesh">bangladesh</option>
+							<option value="Belgian">Belgian</option>
+							<option value="belizean">belizean</option>
+							<option value="Beninese">Beninese</option>
+							<option value="Dzongkha">Dzongkha</option>
+							<option value="Bolivian">Bolivian</option>
+							<option value="Bosnian herzegowinisch">Bosnian herzegowinisch</option>
+							<option value="botsuanisch">botsuanisch</option>
+							<option value="Brazilian">Brazilian</option>
+							<option value="British">British</option>
+							<option value="bruneiisch">bruneiisch</option>
+							<option value="Bulgarian">Bulgarian</option>
+							<option value="burkinisch">burkinisch</option>
+							<option value="burundisch">burundisch</option>
+							<option value="cabo-verdisch">cabo-verdisch</option>
+							<option value="Chilean">Chilean</option>
+							<option value="Chinese">Chinese</option>
+							<option value="Costa Rican">Costa Rican</option>
+							<option value="Danish">Danish</option>
+							<option value="the north Mariana Islands">the north Mariana Islands</option>
+							<option value="the Ver. Arab. Emirates">the Ver. Arab. Emirates</option>
+							<option value="dominicanisch">dominicanisch</option>
+							<option value="Dominican">Dominican</option>
+							<option value="dschibutisch">dschibutisch</option>
+							<option value="Ecuadorian">Ecuadorian</option>
+							<option value="Eritrean">Eritrean</option>
+							<option value="Estonian">Estonian</option>
+							<option value="Fijian">Fijian</option>
+							<option value="Finnish">Finnish</option>
+							<option value="French">French</option>
+							<option value="gabonese">gabonese</option>
+							<option value="gambian">gambian</option>
+							<option value="Georgian">Georgian</option>
+							<option value="Ghanaian">Ghanaian</option>
+							<option value="grenadian">grenadian</option>
+							<option value="Greek">Greek</option>
+							<option value="Guatemalan">Guatemalan</option>
+							<option value="Guinea-bissauisch">Guinea-bissauisch</option>
+							<option value="guineisch">guineisch</option>
+							<option value="guyanese">guyanese</option>
+							<option value="Haitian">Haitian</option>
+							<option value="Honduran">Honduran</option>
+							<option value="Indian">Indian</option>
+							<option value="Indonesian">Indonesian</option>
+							<option value="Iraqi">Iraqi</option>
+							<option value="Iranian">Iranian</option>
+							<option value="Irish">Irish</option>
+							<option value="Icelandic">Icelandic</option>
+							<option value="Israeli">Israeli</option>
+							<option value="Italian">Italian</option>
+							<option value="Ivorian">Ivorian</option>
+							<option value="Jamaican">Jamaican</option>
+							<option value="Japanese">Japanese</option>
+							<option value="Yemeni">Yemeni</option>
+							<option value="Jordanian">Jordanian</option>
+							<option value="Cambodian">Cambodian</option>
+							<option value="cameroonian">cameroonian</option>
+							<option value="Canadian">Canadian</option>
+							<option value="Kazakh">Kazakh</option>
+							<option value="Qatari">Qatari</option>
+							<option value="Kenyan">Kenyan</option>
+							<option value="Kyrgyz">Kyrgyz</option>
+							<option value="Kiribati">Kiribati</option>
+							<option value="Colombian">Colombian</option>
+							<option value="comorian">comorian</option>
+							<option value="Congolese">Congolese</option>
+							<option value="Korean">Korean</option>
+							<option value="Croatian">Croatian</option>
+							<option value="Cuban">Cuban</option>
+							<option value="kuwaitisch">kuwaitisch</option>
+							<option value="Laotian">Laotian</option>
+							<option value="lesothisch">lesothisch</option>
+							<option value="Latvian">Latvian</option>
+							<option value="Lebanese">Lebanese</option>
+							<option value="Liberian">Liberian</option>
+							<option value="libyan">libyan</option>
+							<option value="liechtensteinisch">liechtensteinisch</option>
+							<option value="Lithuanian">Lithuanian</option>
+							<option value="lucianisch">lucianisch</option>
+							<option value="Luxembourgish">Luxembourgish</option>
+							<option value="Madagascan">Madagascan</option>
+							<option value="Macedonian / Macedonian">Macedonian / Macedonian</option>
+							<option value="malawian">malawian</option>
+							<option value="Malaysian">Malaysian</option>
+							<option value="maldivian">maldivian</option>
+							<option value="malisch">malisch</option>
+							<option value="Maltese">Maltese</option>
+							<option value="Moroccan">Moroccan</option>
+							<option value="Marshallese">Marshallese</option>
+							<option value="mauritanian">mauritanian</option>
+							<option value="Mauritian">Mauritian</option>
+							<option value="Mexican">Mexican</option>
+							<option value="micronesian">micronesian</option>
+							<option value="Moldavian">Moldavian</option>
+							<option value="Monegasque">Monegasque</option>
+							<option value="Mongolian">Mongolian</option>
+							<option value="montenegrin">montenegrin</option>
+							<option value="Mozambican">Mozambican</option>
+							<option value="Myanmarian">Myanmarian</option>
+							<option value="Namibian">Namibian</option>
+							<option value="Nauruan">Nauruan</option>
+							<option value="Nepalese">Nepalese</option>
+							<option value="New Zealand">New Zealand</option>
+							<option value="Nicaraguan">Nicaraguan</option>
+							<option value="Dutch">Dutch</option>
+							<option value="Nigerian">Nigerian</option>
+							<option value="nigrisch">nigrisch</option>
+							<option value="Norwegian">Norwegian</option>
+							<option value="Omani">Omani</option>
+							<option value="Austrian">Austrian</option>
+							<option value="Pakistani">Pakistani</option>
+							<option value="Palauan">Palauan</option>
+							<option value="Panamanian">Panamanian</option>
+							<option value="Papua-neuguineisch">Papua-neuguineisch</option>
+							<option value="Paraguayan">Paraguayan</option>
+							<option value="Peruvian">Peruvian</option>
+							<option value="Filipino">Filipino</option>
+							<option value="Polish">Polish</option>
+							<option value="Portuguese">Portuguese</option>
+							<option value="Rwandan">Rwandan</option>
+							<option value="Romanian">Romanian</option>
+							<option value="Russian">Russian</option>
+							<option value="salomonisch">salomonisch</option>
+							<option value="Salvadorian">Salvadorian</option>
+							<option value="Zambian">Zambian</option>
+							<option value="Samoan">Samoan</option>
+							<option value="sanmarinesisch">sanmarinesisch</option>
+							<option value="santomeisch">santomeisch</option>
+							<option value="Saudi-arabian">Saudi-arabian</option>
+							<option value="Swedish">Swedish</option>
+							<option value="Swiss">Swiss</option>
+							<option value="Senegalese">Senegalese</option>
+							<option value="Serbian">Serbian</option>
+							<option value="seychellisch">seychellisch</option>
+							<option value="sierraleonisch">sierraleonisch</option>
+							<option value="Zimbabwean">Zimbabwean</option>
+							<option value="Singaporean">Singaporean</option>
+							<option value="Slovak">Slovak</option>
+							<option value="Slovenian">Slovenian</option>
+							<option value="somali">somali</option>
+							<option value="Spanish">Spanish</option>
+							<option value="Sri Lankan">Sri Lankan</option>
+							<option value="South African">South African</option>
+							<option value="Sudanese">Sudanese</option>
+							<option value="südsudanesisch">südsudanesisch</option>
+							<option value="surinamese">surinamese</option>
+							<option value="swasiländisch">swasiländisch</option>
+							<option value="Syrian">Syrian</option>
+							<option value="Tajik">Tajik</option>
+							<option value="Taiwanese">Taiwanese</option>
+							<option value="Tanzanian">Tanzanian</option>
+							<option value="Thai">Thai</option>
+							<option value="togolese">togolese</option>
+							<option value="tongan">tongan</option>
+							<option value="Chadian">Chadian</option>
+							<option value="Czech">Czech</option>
+							<option value="Tunisian">Tunisian</option>
+							<option value="Turkish">Turkish</option>
+							<option value="Turkmen">Turkmen</option>
+							<option value="Tuvaluan">Tuvaluan</option>
+							<option value="Ugandan">Ugandan</option>
+							<option value="Ukrainian">Ukrainian</option>
+							<option value="Hungarian">Hungarian</option>
+							<option value="Uruguayan">Uruguayan</option>
+							<option value="Uzbek">Uzbek</option>
+							<option value="vanuatuisch">vanuatuisch</option>
+							<option value="Venezuelan">Venezuelan</option>
+							<option value="Vietnamese">Vietnamese</option>
+							<option value="vince table">vince table</option>
+							<option value="from Niue">from Niue</option>
+							<option value="from St. Kitts and Nevis">from St. Kitts and Nevis</option>
+							<option value="from Timor-Leste">from Timor-Leste</option>
+							<option value="from Trinidad and Tobago">from Trinidad and Tobago</option>
+							<option value="belarusian">belarusian</option>
+							<option value="zentralafrikanisch">zentralafrikanisch</option>
+							<option value="zyprisch">zyprisch</option>
+						</select>
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.Nationality"></span>
+					</div>
+					<div class="mb-2 col-12">
+						<label class="d-block mb-2">Gender</label>
+						<div class="d-inline-block me-2">
+							<input type="radio" role="button" class="form-check-input" value="1"
+								asp-for="SPDetails.Gender" id="Male">
+							<label for="Male" role="button" class="ps-2">Male</label>
+						</div>
+						<div class="d-inline-block me-2">
+							<input type="radio" role="button" class="form-check-input" value="2"
+								asp-for="SPDetails.Gender" id="Female">
+							<label for="Female" role="button" class="ps-2">Female</label>
+						</div>
+						<span asp-validation-for="SPDetails.Gender" class="text-danger"></span>
+					</div>
+					<div class="col-12 mb-2">
+						<label class="d-block mb-2">Select Avatar</label>
+						<div class="avatar d-flex flex-wrap">
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" checked
+									value="avatar-car.png" id="avatar-car.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-car.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-car.png">
+								</label>
+							</div>
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" value="avatar-female.png"
+									id="avatar-female.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-female.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-female.png">
+								</label>
+							</div>
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" value="avatar-hat.png"
+									id="avatar-hat.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-hat.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-hat.png">
+								</label>
+							</div>
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" value="avatar-iron.png"
+									id="avatar-iron.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-iron.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-iron.png">
+								</label>
+							</div>
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" value="avatar-male.png"
+									id="avatar-male.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-male.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-male.png">
+								</label>
+							</div>
+							<div>
+								<input type="radio" asp-for="SPDetails.Profile" class="d-none" value="avatar-ship.png"
+									id="avatar-ship.png">
+								<label class="mx-2 mb-2 rounded-circle" for="avatar-ship.png">
+									<img role="button" class="img-fluid" src="~/images/avatar-ship.png">
+								</label>
+							</div>
+						</div>
+						<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.Profile"></span>
+					</div>
+					<div class="border-bottom pb-2 fs-5 fw-bold">My Address</div>
+					<div class="row">
+						<div class="col-12 col-md-4">
+							<label asp-for="SPDetails.StreetName" class="fw-bold mb-1">Street Name</label>
+							<input type="text" asp-for="SPDetails.StreetName" class="form-control"
+								placeholder="Street Name">
+							<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.StreetName"></span>
+						</div>
+						<div class="col-12 col-md-4">
+							<label asp-for="SPDetails.HouseNumber" class="fw-bold mb-1">House Numer</label>
+							<input type="text" asp-for="SPDetails.HouseNumber" class="form-control"
+								placeholder="House Numer">
+							<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.HouseNumber"></span>
+						</div>
+						<div class="col-12 col-md-4">
+							<label asp-for="SPDetails.PostalCode" class="fw-bold mb-1">Postal Code</label>
+							<input type="text" asp-for="SPDetails.PostalCode" class="form-control"
+								placeholder="Postal Code">
+							<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.PostalCode"></span>
+						</div>
+						<div class="col-12 col-md-4">
+							<label asp-for="SPDetails.City" class="fw-bold mb-1">City</label>
+							<input type="text" asp-for="SPDetails.City" class="form-control" placeholder="City"
+								readonly>
+							<span class="d-block text-danger mt-1" asp-validation-for="SPDetails.City"></span>
+						</div>
+					</div>
+				</div>
+				<hr class="bg-transparent" />
+
+				<span class="text-danger my-2" id="formSubmitError"></span>
+				<button id="UpdateDetailsFormBtn" class="save rounded-pill" type="submit">Save</button>
+			</form>
+		</div>
+		<div role="tabpanel" aria-labelledby="changePasswordTabBtn" id="password" class="tab-pane fade">
+			<form id="ChangePasswordForm">
+				<div class="row flex-column mb-2">
+					<div class="col-12 col-md-6">
+						<label class="fw-bold mb-1" asp-for="PasswordChange.CurrentPassword">Current Password</label>
+						<input type="password" class="form-control" asp-for="PasswordChange.CurrentPassword"
+							placeholder="Current Password">
+						<span asp-validation-for="PasswordChange.CurrentPassword"
+							class="d-block text-danger my-1"></span>
+					</div>
+					<div class="col-12 col-md-6">
+						<label class="fw-bold mb-1" asp-for="PasswordChange.NewPassword">New Password</label>
+						<input type="password" class="form-control" asp-for="PasswordChange.NewPassword"
+							placeholder="New Password">
+						<span asp-validation-for="PasswordChange.NewPassword" class="d-block text-danger my-1"></span>
+					</div>
+					<div class="col-12 col-md-6">
+						<label class="fw-bold mb-1" asp-for="PasswordChange.CNewPassword">Confirm Password</label>
+						<input type="password" class="form-control" asp-for="PasswordChange.CNewPassword"
+							placeholder="Confirm New Password">
+						<span asp-validation-for="PasswordChange.CNewPassword" class="d-block text-danger my-1"></span>
+					</div>
+				</div>
+				<button id="ChangePasswordFormBtn" class="save rounded-pill" type="submit">Save</button>
+			</form>
+		</div>
+	</div>
+</div>
+@section CustomScripts
+{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"
+	integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/spMySettings.js" asp-append-version="true"></script>
+}

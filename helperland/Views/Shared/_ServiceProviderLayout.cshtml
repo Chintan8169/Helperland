@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="~/css/_common.css" asp-append-version="true">
 </head>
 
-<body class="d-flex flex-column justify-content-between">
+<body>
 	<nav class="d-lg-flex sticky-top d-none justify-content-between align-items-center text-white">
 		<div class="logoDiv">
 			<a class="d-block" asp-controller="Static" asp-action="Index">
@@ -41,7 +41,7 @@
 			<div class="userInfoDropdown d-flex align-items-center justify-content-center" tabindex="0" role="button"
 				data-bs-html="true" data-bs-offset="-80,15" data-bs-toggle="popover"
 				data-bs-custom-class="userInfoPopover" data-bs-trigger="focus"
-				data-bs-content="<a class='d-block userInfoItem' href='/ServiceProvider/Dashboard'>My Dashboard</a><a class='d-block userInfoItem' href='/ServiceProvider/Index'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
+				data-bs-content="<a class='d-block userInfoItem' href='/ServiceProvider/Dashboard?HasPets=True'>My Dashboard</a><a class='d-block userInfoItem' href='/ServiceProvider/Profile'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
 				data-bs-original-title="<div class='userInfoText'>Welcome,<b class='d-block'>@loggedInUser.FirstName @loggedInUser.LastName</b></div>">
 				<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
 					<path fill-rule="evenodd" fill="#FFF"
@@ -76,15 +76,19 @@
 				</div>
 				<hr class="my-1" />
 				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
-						asp-action="Dashboard">Dashboard</a></div>
-				<div class="navItem"><a class="d-block" href="#">Dashboard</a></div>
-				<div class="navItem"><a class="d-block" href="#">New Service Request</a></div>
-				<div class="navItem"><a class="d-block" href="#">Upcoming Services</a></div>
+						asp-action="Dashboard" asp-route-HasPets="True">Dashboard</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Dashboard" asp-route-HasPets="True">New
+						Service Request</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
+						asp-action="UpcomingServices">Upcoming Services</a></div>
 				<div class="navItem"><a class="d-block" href="#">Service Schedule</a></div>
-				<div class="navItem"><a class="d-block" href="#">Service History</a></div>
-				<div class="navItem"><a class="d-block" href="#">My Ratings</a></div>
-				<div class="navItem"><a class="d-block" href="#">Block Customer</a></div>
-				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Index">My
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
+						asp-action="ServiceHistory">Service History</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="MyRatings">My
+						Ratings</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider"
+						asp-action="BlockCustomer">Block Customer</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Profile">My
 						Settings</a></div>
 				<div class="navItem"><a class="d-block" asp-controller="Account" asp-action="Logout">Logout</a></div>
 				<hr class="my-1" />
@@ -100,7 +104,46 @@
 	</nav>
 	<h1 class="heading d-flex align-items-center justify-content-center flex-wrap text-break">
 		Welcome,&nbsp;<span>@loggedInUser.FirstName @loggedInUser.LastName</span></h1>
-	@RenderBody()
+	<div class="container-fluid position-relative d-flex align-items-start ">
+		<div class="verticalNavbar d-none d-lg-block" style="min-height: 630px;">
+			<ul class="verticalNavItems p-0 m-0">
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="New Service Request")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="Dashboard" asp-route-HasPets="True">Dashboard</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="New Service Request")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="Dashboard" asp-route-HasPets="True">New Service Request</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Upcoming Services")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="UpcomingServices">Upcoming Services</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Service Schedules")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="ServiceSchedule">Service Schedules</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Service History")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="ServiceHistory">Service History</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="My Ratings")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="MyRatings">My Ratings</a>
+				</li>
+				<li
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Block Customer")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="ServiceProvider" asp-action="BlockCustomer">Block Customer</a>
+				</li>
+				<li class="verticalNavItem"><a href="#">Invoices</a></li>
+				<li class="verticalNavItem"><a href="#">Notifications</a></li>
+			</ul>
+		</div>
+		@RenderBody()
+	</div>
+	<div class="loaderContainer">
+		<div class="loader rounded-circle"></div>
+	</div>
 	<footer>
 		<div class="footerMain d-flex align-items-center justify-content-between">
 			<div class="footerLogo">
@@ -137,14 +180,6 @@
 				</a>
 			</div>
 		</div>
-		@if (!string.IsNullOrEmpty(ViewBag.PageTitle) && ViewBag.PageTitle != "Home")
-		{
-			<hr />
-			<div class="terms text-center">
-				©2018 Helperland. All rights reserved. <a href="#">Terms and Conditions</a> | <a href="#">Privacy
-					Policy</a>
-			</div>
-		}
 	</footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
@@ -156,13 +191,26 @@
 	const hamburger = document.querySelector(".hamburger");
 	const halfPageBlack = document.querySelector(".halfPageBlack");
 	const navMenu = document.querySelector(".fullPage");
+	const verticalNavbar = document.querySelector(".verticalNavbar");
 	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 	const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
+	const body = document.querySelector("body");
 
 	const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-	const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
+	const popoverList = popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl, { sanitize: false }));
 	hamburger.addEventListener("click", () => document.querySelector("body").classList.toggle("navOpen"));
 	halfPageBlack.addEventListener("click", () => hamburger.click());
+	verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+	window.addEventListener("resize", () => {
+		verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
+	});
+
+	const loading = (isLoading) => (isLoading) ? body.classList.add("loading") : body.classList.remove("loading");
+
+	loading(true);
+	document.onreadystatechange = () => {
+		if (document.readyState === "complete") loading(false)
+	}
 </script>
 @RenderSection("CustomScripts",required:false)
 

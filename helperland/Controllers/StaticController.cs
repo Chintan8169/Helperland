@@ -1,22 +1,22 @@
 using helperland.Models;
 using helperland.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
-using System.Text.Json;
 
 namespace helperland.Controllers;
 public class StaticController : Controller
 {
+#nullable disable
 	private readonly HelperlandContext context;
 	private readonly IWebHostEnvironment webHostEnvironment;
 	private readonly IHttpClientFactory httpClientFactory;
+	private readonly Email email;
 
-	public StaticController(HelperlandContext context, IWebHostEnvironment webHostEnvironment, IHttpClientFactory httpClientFactory)
+	public StaticController(HelperlandContext context, IWebHostEnvironment webHostEnvironment, IHttpClientFactory httpClientFactory, Email email)
 	{
 		this.context = context;
 		this.webHostEnvironment = webHostEnvironment;
 		this.httpClientFactory = httpClientFactory;
+		this.email = email;
 	}
 	public IActionResult Index()
 	{
@@ -57,51 +57,52 @@ public class StaticController : Controller
 			newMessage.Subject = model.Subject;
 			newMessage.CreatedOn = DateTime.Now;
 			string uniqueFilename;
+			string filePath = null;
 			if (model.File != null)
 			{
 				string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images", "ContactUsUploadedImages");
 				uniqueFilename = Guid.NewGuid().ToString() + "_" + model.File.FileName;
-				string filePath = Path.Combine(uploadsFolder, uniqueFilename);
+				filePath = Path.Combine(uploadsFolder, uniqueFilename);
 				newMessage.UploadedFileName = uniqueFilename;
 				using (var fileStream = new FileStream(filePath, FileMode.Create))
 				{
 					model.File.CopyTo(fileStream);
 				}
 			}
-			using (MailMessage newMail = new MailMessage("gohilchintanrajsinh@gmail.com", "helperlandadmin@yopmail.com"))
+			context.ContactUs.Add(newMessage);
+			context.SaveChanges();
+			var newMail = new SendMailViewModel()
 			{
-				newMail.Subject = model.Subject;
-				newMail.Body = $@"
+				Subject = model.Subject,
+				IsBodyHtml = true,
+				Body = $@"
 				<h3>User Name: {model.FirstName} {model.LastName}</h3>
 				<h3>User Email: {model.Email}</h3>
 				<h4>User Phone Number: {model.PhoneNumber}</h4>
-				<p>Message: {model.Message}</p>
-			";
-				if (model.File != null && model.File.Length > 0)
-				{
-					string fileName = Path.GetFileName(model.File.FileName);
-					newMail.Attachments.Add(new Attachment(model.File.OpenReadStream(), fileName));
-				}
-				newMail.IsBodyHtml = true;
-				using (SmtpClient smtp = new SmtpClient())
-				{
-					smtp.Host = "smtp.gmail.com";
-					smtp.EnableSsl = true;
-					NetworkCredential NetworkCred = new NetworkCredential("gohilchintanrajsinh@gmail.com", "Gohil@9712");
-					smtp.UseDefaultCredentials = false;
-					smtp.Credentials = NetworkCred;
-					smtp.Port = 587;
-					smtp.Send(newMail);
-				}
+				<p>Message: {model.Message}</p>",
+				To = new List<string>() { "helperlandadmin@yopmail.com" }
+			};
+			if (model.File != null && model.File.Length > 0 && filePath != null)
+			{
+				newMail.AttachmentFilePath = filePath;
 			}
-			context.ContactUs.Add(newMessage);
-			context.SaveChanges();
-			Response.Cookies.Append("isSuccessModalOpen", "true");
-			Response.Cookies.Append("isSuccessModalContent", "Form successfully submitted !!");
-			return RedirectToAction("ContactUs");
+			var successMail = email.SendMail(newMail);
+			if (successMail)
+			{
+				Response.Cookies.Append("isSuccessModalOpen", "true");
+				Response.Cookies.Append("isSuccessModalContent", "Form successfully submitted !!");
+				return RedirectToAction("ContactUs");
+			}
+			else
+			{
+				Response.Cookies.Append("isErrorModalOpen", "true");
+				Response.Cookies.Append("errorModalContent", "Can not send mail to admin<br>However your details have been saved successfully");
+				return View();
+			}
 		}
-		catch
+		catch (Exception e)
 		{
+			Console.WriteLine(e);
 			Response.Cookies.Append("isErrorModalOpen", "true");
 			Response.Cookies.Append("errorModalContent", "Internal Server Error");
 			return View();

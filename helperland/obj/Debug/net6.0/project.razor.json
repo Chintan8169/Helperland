@@ -16298,11 +16298,6 @@
   "RootNamespace": "helperland",
   "Documents": [
     {
-      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\Index.cshtml",
-      "TargetPath": "Views\\ServiceProvider\\Index.cshtml",
-      "FileKind": "mvc"
-    },
-    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\_ViewImports.cshtml",
       "TargetPath": "Views\\_ViewImports.cshtml",
       "FileKind": "mvc"
@@ -16318,6 +16313,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\UpcomingServices.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\UpcomingServices.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\CustomerSignup.cshtml",
       "TargetPath": "Views\\Account\\CustomerSignup.cshtml",
       "FileKind": "mvc"
@@ -16328,13 +16328,28 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\Dashboard.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\Dashboard.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\BlockCustomer.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\BlockCustomer.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Static\\Index.cshtml",
       "TargetPath": "Views\\Static\\Index.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\Profile.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\Profile.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -16355,6 +16370,16 @@
     {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Customer\\Dashboard.cshtml",
       "TargetPath": "Views\\Customer\\Dashboard.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\ServiceHistory.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\ServiceHistory.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\MyRatings.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\MyRatings.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -16390,6 +16415,11 @@
     {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\ServiceProviderSignup.cshtml",
       "TargetPath": "Views\\Account\\ServiceProviderSignup.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Customer\\FavouriteAndBlocked.cshtml",
+      "TargetPath": "Views\\Customer\\FavouriteAndBlocked.cshtml",
       "FileKind": "mvc"
     }
   ],

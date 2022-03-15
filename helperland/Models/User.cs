@@ -17,7 +17,7 @@ public class User : IdentityUser
 	public bool WorksWithPets { get; set; }
 	public DateTime CreatedDate { get; set; }
 	public DateTime ModifiedDate { get; set; }
-	public int ModifiedBy { get; set; }
+	public string ModifiedBy { get; set; }
 	public bool IsApproved { get; set; }
 
 	public virtual ICollection<ServiceRequest> ServiceRequest { get; set; }

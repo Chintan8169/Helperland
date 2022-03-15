@@ -60,7 +60,7 @@
 					<div class="userInfoDropdown d-flex align-items-center justify-content-center" tabindex="0" role="button"
 				data-bs-html="true" data-bs-offset="-80,15" data-bs-toggle="popover"
 				data-bs-custom-class="userInfoPopover" data-bs-trigger="focus"
-				data-bs-content="<a class='d-block userInfoItem' href='/ServiceProvider/Dashboard'>My Dashboard</a><a class='d-block userInfoItem' href='/ServiceProvider/Index'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
+				data-bs-content="<a class='d-block userInfoItem' href='/ServiceProvider/Dashboard?HasPets=True'>My Dashboard</a><a class='d-block userInfoItem' href='/ServiceProvider/Profile'>My Settings</a><a class='d-block userInfoItem' href='/Account/Logout'>Logout</a>"
 				data-bs-original-title="<div class='userInfoText'>Welcome,<b class='d-block'>@loggedInUser.FirstName @loggedInUser.LastName</b></div>">
 						<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
 							<path fill-rule="evenodd" fill="#FFF"
@@ -146,7 +146,8 @@
 					</div>
 					@if (User.IsInRole("ServiceProvider"))
 					{
-						<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Dashboard">My
+						<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Dashboard"
+						asp-route-HasPets="True">My
 								Dashboard</a></div>
 						<div class="navItem"><a class="d-block" asp-controller="ServiceProvider" asp-action="Index">My
 								Settings</a></div>

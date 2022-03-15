@@ -175,7 +175,7 @@ tbody tr {
 .timing {
 	font-size: 16px;
 	color: #646464;
-	margin-top: 11px;
+	margin-top: 6px;
 }
 
 .custName,
@@ -210,19 +210,35 @@ tbody tr {
 }
 
 #ratingModal,
-#cancelService {
+#cancelService,
+#rescheduleService,
+#serviceDetails,
+#timeConflictModal {
+	font-size: 16px;
 	color: #646464;
 }
 
-#cancelService .modal-dialog {
+#cancelService .modal-dialog,
+#rescheduleService .modal-dialog,
+#timeConflictModal .modal-dialog {
 	max-width: 400px;
+}
+
+#serviceDetails .modal-dialog {
+	max-width: 900px;
+}
+
+#serviceDetails .buttons button img {
+	height: 20px;
+	width: 20px;
 }
 
 .toastContainer {
 	z-index: 10;
 }
 
-.form-control {
+.form-control,
+.form-select {
 	background-color: #fff;
 	font-size: 16px;
 	line-height: 20px;
@@ -237,11 +253,36 @@ tbody tr {
 	transition: border-color 0.25s;
 }
 
+#NewServiceDate {
+	padding-left: 40px;
+	cursor: pointer;
+	background: #fff;
+}
+
+.datePicker::before {
+	content: "";
+	pointer-events: none;
+	height: 20px;
+	width: 20px;
+	background: url("../images/book-service-calendar.png") center center;
+	background-size: contain;
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
 textarea.form-control {
 	height: 126px;
 }
 
-.form-control:focus {
+.form-check-input:checked {
+	background: #1d7a8c;
+	border-color: #1d7a8c !important;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
 	box-shadow: none !important;
 	border-color: #1d7a8c;
 	color: #646464 !important;
@@ -274,6 +315,21 @@ textarea.form-control {
 
 .cancel:hover {
 	background: #cc5656;
+}
+
+.unblocked {
+	background: #ff6b6b !important;
+}
+.unblocked:hover {
+	background: #cc5656 !important;
+}
+
+.blocked {
+	background: #67b644 !important;
+}
+
+.blocked:hover {
+	background: #52833f !important;
 }
 
 .status {
@@ -339,6 +395,32 @@ table.dataTable thead th,
 table.dataTable tbody td {
 	border: none !important;
 	padding: 16px 18px !important;
+}
+
+#myRatingsTable,
+#blockCustomerTable {
+	color: #646464;
+}
+
+#blockCustomerTable tbody tr {
+	border: none !important;
+}
+
+#blockCustomerTable tbody tr td {
+	border: 1px solid #e1e1e1 !important;
+}
+
+#myRatingsTable tbody tr.row td,
+#blockCustomerTable tbody tr td {
+	padding: 0 !important;
+}
+
+#myRatingsTable tbody tr td.border-top {
+	border-top: 1px solid #dee2e6 !important;
+}
+
+.myRatingSortingPopover.popover {
+	display: block !important;
 }
 
 .dataTables_wrapper .dataTables_paginate a.paginate_button.current,
@@ -420,6 +502,14 @@ div.dataTables_paginate {
 	height: 38px !important;
 }
 
+.clickable {
+	cursor: pointer;
+	transition: opacity 0.35s;
+}
+.clickable:hover {
+	opacity: 0.8;
+}
+
 .dt-button {
 	float: right !important;
 	border-radius: 300px !important;
@@ -458,6 +548,11 @@ div.dataTables_paginate {
 .text-md-nowrap {
 	white-space: nowrap;
 }
+
+.serviceMap {
+	background: #e1e1e1;
+}
+
 @media screen and (max-width: 992px) {
 	.dataTables_wrapper {
 		max-width: 100% !important;
@@ -473,21 +568,26 @@ div.dataTables_paginate {
 		display: none;
 	}
 
-	tbody tr {
+	table.dataTable tbody tr {
 		display: flex;
 		flex-direction: column;
 		margin: 15px 0;
-		padding: 25px;
+		padding: 25px !important;
 		gap: 10px;
 		border-radius: 7px;
 		border: 1px solid #a1a0a0 !important;
 		box-shadow: 3px 5px 5px 5px #c4c2c2;
 	}
 
-	table.dataTable tbody tr td {
+	table.dataTable tbody tr td,
+	#myRatingsTable tbody tr.row td {
 		position: relative;
 		padding: 6px 0 !important;
 		padding-top: 26px !important;
+	}
+
+	#myRatingsTable tbody tr.row td.border-top {
+		border-top: none !important;
 	}
 
 	table.dataTable tbody tr td::before {
@@ -547,5 +647,9 @@ div.dataTables_paginate {
 	.navSmMenuItem:hover,
 	.navSmMenuItem:hover a {
 		color: #1d7a8c;
+	}
+
+	.serviceMap {
+		min-height: 400px;
 	}
 }

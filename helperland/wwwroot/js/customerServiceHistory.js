@@ -7,9 +7,12 @@ const ratingModalHtml = document.querySelector("#ratingModal");
 const ratingModalError = ratingModalHtml.querySelector(".ratingModalError");
 const Comments = ratingModalHtml.querySelector("#Comments");
 const submitRating = ratingModalHtml.querySelector("#submitRating");
+const serviceDetailsModalHtml = document.querySelector("#serviceDetails");
+const serviceDetailsModalBody = serviceDetailsModalHtml.querySelector(".modal-body");
 
 const toast = bootstrap.Toast.getOrCreateInstance(toastHtml);
 const ratingModal = bootstrap.Modal.getOrCreateInstance(ratingModalHtml);
+const serviceDetailsModal = bootstrap.Modal.getOrCreateInstance(serviceDetailsModalHtml);
 
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 	"serviceDate-pre": function (a) {
@@ -54,8 +57,14 @@ const dt = new DataTable("#serviceHistoryTable", {
 		},
 		info: "Total Record: _MAX_",
 		lengthMenu: "Show_MENU_Entries",
+		emptyTable: "No Service History Found",
 	},
-	buttons: ["excel"],
+	buttons: [
+		{
+			extend: "excel",
+			text: "Export",
+		},
+	],
 	columnDefs: [
 		{ orderable: false, targets: 4 },
 		{ type: "serviceDate", targets: 0 },
@@ -88,7 +97,7 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 		if (serviceId && serviceProviderId) {
 			ratingModalHtml.querySelector("img").src = `/images/${profilePic}`;
 			ratingModalHtml.querySelector(".serviceProviderName").innerHTML = serviceProviderName;
-			ratingModalHtml.querySelector(".avgRating").innerHTML = avgRating;
+			ratingModalHtml.querySelector(".avgRating").innerHTML = parseFloat(avgRating).toFixed(2);
 			ratingModalHtml.querySelector(".feedback .cover").style.width = (5 - parseFloat(avgRating)) * 20 + "%";
 			body.classList.add("loading");
 			const res = await fetch(`/Customer/IsRatingGiven?ServiceId=${serviceId}&ServiceProviderId=${serviceProviderId}`, { method: "GET" });
@@ -203,6 +212,110 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 	} catch (error) {
 		body.classList.remove("loading");
 		console.log(error.message);
+		showToast("danger", "Internal Server Error !");
+	}
+};
+
+const extras = ["Inside Cabinate", "Inside Fridge", "Inside Oven", "Laundry Wash & Dry", "Interior Windows"];
+
+const openDetailsModal = async (
+	serviceId,
+	serviceProviderName,
+	profilePic,
+	avgRating,
+	serviceStartDate,
+	serviceStartTime,
+	serviceEndTime,
+	payment
+) => {
+	try {
+		if (serviceId) {
+			body.classList.add("loading");
+			const res = await fetch(`/Customer/GetServiceDetails?serviceId=${serviceId}`, { method: "GET" });
+			const data = await res.json();
+			body.classList.remove("loading");
+			if (data.err) {
+				serviceDetailsModal.hide();
+				showToast("danger", data.err);
+			} else {
+				let extraStr = "";
+				if (data.extras.length > 0) {
+					data.extras.forEach((e, i) => {
+						extraStr += i == data.extras.length - 1 ? extras[e - 1] : extras[e - 1] + ", ";
+					});
+				} else extraStr = "No Extra Service !";
+				serviceDetailsModalBody.innerHTML = `
+				<div class="${serviceProviderName.trim() == "" ? "col-12" : "col-12 col-md-7"}">
+					<div class="serviceDateRelatedDetails">
+						<div class="fw-bold fs-5">${serviceStartDate} ${serviceStartTime} - ${serviceEndTime}</div>
+						<div><strong>Duration:</strong> ${data.duration} Hrs.</div>
+					</div>
+					<hr />
+					<div class="serviceRelatedDetails">
+						<div><strong>Service Id:</strong> ${serviceId}</div>
+						<div><strong>Extras:</strong> ${extraStr}</div>
+						<div class="d-flex align-items-start justify-content-start"><strong>Net Amount:</strong><span
+								class="paymentAmount ms-3">${payment} €</span></div>
+					</div>
+					<hr />
+					<div class="serviceAddressRelatedDetails">
+						<div><strong>Service Address: </strong> ${data.serviceStreetName} ${data.serviceHouseNumber}, ${data.postalCode} ${data.city}</div>
+						<div><strong>Phone Number: </strong> ${data.phoneNumber}</div>
+						<div><strong>Email: </strong>${data.email}</div>
+					</div>
+					<hr />
+					<div class="otherStuff">
+						<div><strong>Comments: </strong> ${data.comments ? data.comments : ""}</div>
+						<div><img src="/images/${data.hasPets ? "included.png" : "not-included.png"}"> I Have ${data.hasPets ? "" : "not"} Pets at Home</div>
+					</div>
+				</div>
+				${
+					serviceProviderName.trim() != ""
+						? `<div class="vr mx-3 p-0 col-1 d-none d-md-block"></div>
+				<div class="serviceProviderRelatedDetails col-12 col-md-4">
+					<strong class="d-block fs-4 lh-sm">Service Provider Details</strong>
+					<div class="serviceProvider d-flex align-items-center justify-content-start">
+						<img class="rounded-circle" src="/images/${profilePic}">
+						<div>
+							<div class="fw-bold fs-5">${serviceProviderName}</div>
+							<div
+								class="stars position-relative d-inline-flex align-items-center justify-content-center">
+								<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+								</svg>
+								<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+								</svg>
+								<div class="cover position-absolute top-0 end-0 h-100" style="width:${(5 - parseInt(avgRating)) * 20}%"></div>
+							</div>
+							<span class="lh-sm ms-1 avgRating">${parseFloat(avgRating).toFixed(2)}</span>
+						</div>
+					</div>
+					<div>${parseInt(data.totalCleaning)} cleaning</div>
+				</div>`
+						: ""
+				}
+				`;
+				serviceDetailsModal.show();
+			}
+		}
+	} catch (error) {
+		body.classList.remove("loading");
+		serviceDetailsModal.hide();
 		showToast("danger", "Internal Server Error !");
 	}
 };

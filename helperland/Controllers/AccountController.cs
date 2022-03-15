@@ -53,11 +53,12 @@ public class AccountController : Controller
 			IsRegisteredUser = false,
 			CreatedDate = DateTime.Now,
 			ModifiedDate = DateTime.Now,
-			ModifiedBy = model.UserTypeId,
 			IsApproved = false,
 			PhoneNumber = model.PhoneNumber
 		};
 		var result = await userManager.CreateAsync(newUser, model.Password);
+		newUser.ModifiedBy = newUser.Id;
+		context.SaveChanges();
 		if (result.Succeeded)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
@@ -90,11 +91,12 @@ public class AccountController : Controller
 			IsRegisteredUser = false,
 			CreatedDate = DateTime.Now,
 			ModifiedDate = DateTime.Now,
-			ModifiedBy = model.UserTypeId,
 			IsApproved = false,
 			PhoneNumber = model.PhoneNumber
 		};
 		var result = await userManager.CreateAsync(newUser, model.Password);
+		newUser.ModifiedBy = newUser.Id;
+		context.SaveChanges();
 		if (result.Succeeded)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);

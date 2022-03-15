@@ -391,3 +391,5 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 		document.querySelector(".bookServiceErr").innerHTML = "Internal Server Error !";
 	}
 });
+
+successModalHtml.addEventListener("hide.bs.modal", () => (window.location.href = "/Customer/Dashboard"));

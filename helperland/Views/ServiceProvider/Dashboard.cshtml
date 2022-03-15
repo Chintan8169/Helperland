@@ -1,0 +1,170 @@
+@model IEnumerable<SPUpcomingServicesViewModel>
+@{
+	ViewBag.PageTitle = "New Service Request";
+	Layout = "_ServiceProviderLayout";
+}
+@section CustomCss
+{
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
+<link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
+}
+
+
+<div class="position-fixed toastContainer bottom-0 end-0 p-3">
+	<div class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body py-3 px-4 fs-6"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="serviceDetails" tabindex="-1" aria-labelledby="serviceDetailsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="serviceDetailsLabel">Service Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body row gy-0 gx-2"></div>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="timeConflictModal" tabindex="-1" aria-labelledby="timeConflictModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="timeConflictModalLabel">Conflict Service</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body row gy-0 gx-2"></div>
+		</div>
+	</div>
+</div>
+<div class="serviceHistoryTableContainer">
+	<h2 class="tableHeader d-flex align-items-center flex-wrap">
+		<div>
+			New Service Requests
+			<img src="~/images/filter.png" class="sortingButton d-inline-block d-md-none ms-3" type="button"
+				tabindex="0" data-bs-toggle="popover" data-bs-offset="0,15" data-bs-trigger="focus"
+				data-bs-placement="bottom" data-bs-custom-class="sortingPopover" data-bs-html="true" data-bs-content="<label class='sortingRadioLabel form-check-label' for='dateDesc'>
+							<input class='form-check-input box-shadow-none' checked type='radio' data-st-col='1' data-st-type='desc' name='sortingRadio' id='dateDesc' />
+							Service Date: Latest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='dateAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='1' data-st-type='asc' name='sortingRadio' id='dateAsc' />
+							Service Date: Oldest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='custNameAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='asc' name='sortingRadio' id='custNameAsc' />
+							Customer Name: Ascending
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='custNameDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='desc' name='sortingRadio' id='custNameDesc' />
+							Customer Name: Decending
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='pamentAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='asc' name='sortingRadio' id='pamentAsc' />
+							Payment: Low to High
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='pamentDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='desc' name='sortingRadio' id='pamentDesc' />
+							Payment: High to Low
+						</label>
+						" />
+		</div>
+		<div class="hasPets d-flex align-items-center ms-0 ms-sm-3 mt-3 mt-sm-0">
+			<input type="checkbox" role="button" class="form-check-input mt-0" name="hasPets" id="hasPets">
+			<label for="hasPets" class="ps-2" role="button">Includes Pets at Home</label>
+		</div>
+	</h2>
+	<table id="serviceHistoryTable">
+		<thead>
+			<tr>
+				<th class="text-nowrap"><span class="d-inline-block">Service Id</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Service Date</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Customer Details</span><span></span></th>
+				<th class="text-nowrap"><span class="d-inline-block">Payment</span><span></span></th>
+				<th class="text-nowrap text-center"><span class="d-inline-block">Time Conflict</span><span></span></th>
+				<th class="text-nowrap text-center"><span class="d-inline-block">Actions</span><span></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			@if (Model != null && Model.Any())
+			{
+				@foreach (var service in Model)
+				{
+					<tr id="service-@service.ServiceId">
+						<td class="serviceId clickable" data-us-title="Service ID :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.CustomerName",
+							"@service.StreetName",
+							"@service.HouseNumber",
+							"@service.PostalCode",
+							"@service.City",
+							"@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")",
+							"@service.ServiceDate.ToString("HH:mm")",
+							"@service.ServiceDate.AddHours(@service.ServiceHours).ToString("HH:mm")",
+							"@service.ServiceHours",
+							"@service.RecordVersion"
+						)'>@service.ServiceId</td>
+						<td class="clickable" data-us-title="Service Date :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.CustomerName",
+							"@service.StreetName",
+							"@service.HouseNumber",
+							"@service.PostalCode",
+							"@service.City",
+							"@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")",
+							"@service.ServiceDate.ToString("HH:mm")",
+							"@service.ServiceDate.AddHours(@service.ServiceHours).ToString("HH:mm")",
+							"@service.ServiceHours",
+							"@service.RecordVersion"
+						)'>
+							<div class="tdHead d-flex align-items-center justify-content-start">
+								<img src="~/images/calender.png">
+								<h5>@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")</h5>
+							</div>
+							@{
+								var st = service.ServiceDate.ToString("HH:mm");
+								var et = service.ServiceDate.AddHours(service.ServiceHours).ToString("HH:mm");
+							}
+							<div class="timing d-flex align-items-center justify-content-start">
+								<img src="~/images/clock.png">
+								<div class="time text-nowrap">@st - @et</div>
+							</div>
+						</td>
+						<td data-us-title="Customer Details :">
+							<div class="custName text-md-nowrap text-sm-wrap">@service.CustomerName</div>
+							<div class="custAddress d-flex align-items-center justify-content-start">
+								<img src="~/images/addressIcon.png">
+								@service.StreetName @service.HouseNumber,@service.PostalCode @service.City
+							</div>
+						</td>
+						<td data-us-title="Payment :" class="paymentAmount">@Math.Round(service.Payment,2)€</td>
+						<td data-us-title="Time Conflict :" class="timeConflict"></td>
+						<td class="text-start text-md-center text-nowrap" data-us-title="Actions :">
+							<button
+						class="rate position-relative mx-md-auto mx-xl-0 d-sm-inline-flex d-md-flex d-xl-inline-flex align-items-center justify-content-center rounded-pill text-nowrap"
+						onclick='acceptService("@service.ServiceId","@service.RecordVersion")'>
+								Accept
+							</button>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+</div>
+
+
+
+@section CustomScripts
+{
+<script type="text/javascript"
+	src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<script src="~/js/spDashboard.js" asp-append-version="true"></script>
+}

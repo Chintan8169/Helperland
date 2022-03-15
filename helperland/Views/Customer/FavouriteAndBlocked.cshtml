@@ -1,0 +1,17 @@
+@{
+	ViewBag.PageTitle = "Favourite and Blocked Service Provider";
+	Layout = "_CustomerLayout";
+}
+@section CustomCss
+{
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
+<link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
+}
+
+@section CustomScripts
+{
+<script type="text/javascript"
+	src="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.js"></script>
+<script src="~/js/CustomerFavouriteAndBlocked.js" asp-append-version="true"></script>
+}

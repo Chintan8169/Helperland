@@ -82,10 +82,11 @@
 				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="ServiceHistory">Service
 						History</a></div>
 				<div class="navItem"><a class="d-block" href="#">Service Schedule</a></div>
-				<div class="navItem"><a class="d-block" href="#">Favourite Providers</a></div>
+				<div class="navItem"><a class="d-block" asp-controller="Customer"
+						asp-action="FavouriteAndBlocked">Favourite Providers</a></div>
 				<div class="navItem"><a class="d-block" href="#">Invoices</a></div>
 				<div class="navItem"><a class="d-block" href="#">Notifications</a></div>
-				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="Index">My
+				<div class="navItem"><a class="d-block" asp-controller="Customer" asp-action="Profile">My
 						Settings</a></div>
 				<div class="navItem"><a class="d-block" asp-controller="Account" asp-action="Logout">Logout</a></div>
 				<hr class="my-1" />
@@ -114,8 +115,8 @@
 				</li>
 				<li class="verticalNavItem"><a href="#">Service Schedule</a></li>
 				<li
-					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Favourite Providers")?"active verticalNavItem":"verticalNavItem")'>
-					<a href="#">Favourite Providers</a>
+					class='@((ViewBag.PageTitle!=null && ViewBag.PageTitle=="Favourite and Blocked Service Provider")?"active verticalNavItem":"verticalNavItem")'>
+					<a asp-controller="Customer" asp-action="FavouriteAndBlocked">Favourite Providers</a>
 				</li>
 				<li class="verticalNavItem"><a href="#">Invoices</a></li>
 				<li class="verticalNavItem"><a href="#">Notifications</a></li>
@@ -159,14 +160,6 @@
 				</a>
 			</div>
 		</div>
-		@if (!string.IsNullOrEmpty(ViewBag.PageTitle) && ViewBag.PageTitle != "Home")
-		{
-			<hr />
-			<div class="terms text-center">
-				©2018 Helperland. All rights reserved. <a href="#">Terms and Conditions</a> | <a href="#">Privacy
-					Policy</a>
-			</div>
-		}
 	</footer>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

@@ -1,6 +1,7 @@
 using helperland.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using helperland.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddDbContextPool<HelperlandContext>(option =>
 builder.Services.AddIdentity<User, IdentityRole>()
 .AddEntityFrameworkStores<HelperlandContext>()
 .AddDefaultTokenProviders();
-
+builder.Services.AddScoped<Email>();
 
 
 
