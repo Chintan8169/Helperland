@@ -1,5 +1,4 @@
 const day = document.querySelector("#Details_Day");
-const body = document.querySelector("body");
 const month = document.querySelector("#Details_Month");
 const year = document.querySelector("#Details_Year");
 const UpdateDetailsFormBtn = document.querySelector("#UpdateDetailsFormBtn");
@@ -102,13 +101,13 @@ const makeAddressDefault = async (event, addressId) => {
 		try {
 			const checkbox = document.querySelector("#address" + addressId);
 			if (!checkbox.checked) {
-				body.classList.add("loading");
+				loading(true);
 				const res = await fetch(`/Customer/MakeAddressDefault?addressId=${addressId}`, { method: "GET" });
 				if (res.redirected) {
 					window.location.href = res.url;
 				}
 				const data = await res.json();
-				body.classList.remove("loading");
+				loading(false);
 				if (data.success) {
 					showToast("success", data.success);
 					checkbox.checked = true;
@@ -119,7 +118,7 @@ const makeAddressDefault = async (event, addressId) => {
 				showToast("danger", "This is already your default address !");
 			}
 		} catch (error) {
-			body.classList.remove("loading");
+			loading(false);
 			console.log(error.message);
 			showToast("danger", "Internal Server Error !");
 		}
@@ -147,13 +146,13 @@ const openDeleteAddressModal = (addressId) => {
 deleteAddressModalBtn.addEventListener("click", async () => {
 	try {
 		const addressId = parseInt(deleteAddressModalBtn.getAttribute("data-address-id"));
-		body.classList.add("loading");
+		loading(true);
 		const res = await fetch(`/Customer/DeleteAddress?addressId=${addressId}`, { method: "GET" });
 		if (res.redirected) {
 			window.location.href = res.url;
 		}
 		const data = await res.json();
-		body.classList.remove("loading");
+		loading(false);
 		deleteAddressModal.hide();
 		if (data.success) {
 			showToast("success", data.success);
@@ -163,7 +162,7 @@ deleteAddressModalBtn.addEventListener("click", async () => {
 			showToast("danger", data.err);
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		deleteAddressModal.hide();
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
@@ -172,13 +171,13 @@ deleteAddressModalBtn.addEventListener("click", async () => {
 
 tab2Btn.addEventListener("show.bs.tab", async () => {
 	try {
-		body.classList.add("loading");
+		loading(true);
 		const res = await fetch("/Customer/GetAddresses");
 		if (res.redirected) {
 			window.location.href = res.url;
 		}
 		const jsonData = await res.json();
-		body.classList.remove("loading");
+		loading(false);
 		if (jsonData.length > 0) {
 			tableBody.innerHTML = "";
 			jsonData.forEach((a) => {
@@ -252,7 +251,7 @@ UpdateDetailsFormBtn.addEventListener("click", (e) => {
 
 const submitForm = async () => {
 	try {
-		body.classList.add("loading");
+		loading(true);
 		const formData = new FormData(UpdateDetailsForm);
 		const bodyData = {};
 		bodyData.FirstName = formData.get("Details.FirstName");
@@ -279,9 +278,9 @@ const submitForm = async () => {
 		} else {
 			showToast("danger", data.err);
 		}
-		body.classList.remove("loading");
+		loading(false);
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
 	}
@@ -299,7 +298,7 @@ ChangePasswordFormBtn.addEventListener("click", async (e) => {
 			if (bodyData.CurrentPassword === bodyData.NewPassword) {
 				showToast("danger", "Old Password and New Password can't be same !!");
 			} else {
-				body.classList.add("loading");
+				loading(true);
 				const res = await fetch("/Account/ChangePassword", {
 					method: "POST",
 					headers: {
@@ -317,11 +316,11 @@ ChangePasswordFormBtn.addEventListener("click", async (e) => {
 				} else {
 					showToast("danger", data.err);
 				}
-				body.classList.remove("loading");
+				loading(false);
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
 	}
@@ -340,7 +339,7 @@ addAddressModalBtn.addEventListener("click", async (e) => {
 			data.HouseNumber = formData.get("AddNewAddressViewModel.HouseNumber");
 			data.PhoneNumber = formData.get("AddNewAddressViewModel.PhoneNumber");
 			data.City = document.querySelector("#AddNewAddressViewModel_City").value;
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch("/Customer/AddNewAddress", {
 				method: "POST",
 				headers: {
@@ -352,7 +351,7 @@ addAddressModalBtn.addEventListener("click", async (e) => {
 				window.location.href = res.url;
 			}
 			const jsonData = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (tableBody.innerHTML === "There are no addresses ! <br/> Please Click button below to add some !") {
 				tableBody.innerHTML = "";
 			}
@@ -409,7 +408,7 @@ addAddressModalBtn.addEventListener("click", async (e) => {
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		addAddressModal.hide();
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
@@ -429,7 +428,7 @@ updateAddressModalBtn.addEventListener("click", async (e) => {
 			data.PhoneNumber = formData.get("AddNewAddressViewModel.PhoneNumber");
 			data.City = formData.get("AddNewAddressViewModel.City");
 			data.PostalCode = formData.get("AddNewAddressViewModel.PostalCode");
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch("/Customer/UpdateAddress", {
 				method: "POST",
 				headers: {
@@ -441,7 +440,7 @@ updateAddressModalBtn.addEventListener("click", async (e) => {
 				window.location.href = res.url;
 			}
 			const jsonData = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			updateAddressModal.hide();
 			if (jsonData.success) {
 				showToast("success", jsonData.success);
@@ -460,7 +459,7 @@ updateAddressModalBtn.addEventListener("click", async (e) => {
 		}
 	} catch (error) {
 		updateAddressModal.hide();
-		body.classList.remove("loading");
+		loading(false);
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
 	}

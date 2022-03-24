@@ -138,8 +138,8 @@ if (loginModalForm) {
 						if (ReturnUrl && ReturnUrl.value) return (window.location.href = decodeURIComponent(ReturnUrl.value));
 					}
 					if (jsonRes.userType == "Customer") return (window.location.href = "/Customer/Dashboard");
-					else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Dashboard");
-					else return (window.location.href = "/Admin/Index");
+					else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Dashboard?HasPets=True");
+					else return (window.location.href = "/Admin/ServiceRequests");
 				}
 			}
 		}, 250);

@@ -1,6 +1,5 @@
 const tbody = document.querySelector("tbody");
 const sortingButton = document.querySelector(".sortingButton");
-const body = document.querySelector("body");
 const toastHtml = document.querySelector(".toast");
 const toastBody = toastHtml.querySelector(".toast-body");
 const ratingModalHtml = document.querySelector("#ratingModal");
@@ -99,13 +98,13 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 			ratingModalHtml.querySelector(".serviceProviderName").innerHTML = serviceProviderName;
 			ratingModalHtml.querySelector(".avgRating").innerHTML = parseFloat(avgRating).toFixed(2);
 			ratingModalHtml.querySelector(".feedback .cover").style.width = (5 - parseFloat(avgRating)) * 20 + "%";
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch(`/Customer/IsRatingGiven?ServiceId=${serviceId}&ServiceProviderId=${serviceProviderId}`, { method: "GET" });
 			if (res.redirected) {
 				window.location.href = res.url;
 			}
 			const data = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			const onTimeArrivalRating = document.querySelector(".onTimeArrivalRating");
 			const friendlyRating = document.querySelector(".friendlyRating");
 			const qualityOfServiceRating = document.querySelector(".qualityOfServiceRating");
@@ -157,7 +156,7 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 						if (Comments.value) {
 							data.Comments = Comments.value;
 						}
-						body.classList.add("loading");
+						loading(true);
 						const response = await fetch("/Customer/GiveRating", {
 							method: "POST",
 							headers: {
@@ -169,7 +168,7 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 							window.location.href = response.url;
 						}
 						const resJson = await response.json();
-						body.classList.remove("loading");
+						loading(false);
 						if (resJson.success) {
 							ratingModal.hide();
 							showToast("success", resJson.success);
@@ -210,7 +209,7 @@ const openRatingModal = async (serviceId, serviceProviderId, serviceProviderName
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		console.log(error.message);
 		showToast("danger", "Internal Server Error !");
 	}
@@ -230,10 +229,10 @@ const openDetailsModal = async (
 ) => {
 	try {
 		if (serviceId) {
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch(`/Customer/GetServiceDetails?serviceId=${serviceId}`, { method: "GET" });
 			const data = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (data.err) {
 				serviceDetailsModal.hide();
 				showToast("danger", data.err);
@@ -300,7 +299,7 @@ const openDetailsModal = async (
 									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
 										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
 								</svg>
-								<div class="cover position-absolute top-0 end-0 h-100" style="width:${(5 - parseInt(avgRating)) * 20}%"></div>
+								<div class="cover position-absolute top-0 end-0 h-100" style="width:${(5 - parseFloat(avgRating)) * 20}%"></div>
 							</div>
 							<span class="lh-sm ms-1 avgRating">${parseFloat(avgRating).toFixed(2)}</span>
 						</div>
@@ -314,7 +313,7 @@ const openDetailsModal = async (
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		serviceDetailsModal.hide();
 		showToast("danger", "Internal Server Error !");
 	}

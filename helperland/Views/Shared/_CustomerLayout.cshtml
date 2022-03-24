@@ -161,6 +161,9 @@
 			</div>
 		</div>
 	</footer>
+	<div class="loaderContainer">
+		<div class="loader rounded-circle"></div>
+	</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
@@ -173,6 +176,7 @@
 	const navMenu = document.querySelector(".fullPage");
 	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 	const verticalNavbar = document.querySelector(".verticalNavbar");
+	const body = document.querySelector("body");
 	const tooltipList = tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
 
 	const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
@@ -183,6 +187,12 @@
 	window.addEventListener("resize", () => {
 		verticalNavbar.style.minHeight = `${window.innerHeight - document.querySelector("nav").clientHeight - document.querySelector("heading") - 60}px`;
 	});
+	const loading = (isLoading) => (isLoading) ? body.classList.add("loading") : body.classList.remove("loading");
+
+	loading(true);
+	document.onreadystatechange = () => {
+		if (document.readyState === "complete") loading(false)
+	}
 </script>
 @RenderSection("CustomScripts",required:false)
 

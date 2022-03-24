@@ -69,13 +69,13 @@ checkAvailabilityBtn.addEventListener("click", async (e) => {
 			const isZipCodeValid = zipCodeValidator.element("#bookServiceSubmitViewModel_ZipCode");
 			if (isZipCodeValid) {
 				document.querySelector("#checkAvailbilityError").innerHTML = "";
-				body.classList.add("loading");
+				loading(true);
 				const res = await fetch(`/Customer/CheckAvailability?ZipCode=${ZipCode.value}`, { method: "GET" });
 				if (res.redirected) {
 					window.location.href = res.url;
 				}
 				const jsonData = await res.json();
-				body.classList.remove("loading");
+				loading(false);
 				if (jsonData.cityName) {
 					PostalCode.value = ZipCode.value;
 					City.value = jsonData.cityName;
@@ -89,7 +89,7 @@ checkAvailabilityBtn.addEventListener("click", async (e) => {
 			}
 		}
 	} catch (err) {
-		body.classList.remove("loading");
+		loading(false);
 		document.querySelector("#checkAvailbilityError").innerHTML = "Internal Server Error !";
 	}
 });
@@ -177,13 +177,13 @@ scheduleAndPlanFormBtn.addEventListener("click", async (e) => {
 		const scheduleAndPlanFormValidator = $("#scheduleAndPlanForm").validate();
 		e.preventDefault();
 		if (checkExtremeHours() && scheduleAndPlanFormValidator.form() && !checkTimeIsPassed()) {
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch(`/Customer/GetAddresses?ZipCode=${ZipCode.value}`, { method: "GET" });
 			if (res.redirected) {
 				window.location.href = res.url;
 			}
 			const adds = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (adds.length > 0) {
 				addresses.innerHTML = "";
 				adds.forEach((a) => {
@@ -211,6 +211,7 @@ scheduleAndPlanFormBtn.addEventListener("click", async (e) => {
 		}
 		document.querySelector(".scheduleAndPlanFormError").innerHTML = "";
 	} catch (err) {
+		loading(false);
 		document.querySelector(".scheduleAndPlanFormError").innerHTML = "Internal Server Error !";
 	}
 });
@@ -258,7 +259,7 @@ save.addEventListener("click", async (e) => {
 			data.HouseNumber = formData.get("addNewAddressViewModel.HouseNumber");
 			data.PhoneNumber = formData.get("addNewAddressViewModel.PhoneNumber");
 			data.City = City.value;
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch("/Customer/AddNewAddress", {
 				method: "POST",
 				headers: {
@@ -270,7 +271,7 @@ save.addEventListener("click", async (e) => {
 				window.location.href = res.url;
 			}
 			const jsonData = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (addresses.innerHTML === "There Are No Addresses.Please Add Some !") {
 				addresses.innerHTML = "";
 			}
@@ -293,6 +294,7 @@ save.addEventListener("click", async (e) => {
 			}
 		}
 	} catch (err) {
+		loading(false);
 		document.querySelector("#tab3Error").innerHTML = "Internal Server Error !";
 	}
 });
@@ -354,7 +356,7 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 				break;
 			}
 		}
-		body.classList.add("loading");
+		loading(true);
 		const res = await fetch("/Customer/BookService", {
 			method: "POST",
 			headers: {
@@ -366,7 +368,7 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 			window.location.href = res.url;
 		}
 		const jsonData = await res.json();
-		body.classList.remove("loading");
+		loading(false);
 		if (jsonData.serviceId) {
 			let str = "";
 			if (selectedCheckBoxs.length > 0) {
@@ -388,6 +390,7 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 			throw new Error();
 		}
 	} catch (err) {
+		loading(false);
 		document.querySelector(".bookServiceErr").innerHTML = "Internal Server Error !";
 	}
 });

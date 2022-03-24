@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vpGfUA0FswUOJ0z4SdHP0fuN8JGcq5KH6x7nJrhQdjc=",
+  "Hash": "MXruz60VZKMktI6vj1ZRBBQSZluPLIgC8zud3zR+wqk=",
   "Source": "helperland",
   "BasePath": "_content/helperland",
   "Mode": "Default",
@@ -355,6 +355,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\admin-small-arrow.png"
+    },
+    {
+      "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\images\\adminCalender.png",
+      "SourceId": "helperland",
+      "SourceType": "Discovered",
+      "ContentRoot": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\",
+      "BasePath": "_content/helperland",
+      "RelativePath": "images/adminCalender.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\adminCalender.png"
     },
     {
       "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\images\\adminNextPreviousButton.svg",
@@ -1836,6 +1853,23 @@
       "OriginalItemSpec": "wwwroot\\images\\right-arrow-dark.png"
     },
     {
+      "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\images\\right-arrow-medium.png",
+      "SourceId": "helperland",
+      "SourceType": "Discovered",
+      "ContentRoot": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\",
+      "BasePath": "_content/helperland",
+      "RelativePath": "images/right-arrow-medium.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\right-arrow-medium.png"
+    },
+    {
       "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\images\\serviceProviderProfileImage.svg",
       "SourceId": "helperland",
       "SourceType": "Discovered",
@@ -2191,6 +2225,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\serviceProviderUpcomingServices.js"
+    },
+    {
+      "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\js\\serviceSchedule.js",
+      "SourceId": "helperland",
+      "SourceType": "Discovered",
+      "ContentRoot": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\",
+      "BasePath": "_content/helperland",
+      "RelativePath": "js/serviceSchedule.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\serviceSchedule.js"
     },
     {
       "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\js\\spDashboard.js",

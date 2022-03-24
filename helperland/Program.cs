@@ -2,6 +2,7 @@ using helperland.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using helperland.Controllers;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,9 @@ builder.Services.AddMvc();
 builder.Services.AddLogging();
 builder.Services.AddHttpClient();
 builder.Services.AddDbContextPool<HelperlandContext>(option =>
-	option.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"))
+{
+	option.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
+}
 );
 builder.Services.AddIdentity<User, IdentityRole>()
 .AddEntityFrameworkStores<HelperlandContext>()

@@ -24,6 +24,46 @@ public class AccountController : Controller
 		this.roleManager = roleManager;
 	}
 
+	[HttpPost]
+	public async Task<IActionResult> CreateAdmin(string Email, string Password, string SpecialKey)
+	{
+		try
+		{
+			if (SpecialKey == "Chi@4576923819@ntan")
+			{
+				var newUser = new User()
+				{
+					UserName = Email,
+					FirstName = "Admin",
+					LastName = "TatvaSoft",
+					Email = Email,
+					UserTypeId = 3,
+					IsRegisteredUser = true,
+					CreatedDate = DateTime.Now,
+					ModifiedDate = DateTime.Now,
+					IsApproved = true,
+					PhoneNumber = "7041530497"
+				};
+				var result = await userManager.CreateAsync(newUser, Password);
+				newUser.ModifiedBy = newUser.Id;
+				context.Attach(newUser);
+				context.SaveChanges();
+				var user = await userManager.FindByEmailAsync(Email);
+				await userManager.AddToRoleAsync(user, "Admin");
+				return Json(new { success = "Created Admin !" });
+			}
+			else
+			{
+				return Json(new { err = "SpecialKey is not verified !" });
+			}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
+	}
+
 	[AcceptVerbs("Get", "Post")]
 	public async Task<IActionResult> IsEmailInUse(string email) =>
 	await userManager.FindByEmailAsync(email) == null ? Json(true) : Json("This Email is already in use please choose other !");
@@ -128,18 +168,25 @@ public class AccountController : Controller
 			{
 				return Json(new { error = "Authentication Failed !" });
 			}
-			var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-			if (result.Succeeded)
+			var user = await userManager.FindByEmailAsync(model.Email);
+			if (user.IsApproved)
 			{
-				var user = await userManager.FindByEmailAsync(model.Email);
-				if (user.UserTypeId == 1)
-					return Json(new { success = "Logged In !", userType = "Customer" });
-				else if (user.UserTypeId == 2)
-					return Json(new { success = "Logged In !", userType = "ServiceProvider" });
-				else
-					return Json(new { success = "Logged In !", userType = "Admin" });
+				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+				if (result.Succeeded)
+				{
+					if (user.UserTypeId == 1)
+						return Json(new { success = "Logged In !", userType = "Customer" });
+					else if (user.UserTypeId == 2)
+						return Json(new { success = "Logged In !", userType = "ServiceProvider" });
+					else
+						return Json(new { success = "Logged In !", userType = "Admin" });
+				}
+				return Json(new { error = "Authentication Failed !" });
 			}
-			return Json(new { error = "Authentication Failed !" });
+			else
+			{
+				return Json(new { error = "User is not Approved yet. Contact admin to approve your Account !" });
+			}
 		}
 		catch (Exception e)
 		{

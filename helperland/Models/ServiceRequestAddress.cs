@@ -9,9 +9,10 @@ public class ServiceRequestAddress
 	[Key]
 	public int Id { get; set; }
 	public virtual ServiceRequest ServiceRequest { get; set; }
-#nullable enable
 	[ForeignKey("ServiceRequestId")]
-	public int? ServiceRequestId { get; set; }
+	[Required]
+	public int ServiceRequestId { get; set; }
+#nullable enable
 	public string? AddressLine1 { get; set; }
 	public string? AddressLine2 { get; set; }
 	public string? City { get; set; }

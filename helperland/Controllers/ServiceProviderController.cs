@@ -22,7 +22,6 @@ public class ServiceProviderController : Controller
 
 	public async Task<IActionResult> Dashboard(bool HasPets)
 	{
-		Console.WriteLine(HasPets);
 		try
 		{
 			var sp = await userManager.GetUserAsync(User);
@@ -32,7 +31,7 @@ public class ServiceProviderController : Controller
 				on u.Id equals s.UserId
 				join sa in context.ServiceRequestAddresses
 				on s.ServiceRequestId equals sa.ServiceRequestId
-				where s.Status == 1 && s.HasPets == HasPets
+				where s.Status == 1 && s.ZipCode == sp.ZipCode && (!HasPets ? s.HasPets == false : true)
 				select new SPUpcomingServicesViewModel
 				{
 					UserId = s.UserId,
@@ -48,8 +47,8 @@ public class ServiceProviderController : Controller
 					RecordVersion = s.RecordVersion.ToString()
 				}
 			).ToList();
-			var blocked = context.FavoriteAndBlocked.Where(fab => (fab.UserId == sp.Id || fab.TargetUserId == sp.Id) && fab.IsBlocked);
-			foreach (var s in result)
+			var blocked = context.FavoriteAndBlocked.Where(fab => (fab.UserId == sp.Id || fab.TargetUserId == sp.Id) && fab.IsBlocked).ToList();
+			foreach (var s in result.ToList())
 			{
 				foreach (var b in blocked)
 				{
@@ -65,13 +64,12 @@ public class ServiceProviderController : Controller
 			return Json("Internal Server Error !");
 		}
 	}
-
 	public async Task<IActionResult> AcceptService(int ServiceId, string RecordVersion)
 	{
 		try
 		{
 			var sp = await userManager.GetUserAsync(User);
-			var service = context.ServiceRequests.Where(s => s.ServiceId == ServiceId).FirstOrDefault();
+			var service = context.ServiceRequests.Where(s => s.ServiceId == ServiceId && s.ZipCode == sp.ZipCode).FirstOrDefault();
 			if (service != null)
 			{
 				if (service.RecordVersion.ToString() == RecordVersion.ToLower())
@@ -147,7 +145,6 @@ public class ServiceProviderController : Controller
 			return Json("Internal Server Error !");
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> GetServiceDetails(int ServiceId)
 	{
@@ -200,8 +197,6 @@ public class ServiceProviderController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
-
 	[HttpGet]
 	public async Task<IActionResult> MyRatings()
 	{
@@ -235,7 +230,6 @@ public class ServiceProviderController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> BlockCustomer()
 	{
@@ -302,7 +296,6 @@ public class ServiceProviderController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> Profile()
 	{
@@ -347,7 +340,6 @@ public class ServiceProviderController : Controller
 			return View();
 		}
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> UpdateDetails([FromBody] SPDetails model)
 	{
@@ -399,7 +391,6 @@ public class ServiceProviderController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> CancelService(int ServiceId)
 	{
@@ -415,6 +406,8 @@ public class ServiceProviderController : Controller
 					service.ServiceProviderId = null;
 					service.SpacceptedDate = null;
 					service.RecordVersion = Guid.NewGuid();
+					service.ModifiedBy = sp.Id;
+					service.ModifiedDate = DateTime.Now;
 					context.ServiceRequests.Attach(service);
 					context.SaveChanges();
 					return Json(new { success = "Successfully Cancelled Service !" });
@@ -445,6 +438,8 @@ public class ServiceProviderController : Controller
 				{
 					service.Status = 3;
 					service.RecordVersion = Guid.NewGuid();
+					service.ModifiedBy = sp.Id;
+					service.ModifiedDate = DateTime.Now;
 					context.ServiceRequests.Attach(service);
 					context.SaveChanges();
 					return Json(new { success = "Successfully Completed Service !" });
@@ -462,7 +457,6 @@ public class ServiceProviderController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> UpcomingServices()
 	{
@@ -499,4 +493,77 @@ public class ServiceProviderController : Controller
 			return Json("Internal Server Error !");
 		}
 	}
+
+	[HttpGet]
+	public IActionResult ServiceSchedule()
+	{
+		return View();
+	}
+	[HttpGet]
+	public async Task<IActionResult> GetEvents()
+	{
+		var sp = await userManager.GetUserAsync(User);
+		var services = (
+			from s in context.ServiceRequests
+			where s.ServiceProviderId == sp.Id && (s.Status == 2 || s.Status == 3)
+			select new EventViewModel
+			{
+				id = s.ServiceId,
+				start = s.ServiceStartDate.ToString("yyyy-MM-ddTHH:mm:ss"),
+				title = s.ServiceStartDate.ToString("HH:mm") + " - " + s.ServiceStartDate.AddHours(s.ServiceHours).ToString("HH:mm"),
+				backgroundColor = s.Status == 3 ? "#86858b" : "#1d7a8c",
+				allDay = false,
+			}
+		).ToArray();
+		return Json(services);
+	}
+
+	[HttpGet]
+	public async Task<IActionResult> GetEventDetails(int ServiceId)
+	{
+		try
+		{
+			var sp = await userManager.GetUserAsync(User);
+			var service = context.ServiceRequests.Where(s => s.ServiceId == ServiceId).FirstOrDefault();
+			var custDetail = context.Users.Where(u => u.Id == service.UserId).FirstOrDefault();
+			var custAddress = context.ServiceRequestAddresses.Where(sa => sa.ServiceRequestId == service.ServiceRequestId).FirstOrDefault();
+			if (service != null)
+			{
+				var serviceExtra = context.ServiceRequestExtras.Where(sa => sa.ServiceRequestId == service.ServiceRequestId).Select(sea => sea.ServiceExtraId).ToArray();
+				var jsonData = new
+				{
+					Payment = service.TotalCost,
+					Extras = serviceExtra,
+					HasPets = service.HasPets,
+					Comments = service.Comments,
+					ServiceStartDate = service.ServiceStartDate.ToString("dd/MM/yyyy").Replace("-", "/"),
+					ServiceStartTime = service.ServiceStartDate.ToString("HH:mm"),
+					ServiceEndTime = service.ServiceStartDate.AddHours(service.ServiceHours).ToString("HH:mm"),
+					ServiceDuration = service.ServiceHours,
+					CustName = custDetail.FirstName + " " + custDetail.LastName,
+					Street = custAddress.AddressLine1,
+					HouseNum = custAddress.AddressLine2,
+					PostalCode = custAddress.PostalCode,
+					City = custAddress.City,
+				};
+				return Json(jsonData);
+			}
+			return Json(new { err = "Service Not Found !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
+	}
+}
+
+public class EventViewModel
+{
+#nullable disable
+	public int id { get; set; }
+	public string start { get; set; }
+	public string title { get; set; }
+	public string backgroundColor { get; set; }
+	public bool allDay { get; set; }
 }

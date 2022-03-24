@@ -10,14 +10,16 @@ namespace helperland.Controllers;
 public class CustomerController : Controller
 {
 	private readonly HelperlandContext context;
-	private readonly Microsoft.AspNetCore.Identity.UserManager<User> userManager;
+	private readonly UserManager<User> userManager;
 	private readonly RoleManager<IdentityRole> roleManager;
+	private readonly Email email;
 
-	public CustomerController(HelperlandContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+	public CustomerController(HelperlandContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, Email email)
 	{
 		this.context = context;
 		this.userManager = userManager;
 		this.roleManager = roleManager;
+		this.email = email;
 	}
 
 	[HttpGet]
@@ -47,7 +49,6 @@ public class CustomerController : Controller
 		};
 		return View(model);
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> Dashboard()
 	{
@@ -93,7 +94,6 @@ public class CustomerController : Controller
 		}
 		return View(result);
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> CancelService([FromBody] CancelServiceViewModel model)
 	{
@@ -120,7 +120,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> RescheduleService([FromBody] RescheduleServiceViewModel model)
 	{
@@ -139,24 +138,38 @@ public class CustomerController : Controller
 						return Json(new { err = "This selected time is same !" });
 					}
 					DateTime newServiceEnd = newServiceDate.AddHours(service.ServiceHours);
-					var services = context.ServiceRequests.Where(s => s.ServiceProviderId == service.ServiceProviderId && s.Status == 2 && s.ServiceRequestId != service.ServiceRequestId && s.ServiceStartDate.Date == newServiceDate.Date && s.ServiceStartDate.Month == newServiceDate.Month && s.ServiceStartDate.Year == newServiceDate.Year).ToList();
-					if (services.Count() > 0)
+					if (newServiceEnd.Hour + newServiceEnd.Minute > 21)
 					{
-						foreach (var s in services)
+						return Json(new { err = "Rescheduled Time is greater than 9:00 PM !" });
+					}
+					else if (DateTime.Now.CompareTo(newServiceDate) > 0)
+					{
+						return Json(new { err = "Rescheduled Time is is already passed !" });
+					}
+					else
+					{
+						var services = context.ServiceRequests.Where(s => s.ServiceProviderId == service.ServiceProviderId && s.Status == 2 && s.ServiceRequestId != service.ServiceRequestId && s.ServiceStartDate.Date == newServiceDate.Date && s.ServiceStartDate.Month == newServiceDate.Month && s.ServiceStartDate.Year == newServiceDate.Year).ToList();
+						if (services.Count() > 0)
 						{
-							var tempServiceStart = s.ServiceStartDate;
-							var tempServiceEnd = s.ServiceStartDate.AddHours((double)(service.ServiceHours + 1));
-							if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
+							foreach (var s in services)
 							{
-								return Json(new
+								var tempServiceStart = s.ServiceStartDate;
+								var tempServiceEnd = s.ServiceStartDate.AddHours((double)(service.ServiceHours + 1));
+								if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
 								{
-									err = "Another service request has been assigned to the service provider on " + tempServiceStart.ToString("dd/MM/yyyy") +
-								" from " + tempServiceStart.ToString("HH/mm") + " to " + tempServiceEnd.AddHours(-1).ToString("HH/mm") + ". Either choose another date or pick up a different time slot."
-								});
+									return Json(new
+									{
+										err = "Another service request has been assigned to the service provider on " + tempServiceStart.ToString("dd/MM/yyyy") +
+									" from " + tempServiceStart.ToString("HH/mm") + " to " + tempServiceEnd.AddHours(-1).ToString("HH/mm") + ". Either choose another date or pick up a different time slot."
+									});
+								}
 							}
 						}
 					}
 					service.ServiceStartDate = newServiceDate;
+					service.RecordVersion = Guid.NewGuid();
+					service.ModifiedBy = user.Id;
+					service.ModifiedDate = DateTime.Now;
 					context.ServiceRequests.Attach(service);
 					context.SaveChanges();
 					return Json(new { success = "Successfully Rescheduled Service !!" });
@@ -170,7 +183,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> GetServiceDetails(int serviceId)
 	{
@@ -215,7 +227,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> ServiceHistory()
 	{
@@ -261,7 +272,6 @@ public class CustomerController : Controller
 		}
 		return View(result);
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> UpdateDetails([FromBody] Details model)
 	{
@@ -288,7 +298,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error ! Please Try Again Later !" });
 		}
 	}
-
 	[HttpGet]
 	public IActionResult BookService()
 	{
@@ -297,77 +306,110 @@ public class CustomerController : Controller
 	[HttpPost]
 	public async Task<IActionResult> BookService([FromBody] BookServiceSubmitViewModel model)
 	{
-		int random = new Random().Next(1000, 9999);
-		var isExist = context.ServiceRequests.Where(x => x.ServiceId == random).FirstOrDefault();
-		while (isExist != null)
+		var newServiceRequest = new ServiceRequest();
+		try
 		{
-			random = new Random().Next(1000, 9999);
-			isExist = context.ServiceRequests.Where(x => x.ServiceId == random).FirstOrDefault();
-		}
-		var user = await userManager.GetUserAsync(User);
-		var newServiceRequest = new ServiceRequest()
-		{
-			ServiceId = random,
-			UserId = user.Id,
-			ZipCode = model.ZipCode,
-			PaymentDue = false,
-			ServiceHours = model.ServiceBasicHours,
-			HasPets = model.HasPets,
-			CreatedDate = DateTime.Now,
-			ModifiedDate = DateTime.Now,
-			Distance = 0,
-			Status = 1,
-			RecordVersion = Guid.NewGuid()
-		};
-		if (model.ExtraServices != null)
-		{
-			newServiceRequest.ServiceHours += model.ExtraServices.Count() * 0.5;
-		}
-		newServiceRequest.SubTotal = ((decimal)((newServiceRequest.ServiceHours) * 18));
-		newServiceRequest.TotalCost = newServiceRequest.SubTotal;
-		if (model.Comments != null)
-		{
-			newServiceRequest.Comments = model.Comments;
-		}
-		var s = model.ServiceDate.Split("/");
-		double x = model.ServiceStartTime;
-		int hours = ((int)Math.Floor(x));
-		int min = ((int)Math.Ceiling((x - hours) * 60));
-		var d = new DateTime(Int32.Parse(s[2]), Int32.Parse(s[1]), Int32.Parse(s[0]), hours, min, 0);
-		newServiceRequest.ServiceStartDate = d;
-		context.ServiceRequests.Add(newServiceRequest);
-		context.SaveChanges();
-		var custAddress = context.UserAddresses.Where(a => a.AddressId == model.AddressId && a.UserId == user.Id).FirstOrDefault();
-		if (custAddress != null)
-		{
-			var newServiceRequestAddress = new ServiceRequestAddress()
+			int random = new Random().Next(1000, 9999);
+			var isExist = context.ServiceRequests.Where(x => x.ServiceId == random).FirstOrDefault();
+			while (isExist != null)
 			{
-				ServiceRequestId = newServiceRequest.ServiceRequestId,
-				AddressLine1 = custAddress.AddressLine1,
-				AddressLine2 = custAddress.AddressLine2,
-				City = custAddress.City,
-				State = custAddress.State,
-				PostalCode = custAddress.PostalCode,
-				Mobile = custAddress.Mobile,
-				Email = custAddress.Email
-			};
-			context.ServiceRequestAddresses.Add(newServiceRequestAddress);
+				random = new Random().Next(1000, 9999);
+				isExist = context.ServiceRequests.Where(x => x.ServiceId == random).FirstOrDefault();
+			}
+			var user = await userManager.GetUserAsync(User);
+			newServiceRequest.ServiceId = random;
+			newServiceRequest.UserId = user.Id;
+			newServiceRequest.ZipCode = model.ZipCode;
+			newServiceRequest.PaymentDue = false;
+			newServiceRequest.ServiceHours = model.ServiceBasicHours;
+			newServiceRequest.HasPets = model.HasPets;
+			newServiceRequest.CreatedDate = DateTime.Now;
+			newServiceRequest.ModifiedBy = user.Id;
+			newServiceRequest.ModifiedDate = DateTime.Now;
+			newServiceRequest.Distance = 0;
+			newServiceRequest.Status = 1;
+			newServiceRequest.RecordVersion = Guid.NewGuid();
+
+
+			if (model.ExtraServices != null)
+			{
+				newServiceRequest.ServiceHours += model.ExtraServices.Count() * 0.5;
+			}
+			newServiceRequest.SubTotal = ((decimal)((newServiceRequest.ServiceHours) * 18));
+			newServiceRequest.TotalCost = newServiceRequest.SubTotal;
+			if (model.Comments != null)
+			{
+				newServiceRequest.Comments = model.Comments;
+			}
+			var s = model.ServiceDate.Split("/");
+			double x = model.ServiceStartTime;
+			int hours = ((int)Math.Floor(x));
+			int min = ((int)Math.Ceiling((x - hours) * 60));
+			var d = new DateTime(Int32.Parse(s[2]), Int32.Parse(s[1]), Int32.Parse(s[0]), hours, min, 0);
+			newServiceRequest.ServiceStartDate = d;
+			context.ServiceRequests.Add(newServiceRequest);
 			context.SaveChanges();
-		}
-		if (model.ExtraServices != null)
-		{
-			foreach (var extra in model.ExtraServices)
+			var custAddress = context.UserAddresses.Where(a => a.AddressId == model.AddressId && a.UserId == user.Id).FirstOrDefault();
+			if (custAddress != null)
 			{
-				var extraService = new ServiceRequestExtra()
+				var newServiceRequestAddress = new ServiceRequestAddress()
 				{
 					ServiceRequestId = newServiceRequest.ServiceRequestId,
-					ServiceExtraId = extra
+					AddressLine1 = custAddress.AddressLine1,
+					AddressLine2 = custAddress.AddressLine2,
+					City = custAddress.City,
+					State = custAddress.State,
+					PostalCode = custAddress.PostalCode,
+					Mobile = custAddress.Mobile,
+					Email = custAddress.Email
 				};
-				context.ServiceRequestExtras.Add(extraService);
+				context.ServiceRequestAddresses.Add(newServiceRequestAddress);
+			}
+			else throw new Exception("Address Not Found !");
+			if (model.ExtraServices != null)
+			{
+				foreach (var extra in model.ExtraServices)
+				{
+					var extraService = new ServiceRequestExtra()
+					{
+						ServiceRequestId = newServiceRequest.ServiceRequestId,
+						ServiceExtraId = extra
+					};
+					context.ServiceRequestExtras.Add(extraService);
+				}
+			}
+			context.SaveChanges();
+#nullable disable
+			var sps = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == model.ZipCode).ToList();
+			var blockedsps = context.FavoriteAndBlocked.Where(fab => fab.UserId == user.Id && fab.IsBlocked).Select(fab => fab.TargetUserId).Distinct().ToList().Concat(context.FavoriteAndBlocked.Where(fab => fab.TargetUserId == user.Id && fab.IsBlocked).Select(fab => fab.UserId).Distinct()).ToList();
+			List<string> spEmails = new List<string>();
+			foreach (var sp in blockedsps) sps.Remove(sps.Find(u => u.Id == sp));
+			foreach (var sp in sps) spEmails.Add(sp.Email);
+			foreach (var pro in spEmails) Console.WriteLine(pro);
+			if (spEmails.Count() <= 0) return Json(new { err = "There is no service provider providing services in your area !" });
+			email.SendMail(new SendMailViewModel
+			{
+				Subject = "New Service",
+				IsBodyHtml = true,
+				Body = @$"
+					<h1 style='font-size:35px;'>Greetings</h1>
+					<p style='font-size:25px;'>New Service is booked with ServiceId {newServiceRequest.ServiceId}</p>
+				",
+				To = spEmails
+			});
+			return Json(new { ServiceId = newServiceRequest.ServiceId });
+		}
+		catch (Exception e)
+		{
+			if (newServiceRequest.ServiceRequestId != 0)
+			{
+				context.ServiceRequests.Remove(newServiceRequest);
 				context.SaveChanges();
 			}
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
 		}
-		return Json(new { ServiceId = newServiceRequest.ServiceId });
+#nullable enable
 	}
 
 	[HttpGet]
@@ -514,14 +556,17 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpGet]
-	public JsonResult CheckAvailability(string ZipCode)
+	public async Task<JsonResult> CheckAvailability(string ZipCode)
 	{
+#nullable disable
+		var user = await userManager.GetUserAsync(User);
 		if (ZipCode != null)
 		{
-			var isAvailable = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == ZipCode).FirstOrDefault();
-			if (isAvailable != null)
+			var sps = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == ZipCode).ToList();
+			var blockedsps = context.FavoriteAndBlocked.Where(fab => fab.UserId == user.Id && fab.IsBlocked).Select(fab => fab.TargetUserId).Distinct().ToList().Concat(context.FavoriteAndBlocked.Where(fab => fab.TargetUserId == user.Id && fab.IsBlocked).Select(fab => fab.UserId).Distinct()).ToList();
+			foreach (var sp in blockedsps) sps.Remove(sps.Where(u => u.Id == sp).FirstOrDefault());
+			if (sps != null && sps.Count() > 0)
 			{
 				var city = (
 					from z in context.ZipCodes
@@ -534,8 +579,8 @@ public class CustomerController : Controller
 			}
 		}
 		return Json(false);
+#nullable enable
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> AddNewAddress([FromBody] AddNewAddressViewModel model)
 	{
@@ -592,7 +637,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !!" });
 		}
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> FavouriteAndBlocked()
 	{

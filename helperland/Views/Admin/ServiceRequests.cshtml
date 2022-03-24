@@ -1,0 +1,336 @@
+@model AdminServiceRequestsViewModel
+@{
+	Layout = "_AdminLayout";
+	ViewBag.PageTitle = "Service Requests";
+	string[] statusStrings = { "new", "accepted", "completed", "cancelled" };
+}
+<div class="modal fade px-3" id="serviceDetails" tabindex="-1" aria-labelledby="serviceDetailsLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="serviceDetailsLabel">Service Details</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body row gy-0 gx-2"></div>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="RefundModal" tabindex="-1" aria-labelledby="RefundModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fs-3" id="RefundModalLabel">Refund Amount</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="amounts row align-items-center">
+					<div class="amount col-12 col-md-4">
+						<div>Paid Amount</div>
+						<div id="paidAmountDiv">
+							<input type="text" name="paidAmount" readonly id="paidAmount">
+						</div>
+					</div>
+					<div class="amount col-12 col-md-4">
+						<div>Refunded Amount</div>
+						<div id="refundedAmountDiv">
+							<input type="text" name="refundedAmount" readonly id="refundedAmount">
+						</div>
+					</div>
+					<div class="amount col-12 col-md-4">
+						<div>In Balance Amount</div>
+						<div id="balanceAmountDiv">
+							<input type="text" name="balanceAmount" readonly id="balanceAmount">
+						</div>
+					</div>
+				</div>
+				<form class="row">
+					<div class="mb-2 col-12 col-md-6"></div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade px-3" id="EditOrRescheduleModal" tabindex="-1" aria-labelledby="EditOrRescheduleModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered mx-auto">
+		<div class="modal-content">
+			<div class="modal-header pb-0 border-0">
+				<h5 class="modal-title fw-bold" id="EditOrRescheduleModalLabel">Edit or Reschedule</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form class="row" id="RescheduleForm">
+					<div class="mb-3 col-12 col-md-6 position-relative mw-100">
+						<label asp-for="AdminRescheduleViewModel.RescheduleDate" class="fw-bold">Date</label>
+						<div class="datePicker mw-100">
+							<input type="text" class="form-control box-shadow-none rounded-0"
+								asp-for="AdminRescheduleViewModel.RescheduleDate" placeholder="Date">
+						</div>
+					</div>
+					<div class="mb-3 col-12 col-md-6">
+						<label asp-for="AdminRescheduleViewModel.RescheduleTime" class="fw-bold">Time</label>
+						<select asp-for="AdminRescheduleViewModel.RescheduleTime"
+							class="form-select box-shadow-none rounded-0">
+							<option value="8">8:00</option>
+							<option value="8.5">8:30</option>
+							<option value="9">9:00</option>
+							<option value="9.5">9:30</option>
+							<option value="10">10:00</option>
+							<option value="10.5">10:30</option>
+							<option value="11">11:00</option>
+							<option value="11.5">11:30</option>
+							<option value="12">12:00</option>
+							<option value="12.5">12:30</option>
+							<option value="13">13:00</option>
+							<option value="13.5">13:30</option>
+							<option value="14">14:00</option>
+							<option value="14.5">14:30</option>
+							<option value="15">15:00</option>
+							<option value="15.5">15:30</option>
+							<option value="16">16:00</option>
+							<option value="16.5">16:30</option>
+							<option value="17">17:00</option>
+							<option value="17.5">17:30</option>
+							<option value="18">18:00</option>
+						</select>
+					</div>
+					<div class="col-12 fs-5 mb-1 fw-bold">Service Address</div>
+					<div class="mb-3 col-12 col-md-6 position-relative mw-100">
+						<label asp-for="AdminRescheduleViewModel.StreetName" class="fw-bold">Street Name</label>
+						<input type="text" class="form-control box-shadow-none rounded-0"
+							asp-for="AdminRescheduleViewModel.StreetName" placeholder="Street Name">
+					</div>
+					<div class="mb-3 col-12 col-md-6">
+						<label asp-for="AdminRescheduleViewModel.HouseNumber" class="fw-bold">House Number</label>
+						<input type="text" asp-for="AdminRescheduleViewModel.HouseNumber"
+							class="form-control box-shadow-none rounded-0" placeholder="House Number" />
+					</div>
+					<div class="mb-3 col-12 col-md-6">
+						<label asp-for="AdminRescheduleViewModel.PostalCode" class="fw-bold">Postal Code</label>
+						<input type="text" asp-for="AdminRescheduleViewModel.PostalCode"
+							class="form-control box-shadow-none rounded-0" placeholder="Postal Code" />
+					</div>
+					<div class="mb-3 col-12 col-md-6">
+						<label asp-for="AdminRescheduleViewModel.City" class="fw-bold">City</label>
+						<input type="text" asp-for="AdminRescheduleViewModel.City"
+							class="form-control box-shadow-none rounded-0" placeholder="City" readonly />
+					</div>
+					<div class="mb-3 col-12">
+						<label asp-for="AdminRescheduleViewModel.RescheduleReason" class="fw-bold">Why do you want to
+							Reschedule service ?</label>
+						<textarea asp-for="AdminRescheduleViewModel.RescheduleReason"
+							class="form-control py-2 box-shadow-none rounded-0"
+							placeholder="Why do you want to Reschedule service ?"></textarea>
+					</div>
+					<div class="col-12">
+						<button type="submit" class="search w-100 fw-bold fs-6">Edit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<h2 class="heading">Service Requests</h2>
+<form id="filForm" class="filterForm d-flex flex-wrap align-items-center justify-content-center bg-white">
+	<input type="number" class="form-control m-0 box-shadow-none mw-sm-100" name="serviceId" id="serviceId"
+		placeholder="Service ID" />
+	<select name="customer" class="form-select m-0 box-shadow-none" id="customer">
+		<option selected value="customer">Customer</option>
+		@if (Model != null && Model.Cust_Names.Any())
+		{
+			foreach (var custName in Model.Cust_Names)
+			{
+				<option value="@custName">@custName</option>
+			}
+		}
+	</select>
+	<select name="serviceProvider" class="form-select m-0 box-shadow-none" id="serviceProvider">
+		<option selected value="serviceProvider">Service Provider</option>
+		@if (Model != null && Model.SP_Names.Any())
+		{
+			foreach (var spName in Model.SP_Names)
+			{
+				<option value="@spName">@spName</option>
+			}
+		}
+	</select>
+	<select name="status" id="status" class="form-select m-0 box-shadow-none">
+		<option selected value="status">Status</option>
+		<option value="new">New</option>
+		<option value="completed">Completed</option>
+		<option value="accepted">Accepted</option>
+		<option value="cancelled">Cancelled</option>
+	</select>
+	<div class="datePicker">
+		<input type="text" class="m-0 box-shadow-none form-control" name="fromDate" id="fromDate"
+			placeholder="From Date" />
+	</div>
+	<div class="datePicker">
+		<input type="text" class="m-0 box-shadow-none form-control" name="toDate" id="toDate" placeholder="To Date" />
+	</div>
+	<button class="search" id="filterTable" type="button">Search</button>
+	<button class="clear" id="clearFilter" type="reset">Clear</button>
+</form>
+<div class="tableFilterSm h4 d-flex align-items-center d-md-none px-1">
+	Filter Table :
+	<img src="~/images/filter.png" tabindex="0" class="sortingButton" data-bs-toggle="popover" data-bs-offset="10,15"
+		data-bs-trigger="focus" data-bs-placement="bottom" data-bs-custom-class="sortingPopover" data-bs-html="true"
+		data-bs-content="
+						<label class='sortingRadioLabel form-check-label' for='serDtDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='1' data-st-type='desc' name='sortingRadio' id='serDtDesc' />
+							Service Date: Latest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='serDtAsc'>
+							<input class='form-check-input box-shadow-none' checked type='radio' data-st-col='1' data-st-type='asc' name='sortingRadio' id='serDtAsc' />
+							Service Date: Oldest
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='cusDetAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='asc' name='sortingRadio' id='cusDetAsc' />
+							Customer Details: Asceding
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='cusDetDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='2' data-st-type='desc' name='sortingRadio' id='cusDetDesc' />
+							Customer Details: Deceding
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='spAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='asc' name='sortingRadio' id='spAsc' />
+							Service Provider: Asceding
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='spDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='desc' name='sortingRadio' id='spDesc' />
+							Service Provider: Deceding
+						</label>
+						" />
+</div>
+<table id="adminServiceRequestTable" class="fixedHeader-floating">
+	<thead>
+		<tr>
+			<th class="text-nowrap"><span class="d-inline-block">Service ID</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Service Date</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Customer Details</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Service Provider</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Status</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Action</span><span></span></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null && Model.viewModels.Any())
+		{
+			@foreach (var service in Model.viewModels)
+			{
+				<tr>
+					<td class="serviceId clickable" data-dt-colName="Service ID :">@service.ServiceId</td>
+					<td data-dt-colName="Service Date :" class="clickable" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.SP_First_Name @service.SP_Last_Name",
+							"@service.ProfilePhoto",
+							"@service.SP_Avg_Ratings",
+							"@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")",
+							 "@service.ServiceDate.ToString("HH:mm")",
+							 "@service.ServiceDate.AddHours(service.TotalHours).ToString("HH:mm")",
+							"@service.TotalAmount"
+							)'>
+						<div class="tdHead d-flex align-items-center justify-content-start">
+							<img src="/images/calender.png" />
+							<h5>@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")</h5>
+						</div>
+						<div class="timing d-flex align-items-center justify-content-start">
+							<img src="/images/clock.png" />
+							@{
+								var st = service.ServiceDate.ToString("HH:mm");
+								var et = service.ServiceDate.AddHours(service.TotalHours).ToString("HH:mm");
+							}
+							<div class="time text-md-nowrap">@st - @et</div>
+						</div>
+					</td>
+					<td data-dt-colName="Customer Details :">
+						<div class="custName text-md-nowrap">@service.User_First_Name @service.User_Last_Name</div>
+						<div class="custAddress d-flex text-md-nowrap align-items-center justify-content-start">
+							<img src="/images/addressIcon.png" />
+							@service.StreetName @service.HouseNumber,@service.PostalCode @service.City
+						</div>
+					</td>
+					<td data-dt-colName="Service Provider :">
+						@if (service.SP_Id != null)
+						{
+							<div class="serviceProvider d-flex align-items-center justify-content-start">
+								<img class="rounded-circle img-fluid" src="/images/@service.ProfilePhoto" />
+								<div class="serviceProviderInfo text-md-nowrap d-flex align-items-start flex-column">
+									<div class="serviceProviderName">@service.SP_First_Name @service.SP_Last_Name</div>
+									<div class="feedback d-flex align-items-center justify-content-center">
+										<div class="stars position-relative d-flex align-items-center justify-content-center">
+											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+												<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+												<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+												<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+												<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+											</svg>
+											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+												<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+											</svg>
+											<div class="cover position-absolute top-0 end-0 h-100"
+									style="width: @(100-service.SP_Avg_Ratings*20)%;"></div>
+										</div>
+										<span class="lh-sm ms-1">@Math.Round(service.SP_Avg_Ratings,2)</span>
+									</div>
+								</div>
+							</div>
+						}
+					</td>
+					<td class="text-md-center text-start" data-dt-colName="Status :"><span
+					class='status @statusStrings[service.ServiceStatus-1]'>@statusStrings[service.ServiceStatus-1]</span>
+					</td>
+					<td class="actionTd" data-dt-colName="Action :">
+						@if (service.ServiceStatus != 3 && service.ServiceStatus != 4)
+						{
+							<div class="action rounded-circle d-flex flex-column align-items-center justify-content-center position-relative"
+					tabindex="0" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-offset="0,10"
+					data-bs-custom-class="actionPopover" data-bs-placement="bottom" data-bs-html="true"
+					data-bs-content='<a role="button" class="custPopoverAnch" onclick=openEditOrRescheduleModal("@service.ServiceId","@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")","@service.ServiceDate.ToString("HH:mm")","@service.HouseNumber","@service.PostalCode","@service.City","@service.StreetName.Replace(" ","%20")")>Edit Or Reschedule</a>'>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+							</div>
+						}
+						else if (service.ServiceStatus == 3 || service.ServiceStatus == 4)
+						{
+							<div class="action rounded-circle d-flex flex-column align-items-center justify-content-center position-relative"
+					tabindex="0" data-bs-trigger="click" data-bs-toggle="popover" data-bs-offset="0,10"
+					data-bs-custom-class="actionPopover" data-bs-placement="bottom" data-bs-html="true"
+					data-bs-content='<a role="button" class="custPopoverAnch" onclick=openRefundModal("@service.ServiceId","@service.TotalAmount","@(service.RefundedAmount!=null?service.RefundedAmount:"0.00")")>Refund</a>'>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+							</div>
+						}
+					</td>
+				</tr>
+			}
+		}
+		@* ${ popoverContent !==""? 'data-bs-toggle="popover" data-bs-offset="-30,10" data-bs-placement="bottom"
+			data-bs-content="' +popoverContent + '" data-bs-html="true"' : "" }> *@
+	</tbody>
+</table>
+<footer>©2018 Helperland. All rights reserved.</footer>
+@section CustomScripts
+{
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+	integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"
+	integrity="sha512-o6XqxgrUsKmchwy9G5VRNWSSxTS4Urr4loO6/0hYdpWmFUfHqGzawGxeQGMDqYzxjY9sbktPbNlkIQJWagVZQg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="~/js/adminServiceRequest.js" asp-append-version="true"></script>
+}

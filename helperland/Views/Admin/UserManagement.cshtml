@@ -1,0 +1,129 @@
+@model AdminUserManagementViewModel
+@{
+	Layout = "_AdminLayout";
+	ViewBag.PageTitle = "User Management";
+	string[] typeStrings = { "Customer", "Service Provider", "Admin" };
+}
+<h2 class="heading d-flex align-items-center justify-content-between">
+	User Management
+	<button><img src="~/images/admin-plus-sign.png" />Add New User</button>
+</h2>
+<form class="filterForm d-flex flex-wrap align-items-center justify-content-center bg-white">
+	<select name="userName" class="form-select m-0 box-shadow-none" id="userName">
+		<option selected value="userName">User Name</option>
+		@if (Model != null && Model.Names.Any())
+		{
+			foreach (var name in Model.Names)
+			{
+				<option value="@name">@name</option>
+			}
+		}
+	</select>
+	<select name="userRole" class="form-select m-0 box-shadow-none" id="userRole">
+		<option selected value="userRole">User Role</option>
+		<option value="Customer">Customer</option>
+		<option value="Service Provider">Service Provider</option>
+		<option value="Admin">Admin</option>
+	</select>
+	<div class="input-group m-0 row">
+		<div type="text"
+			class="input-group-text text-center align-items-center justify-content-center col-2 col-sm-3 px-0">+91</div>
+		<input type="text" class="form-control col-10 col-sm-9 box-shadow-none" id="mobile" placeholder="Mobile Number"
+			aria-label="Mobile Number" autocomplete="off" />
+	</div>
+	<div class="datePicker">
+		<input type="text" class="m-0 box-shadow-none form-control" name="fromDate" id="fromDate"
+			placeholder="From Date" />
+	</div>
+	<div class="datePicker">
+		<input type="text" class="m-0 box-shadow-none form-control" name="toDate" id="toDate" placeholder="To Date" />
+	</div>
+	<button class="search" id="filterTable" type="button">Search</button>
+	<button class="clear" id="clearFilter" type="reset">Clear</button>
+</form>
+<div class="tableFilterSm h4 d-flex align-items-center d-md-none px-1">
+	Filter Table :
+	<img src="~/images/filter.png" tabindex="0" class="sortingButton" data-bs-toggle="popover" data-bs-offset="10,15"
+		data-bs-trigger="focus" data-bs-placement="bottom" data-bs-custom-class="sortingPopover" data-bs-html="true"
+		data-bs-content="
+						<label class='sortingRadioLabel form-check-label' for='userNameAsc'>
+							<input class='form-check-input box-shadow-none' checked type='radio' data-st-col='0' data-st-type='asc' name='sortingRadio' id='userNameAsc' />
+							User Name: A to Z
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='userNamedesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='0' data-st-type='desc' name='sortingRadio' id='userNamedesc' />
+							User Name: Z to A
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='postalCodeAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='asc' name='sortingRadio' id='postalCodeAsc' />
+							Postal Code: Assending
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='postalCodeDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='3' data-st-type='desc' name='sortingRadio' id='postalCodeDesc' />
+							Postal Code: Decending
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='distanceAsc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='5' data-st-type='asc' name='sortingRadio' id='distanceAsc' />
+							Radius: Near to Far
+						</label>
+						<label class='sortingRadioLabel form-check-label' for='distanceDesc'>
+							<input class='form-check-input box-shadow-none' type='radio' data-st-col='5' data-st-type='desc' name='sortingRadio' id='distanceDesc' />
+							Radius: Far to Near
+						</label>
+						" />
+</div>
+<table id="adminUserManagementTable">
+	<thead>
+		<tr>
+			<th class="text-nowrap"><span class="d-inline-block">User Name</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Date Of Registration</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">User Type</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Phone Number</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Postal Code</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">City</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">User Status</span><span></span></th>
+			<th class="text-nowrap"><span class="d-inline-block">Action</span><span></span></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null && Model.viewModels.Any())
+		{
+			@foreach (var user in Model.viewModels)
+			{
+				<tr class="adminServiceRequestTR">
+					<td data-dt-colName="User Name :">@user.FirstName @user.LastName</td>
+					<td data-dt-colName="Date Of Registration :" class="d-flex align-items-center justify-content-start">
+						<img src="~/images/calender.png" asp-append-version="true" class="me-2">
+						<b>@user.RegisteredDate.ToString("dd/MM/yyyy").Replace("-","/")</b>
+					</td>
+					<td data-dt-colName="User Type :">@typeStrings[user.UserTypeId-1]</td>
+					<td data-dt-colName="Phone Number :">@user.PhoneNumber</td>
+					<td data-dt-colName="Postal Code :">@user.ZipCode</td>
+					<td data-dt-colName="City :">@user.City</td>
+					<td data-dt-colName="User Status :" class="text-start text-md-center">
+						<span
+					class='@(user.IsApproved?"status completed":"status cancelled")'>@(user.IsApproved?"Active":"Inactive")</span>
+					</td>
+					<td class="actionTd" data-dt-colName="Action :">
+						@if (user.UserTypeId != 3)
+						{
+							<div class="action rounded-circle d-flex flex-column align-items-center justify-content-center"
+					tabindex="0" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-offset="0,10"
+					data-bs-custom-class="actionPopover" data-bs-placement="bottom" data-bs-html="true"
+					data-bs-content='<a role="button" class="custPopoverAnch" onclick=activateOrDeactivate("@user.UserId","@user.IsApproved")>@(user.IsApproved?"Deactivate":"Activate")</a>'>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+								<div class="dot rounded-circle"></div>
+							</div>
+						}
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+<footer>©2018 Helperland. All rights reserved.</footer>
+@section CustomScripts
+{
+<script src="~/js/adminUserManagement.js" asp-append-version="true"></script>
+}

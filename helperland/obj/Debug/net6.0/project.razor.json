@@ -16318,6 +16318,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\ServiceSchedule.cshtml",
+      "TargetPath": "Views\\ServiceProvider\\ServiceSchedule.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Account\\CustomerSignup.cshtml",
       "TargetPath": "Views\\Account\\CustomerSignup.cshtml",
       "FileKind": "mvc"
@@ -16378,6 +16383,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Admin\\ServiceRequests.cshtml",
+      "TargetPath": "Views\\Admin\\ServiceRequests.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\ServiceProvider\\MyRatings.cshtml",
       "TargetPath": "Views\\ServiceProvider\\MyRatings.cshtml",
       "FileKind": "mvc"
@@ -16398,6 +16408,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Admin\\UserManagement.cshtml",
+      "TargetPath": "Views\\Admin\\UserManagement.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Shared\\_CustomerLayout.cshtml",
       "TargetPath": "Views\\Shared\\_CustomerLayout.cshtml",
       "FileKind": "mvc"
@@ -16405,6 +16420,11 @@
     {
       "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Shared\\_Layout.cshtml",
       "TargetPath": "Views\\Shared\\_Layout.cshtml",
+      "FileKind": "mvc"
+    },
+    {
+      "FilePath": "h:\\TatvaSoft\\Projects\\Helperland\\helperland\\Views\\Shared\\_AdminLayout.cshtml",
+      "TargetPath": "Views\\Shared\\_AdminLayout.cshtml",
       "FileKind": "mvc"
     },
     {

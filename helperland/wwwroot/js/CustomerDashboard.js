@@ -1,6 +1,5 @@
 const tbody = document.querySelector("tbody");
 const sortingButton = document.querySelector(".sortingButton");
-const body = document.querySelector("body");
 const rescheduleServiceModalHtml = document.querySelector("#rescheduleService");
 const rescheduleBtn = rescheduleServiceModalHtml.querySelector("#rescheduleBtn");
 const NewServiceStartTime = rescheduleServiceModalHtml.querySelector("#NewServiceStartTime");
@@ -91,7 +90,7 @@ const dt = new DataTable("#dashboardTable", {
 		},
 		info: "Total Record: _MAX_",
 		lengthMenu: "Show_MENU_Entries",
-		emptyTable: "No Service Requests Found"
+		emptyTable: "No Service Requests Found",
 	},
 	columnDefs: [
 		{ orderable: false, targets: 4 },
@@ -151,10 +150,10 @@ const openDetailsModal = async (
 		if (serviceId) {
 			cancelModal.hide();
 			rescheduleServiceModal.hide();
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch(`/Customer/GetServiceDetails?serviceId=${serviceId}`, { method: "GET" });
 			const data = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (data.err) {
 				serviceDetailsModal.hide();
 				showToast("danger", data.err);
@@ -221,7 +220,7 @@ const openDetailsModal = async (
 									<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
 										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
 								</svg>
-								<div class="cover position-absolute top-0 end-0 h-100" style="width:${(5 - parseInt(avgRating)) * 20}%"></div>
+								<div class="cover position-absolute top-0 end-0 h-100" style="width:${(5 - parseFloat(avgRating)) * 20}%"></div>
 							</div>
 							<span class="lh-sm ms-1 avgRating">${avgRating}</span>
 						</div>
@@ -247,7 +246,7 @@ const openDetailsModal = async (
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		serviceDetailsModal.hide();
 		showToast("danger", "Internal Server Error !");
 	}
@@ -256,7 +255,7 @@ const openDetailsModal = async (
 rescheduleBtn.addEventListener("click", async () => {
 	try {
 		if (NewServiceDate.value && NewServiceStartTime.value) {
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch("/Customer/RescheduleService", {
 				method: "POST",
 				headers: {
@@ -269,7 +268,7 @@ rescheduleBtn.addEventListener("click", async () => {
 				}),
 			});
 			const data = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			if (data.success) {
 				rescheduleServiceModal.hide();
 				showToast("success", data.success);
@@ -282,7 +281,7 @@ rescheduleBtn.addEventListener("click", async () => {
 			}
 		}
 	} catch (error) {
-		body.classList.remove("loading");
+		loading(false);
 		rescheduleServiceModal.hide();
 		showToast("danger", "Internal Server Error !");
 		console.log(error.message);
@@ -293,7 +292,7 @@ cancelBtn.addEventListener("click", async () => {
 	try {
 		const serviceId = cancelBtn.getAttribute("data-serviceid");
 		if (serviceId && validateReason()) {
-			body.classList.add("loading");
+			loading(true);
 			const res = await fetch("/Customer/CancelService", {
 				method: "POST",
 				headers: {
@@ -305,7 +304,7 @@ cancelBtn.addEventListener("click", async () => {
 				window.location.href = res.url;
 			}
 			const data = await res.json();
-			body.classList.remove("loading");
+			loading(false);
 			cancelModal.hide();
 			if (data.success) {
 				document.querySelector("#service_" + serviceId).remove();
@@ -319,7 +318,7 @@ cancelBtn.addEventListener("click", async () => {
 	} catch (error) {
 		cancelModal.hide();
 		console.log(error.message);
-		body.classList.remove("loading");
+		loading(false);
 		showToast("danger", "Internal Server Error !");
 	}
 });

@@ -233,6 +233,114 @@ tbody tr {
 	width: 20px;
 }
 
+#serviceSchedule {
+	width: 100%;
+}
+
+.fc-event {
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 700;
+	text-align: center;
+	border: none;
+	border-radius: 0;
+	padding: 6px 3px;
+	cursor: pointer;
+	color: #fff;
+}
+
+/* .fc-event-time,
+.fc-daygrid-event-dot {
+	display: none !important;
+} */
+
+.fc-daygrid-day-number,
+.fc-col-header-cell-cushion {
+	color: #646464 !important;
+	text-decoration: none !important;
+}
+
+th .fc-scrollgrid-sync-inner {
+	background: #f9f9f9;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 20px;
+	padding: 15px 0;
+}
+
+.fc-toolbar-chunk {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.fc-next-button span,
+.fc-prev-button span {
+	vertical-align: initial !important;
+}
+.fc-next-button span::before,
+.fc-prev-button span::before {
+	content: "" !important;
+	display: inline-block;
+	width: 10px;
+	height: 17px;
+	background: url("../images/right-arrow-medium.png") no-repeat center center;
+}
+
+.fc-prev-button span::before {
+	transform: rotate(180deg);
+}
+
+.fc-next-button,
+.fc-prev-button {
+	background: #fff !important;
+	box-shadow: none !important;
+	border: 1px solid #e1e1e1 !important;
+	border-radius: 0 !important;
+	height: 44px;
+	width: 46px;
+	position: relative !important;
+	transition: background 0.3s ease;
+	outline: 0 !important;
+}
+.fc-next-button:hover,
+.fc-prev-button:hover {
+	background: #f6f6f6 !important;
+}
+.fc-toolbar-title {
+	color: #646464;
+}
+
+.fc-upcomingBtn-button,
+.fc-completedBtn-button {
+	background: transparent !important;
+	border: 0 !important;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	color: #646464 !important;
+	box-shadow: none !important;
+	cursor: text !important;
+	outline: none !important;
+	padding: 0px !important;
+}
+
+.fc-upcomingBtn-button::before,
+.fc-completedBtn-button::before {
+	content: "";
+	display: inline-block;
+	height: 17px;
+	width: 17px;
+	border-radius: 1px;
+	margin-right: 5px;
+	border: 1px solid #e1e1e1 !important;
+	background: #efefef;
+}
+
+.fc-upcomingBtn-button::before {
+	border: 1px solid #1d7a8c !important;
+	background: #1d7a8c;
+}
+
 .toastContainer {
 	z-index: 10;
 }
