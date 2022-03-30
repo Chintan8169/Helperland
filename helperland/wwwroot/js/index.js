@@ -95,54 +95,48 @@ scrollToTop.addEventListener("click", () => window.scroll(0, 0));
 
 if (loginModalForm) {
 	const submitBtn = loginModalForm.querySelector("button");
-	const errorAlertEle = document.querySelector(".errorAlert");
+	const errorAlertEle = document.querySelector(".loginErrorToast");
 	const errorAlertMessage = errorAlertEle.querySelector(".errorMessage");
-	const errorAlert = new bootstrap.Alert(errorAlertEle);
+	const errorAlert = bootstrap.Toast.getOrCreateInstance(errorAlertEle);
+	console.log(errorAlert);
 	submitBtn.addEventListener("click", async (e) => {
 		e.preventDefault();
-		setTimeout(async () => {
-			const validatedForm = $("form.loginModalForm").validate();
-			const errorListLength = validatedForm.errorList.length;
-			if (errorListLength <= 0) {
-				document.querySelector("body").classList.add("loading");
-				const data = new FormData(loginModalForm);
-				const obj = {};
-				obj.Email = data.get("Email");
-				obj.Password = data.get("Password");
-				obj.RememberMe = data.get("RememberMe") == "true" ? true : false;
-				const response = await fetch("/Account/Login", {
-					method: "POST",
-					body: JSON.stringify(obj),
-					headers: {
-						"Content-Type": "application/json",
-					},
-				});
-				const jsonRes = await response.json();
-				document.querySelector("body").classList.remove("loading");
-				if (jsonRes.error) {
-					errorAlertMessage.innerHTML = jsonRes.error;
-					errorAlertEle.classList.remove("d-none");
-					errorAlertEle.classList.add("show");
-					setTimeout(() => {
-						errorAlertEle.classList.remove("show");
-						errorAlertEle.classList.add("d-none");
-					}, 5000);
-				} else if (jsonRes.success) {
-					const paramsSplit = document.location.search.replace("?", "").split("&");
-					if (paramsSplit.length > 0) {
-						const params = [];
-						paramsSplit.forEach((p) => {
-							params.push({ key: p.split("=")[0], value: p.split("=")[1] });
-						});
-						const ReturnUrl = params.find((par) => (par.key = "ReturnUrl"));
-						if (ReturnUrl && ReturnUrl.value) return (window.location.href = decodeURIComponent(ReturnUrl.value));
-					}
-					if (jsonRes.userType == "Customer") return (window.location.href = "/Customer/Dashboard");
-					else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Dashboard?HasPets=True");
-					else return (window.location.href = "/Admin/ServiceRequests");
+		const validatedForm = $("form.loginModalForm").validate();
+		if (validatedForm.form()) {
+			loading(true);
+			const data = new FormData(loginModalForm);
+			const obj = {};
+			obj.Email = data.get("Email");
+			obj.Password = data.get("Password");
+			obj.RememberMe = data.get("RememberMe") == "true" ? true : false;
+			const response = await fetch("/Account/Login", {
+				method: "POST",
+				body: JSON.stringify(obj),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			const jsonRes = await response.json();
+			loading(false);
+			if (jsonRes.error) {
+				errorAlertMessage.innerHTML = jsonRes.error;
+				errorAlert.show();
+				setTimeout(() => errorAlert.hide(), 5000);
+			} else if (jsonRes.success) {
+				const paramsSplit = document.location.search.replace("?", "").split("&");
+				if (paramsSplit.length > 0) {
+					const params = [];
+					paramsSplit.forEach((p) => {
+						params.push({ key: p.split("=")[0], value: p.split("=")[1] });
+					});
+					const ReturnUrl = params.find((par) => (par.key = "ReturnUrl"));
+					if (ReturnUrl && ReturnUrl.value) return (window.location.href = decodeURIComponent(ReturnUrl.value));
 				}
+				if (jsonRes.userType == "Customer") return (window.location.href = "/Customer/Dashboard");
+				else if (jsonRes.userType == "ServiceProvider") return (window.location.href = "/ServiceProvider/Dashboard?HasPets=True");
+				else return (window.location.href = "/Admin/ServiceRequests");
 			}
-		}, 250);
+		}
 	});
 	loginModalForm.addEventListener("submit", (e) => {
 		e.preventDefault();

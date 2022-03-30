@@ -25,7 +25,7 @@ public class AccountController : Controller
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> CreateAdmin(string Email, string Password, string SpecialKey)
+	public async Task<IActionResult> CreateAdmin(string Email, string Password, string SpecialKey, string FirstName, string LastName)
 	{
 		try
 		{
@@ -34,8 +34,8 @@ public class AccountController : Controller
 				var newUser = new User()
 				{
 					UserName = Email,
-					FirstName = "Admin",
-					LastName = "TatvaSoft",
+					FirstName = FirstName,
+					LastName = LastName,
 					Email = Email,
 					UserTypeId = 3,
 					IsRegisteredUser = true,
@@ -169,23 +169,30 @@ public class AccountController : Controller
 				return Json(new { error = "Authentication Failed !" });
 			}
 			var user = await userManager.FindByEmailAsync(model.Email);
-			if (user.IsApproved)
+			if (user != null)
 			{
-				var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-				if (result.Succeeded)
+				if (user.IsApproved)
 				{
-					if (user.UserTypeId == 1)
-						return Json(new { success = "Logged In !", userType = "Customer" });
-					else if (user.UserTypeId == 2)
-						return Json(new { success = "Logged In !", userType = "ServiceProvider" });
-					else
-						return Json(new { success = "Logged In !", userType = "Admin" });
+					var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+					if (result.Succeeded)
+					{
+						if (user.UserTypeId == 1)
+							return Json(new { success = "Logged In !", userType = "Customer" });
+						else if (user.UserTypeId == 2)
+							return Json(new { success = "Logged In !", userType = "ServiceProvider" });
+						else
+							return Json(new { success = "Logged In !", userType = "Admin" });
+					}
+					return Json(new { error = "Authentication Failed !" });
 				}
-				return Json(new { error = "Authentication Failed !" });
+				else
+				{
+					return Json(new { error = "User is not Approved yet. Contact admin to approve your Account !" });
+				}
 			}
 			else
 			{
-				return Json(new { error = "User is not Approved yet. Contact admin to approve your Account !" });
+				return Json(new { error = "Authentication Failed !" });
 			}
 		}
 		catch (Exception e)

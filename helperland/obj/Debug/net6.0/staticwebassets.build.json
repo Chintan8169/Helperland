@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "MXruz60VZKMktI6vj1ZRBBQSZluPLIgC8zud3zR+wqk=",
+  "Hash": "t2xi4VWJpgMl9vwT8tvGXQ3ZIEJoV11Hjx/di9yzojw=",
   "Source": "helperland",
   "BasePath": "_content/helperland",
   "Mode": "Default",
@@ -2174,6 +2174,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\CustomerDashboard.js"
+    },
+    {
+      "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\js\\CustomerFavouriteAndBlocked.js",
+      "SourceId": "helperland",
+      "SourceType": "Discovered",
+      "ContentRoot": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\",
+      "BasePath": "_content/helperland",
+      "RelativePath": "js/CustomerFavouriteAndBlocked.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\CustomerFavouriteAndBlocked.js"
     },
     {
       "Identity": "H:\\TatvaSoft\\Projects\\Helperland\\helperland\\wwwroot\\js\\customerServiceHistory.js",

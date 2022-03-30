@@ -12,12 +12,14 @@ public class AdminController : Controller
 	private readonly HelperlandContext context;
 	private readonly UserManager<User> userManager;
 	private readonly RoleManager<IdentityRole> roleManager;
+	private readonly Email email;
 
-	public AdminController(HelperlandContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+	public AdminController(HelperlandContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, Email email)
 	{
 		this.context = context;
 		this.userManager = userManager;
 		this.roleManager = roleManager;
+		this.email = email;
 	}
 	public IActionResult ServiceRequests()
 	{
@@ -198,10 +200,48 @@ public class AdminController : Controller
 				}
 				else return Json(new { err = "Address Not Found !" });
 				context.SaveChanges();
+				var emails = context.Users.Where(u => u.Id == service.UserId || u.Id == service.ServiceProviderId).Select(u => u.Email).ToList();
+				var sendEmails = new List<string>();
+				foreach (var e in emails) sendEmails.Add(e);
+				email.SendMail(new SendMailViewModel()
+				{
+					Subject = "Reschedule Service",
+					IsBodyHtml = true,
+					To = sendEmails,
+					Body = @$"
+					<h1 style='font-size:35px;'>Greetings,</h1>
+					<div style='font-size:25px;'>Service Request <b>{service.ServiceId}</b> is Rescheduled to <b>{service.ServiceStartDate.ToString("dd/MM/yyyy HH:mm").Replace("-", "/")}</b> due to '{model.RescheduleReason}'</div>"
+				});
 				return Json(new { success = "Successfully Rescheduled Service !!" });
 			}
 		}
 		return Json(new { err = "Service Not Found !" });
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Refund([FromBody] RefundSubmitViewModel model)
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			var service = context.ServiceRequests.Where(s => s.ServiceId == model.ServiceId).FirstOrDefault();
+			if (service != null)
+			{
+				service.RefundedAmount = (service.RefundedAmount != null) ? service.RefundedAmount + model.RefundAmount : model.RefundAmount;
+				service.ModifiedBy = user.Id;
+				service.ModifiedDate = DateTime.Now;
+				service.RecordVersion = Guid.NewGuid();
+				service.Comments = model.RefundReason;
+				context.SaveChanges();
+				return Json(new { success = "Operation Successful !" });
+			}
+			return Json(new { err = "Service Not Found !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !" });
+		}
 	}
 }
 
@@ -210,4 +250,10 @@ public class ActivateOrDeactivateUserViewModel
 #nullable disable
 	public string UserId { get; set; }
 	public bool IsApproved { get; set; }
+}
+public class RefundSubmitViewModel
+{
+	public int ServiceId { get; set; }
+	public decimal RefundAmount { get; set; }
+	public string RefundReason { get; set; }
 }

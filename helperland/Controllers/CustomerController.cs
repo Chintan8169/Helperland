@@ -85,8 +85,7 @@ public class CustomerController : Controller
 						// var servicesWithSP = result.Where(x => x.ServiceProviderId == serviceProviderId).ToList();
 						foreach (var model in result)
 						{
-							if (model.ServiceProviderId == serviceProviderId)
-								model.AvgRating = avgRating;
+							if (model.ServiceProviderId == serviceProviderId) model.AvgRating = avgRating;
 						}
 					}
 				}
@@ -138,7 +137,7 @@ public class CustomerController : Controller
 						return Json(new { err = "This selected time is same !" });
 					}
 					DateTime newServiceEnd = newServiceDate.AddHours(service.ServiceHours);
-					if (newServiceEnd.Hour + newServiceEnd.Minute > 21)
+					if (newServiceEnd.Hour + newServiceEnd.Minute / 60 > 21)
 					{
 						return Json(new { err = "Rescheduled Time is greater than 9:00 PM !" });
 					}
@@ -146,7 +145,7 @@ public class CustomerController : Controller
 					{
 						return Json(new { err = "Rescheduled Time is is already passed !" });
 					}
-					else
+					else if (!String.IsNullOrEmpty(service.ServiceProviderId))
 					{
 						var services = context.ServiceRequests.Where(s => s.ServiceProviderId == service.ServiceProviderId && s.Status == 2 && s.ServiceRequestId != service.ServiceRequestId && s.ServiceStartDate.Date == newServiceDate.Date && s.ServiceStartDate.Month == newServiceDate.Month && s.ServiceStartDate.Year == newServiceDate.Year).ToList();
 						if (services.Count() > 0)
@@ -172,6 +171,17 @@ public class CustomerController : Controller
 					service.ModifiedDate = DateTime.Now;
 					context.ServiceRequests.Attach(service);
 					context.SaveChanges();
+#nullable disable
+					if (!String.IsNullOrEmpty(service.ServiceProviderId)) email.SendMail(new SendMailViewModel()
+					{
+						Subject = "Reschedule Service",
+						IsBodyHtml = true,
+						To = new List<string>() { context.Users.Where(u => u.Id == service.ServiceProviderId).Select(u => u.Email).FirstOrDefault() },
+						Body = @$"
+							<h1 style='font-size:35px;'>Greetings,</h1>
+							<div style='font-size:25px;'>Service Request <b>{service.ServiceId}</b> is Rescheduled to <b>{service.ServiceStartDate.ToString("dd/MM/yyyy HH:mm").Replace("-", "/")}</b></div>"
+					});
+#nullable enable
 					return Json(new { success = "Successfully Rescheduled Service !!" });
 				}
 			}
@@ -330,7 +340,6 @@ public class CustomerController : Controller
 			newServiceRequest.Status = 1;
 			newServiceRequest.RecordVersion = Guid.NewGuid();
 
-
 			if (model.ExtraServices != null)
 			{
 				newServiceRequest.ServiceHours += model.ExtraServices.Count() * 0.5;
@@ -347,6 +356,31 @@ public class CustomerController : Controller
 			int min = ((int)Math.Ceiling((x - hours) * 60));
 			var d = new DateTime(Int32.Parse(s[2]), Int32.Parse(s[1]), Int32.Parse(s[0]), hours, min, 0);
 			newServiceRequest.ServiceStartDate = d;
+			if (model.ServiceProviderId != null)
+			{
+				var newServiceDate = newServiceRequest.ServiceStartDate;
+				var services = context.ServiceRequests.Where(s => s.ServiceProviderId == model.ServiceProviderId && s.Status == 2 && s.ServiceStartDate.Date == newServiceDate.Date && s.ServiceStartDate.Month == newServiceDate.Month && s.ServiceStartDate.Year == newServiceDate.Year).ToList();
+				if (services.Count() > 0)
+				{
+					var newServiceEnd = newServiceRequest.ServiceStartDate.AddHours((double)newServiceRequest.TotalCost);
+					foreach (var st in services)
+					{
+						var tempServiceStart = st.ServiceStartDate;
+						var tempServiceEnd = st.ServiceStartDate.AddHours((double)(newServiceRequest.ServiceHours + 1));
+						if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
+						{
+							return Json(new
+							{
+								err = "Another service request has been assigned to the service provider on " + tempServiceStart.ToString("dd/MM/yyyy") +
+							" from " + tempServiceStart.ToString("HH/mm") + " to " + tempServiceEnd.AddHours(-1).ToString("HH/mm") + ". Either choose another date or pick up a different time slot."
+							});
+						}
+					}
+				}
+				newServiceRequest.ServiceProviderId = model.ServiceProviderId;
+				newServiceRequest.SpacceptedDate = DateTime.Now;
+				newServiceRequest.Status = 2;
+			}
 			context.ServiceRequests.Add(newServiceRequest);
 			context.SaveChanges();
 			var custAddress = context.UserAddresses.Where(a => a.AddressId == model.AddressId && a.UserId == user.Id).FirstOrDefault();
@@ -385,7 +419,6 @@ public class CustomerController : Controller
 			List<string> spEmails = new List<string>();
 			foreach (var sp in blockedsps) sps.Remove(sps.Find(u => u.Id == sp));
 			foreach (var sp in sps) spEmails.Add(sp.Email);
-			foreach (var pro in spEmails) Console.WriteLine(pro);
 			if (spEmails.Count() <= 0) return Json(new { err = "There is no service provider providing services in your area !" });
 			email.SendMail(new SendMailViewModel
 			{
@@ -411,7 +444,6 @@ public class CustomerController : Controller
 		}
 #nullable enable
 	}
-
 	[HttpGet]
 	public async Task<IActionResult> IsRatingGiven(int ServiceId, string ServiceProviderId)
 	{
@@ -449,7 +481,6 @@ public class CustomerController : Controller
 			return Json(new { err = "Internal Server Error !" });
 		}
 	}
-
 	[HttpPost]
 	public async Task<IActionResult> GiveRating([FromBody] RatingViewModel model)
 	{
@@ -641,10 +672,59 @@ public class CustomerController : Controller
 	public async Task<IActionResult> FavouriteAndBlocked()
 	{
 		var user = await userManager.GetUserAsync(User);
-		// var result = (
-		// 	from u in context.Users
-		// );
-		return View();
+		var result = (
+			from s in context.ServiceRequests
+			join u in context.Users on new { ServiceProviderId = s.ServiceProviderId } equals new { ServiceProviderId = u.Id }
+			join fab in context.FavoriteAndBlocked
+				on new { s.UserId, s.ServiceProviderId }
+				equals new { fab.UserId, ServiceProviderId = fab.TargetUserId } into fab_join
+			from fab in fab_join.DefaultIfEmpty()
+			join avgrt in (
+			(
+				from rt in context.Ratings
+				group rt by new { rt.RatingTo } into g
+				select new
+				{
+					AvgRatings = (decimal?)g.Average(p => p.Ratings),
+					SPId = g.Key.RatingTo
+				})) on new { ServiceProviderId = s.ServiceProviderId } equals new { ServiceProviderId = avgrt.SPId } into avgrt_join
+			from avgrt in avgrt_join.DefaultIfEmpty()
+			join totalservice in (
+			(
+				from st in context.ServiceRequests
+				where
+				st.Status == 3
+				group st by new
+				{
+					st.ServiceProviderId
+				} into g
+				select new
+				{
+					TotalCleaning = g.Count(p => p.ServiceId != 0),
+					tspid = g.Key.ServiceProviderId
+				})) on new { ServiceProviderId = s.ServiceProviderId } equals new { ServiceProviderId = totalservice.tspid } into totalservice_join
+			from totalservice in totalservice_join.DefaultIfEmpty()
+			where s.Status == 3 && s.UserId == user.Id
+			select new FavoriteAndBlockedViewModel
+			{
+				IsBlocked = fab.IsBlocked,
+				TotalCleaning = totalservice.TotalCleaning,
+				IsFavorite = fab.IsFavorite,
+				FirstName = u.FirstName,
+				LastName = u.LastName,
+				SPId = s.ServiceProviderId,
+				ProfilePhoto = u.UserProfilePhoto,
+				AvgRatings = avgrt.AvgRatings != null ? (decimal)avgrt.AvgRatings : 0
+			}).Distinct().ToList();
+		foreach (var service in result.ToList())
+		{
+			var blockcust = context.FavoriteAndBlocked.Where(f => f.UserId == service.SPId && f.TargetUserId == user.Id && f.IsBlocked == true).FirstOrDefault();
+			if (blockcust != null)
+			{
+				result.Remove(service);
+			}
+		}
+		return View(result);
 	}
 	public async Task<IActionResult> GetAddresses(string? ZipCode)
 	{
@@ -672,6 +752,97 @@ public class CustomerController : Controller
 		}
 		return Json(add);
 	}
+
+	[HttpPost]
+	public async Task<IActionResult> ChangeBlockOrFavourite([FromBody] ChangeBlockOrFavouriteViewModel model)
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			var fab = context.FavoriteAndBlocked.Where(fab => fab.UserId == user.Id && fab.TargetUserId == model.SPId).FirstOrDefault();
+			if (fab != null)
+			{
+				if (fab.IsFavorite && model.IsBlocked)
+				{
+					return Json(new { err = "You can't block sp who is in your favourite list !" });
+				}
+				if (fab.IsBlocked && model.IsFavourite || model.IsBlocked && model.IsFavourite)
+				{
+					return Json(new { err = "You can't block sp who is in your favourite list !" });
+				}
+				fab.IsBlocked = model.IsBlocked;
+				fab.IsFavorite = model.IsFavourite;
+				context.Attach(fab);
+			}
+			else
+			{
+				var newFab = new FavoriteAndBlocked()
+				{
+					UserId = user.Id,
+					TargetUserId = model.SPId,
+					IsBlocked = model.IsBlocked,
+					IsFavorite = model.IsFavourite,
+				};
+				context.FavoriteAndBlocked.Add(newFab);
+			}
+			context.SaveChanges();
+			return Json(new { success = "Operation Successful !" });
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !!" });
+		}
+	}
+
+	public async Task<IActionResult> GetFavouriteProviders()
+	{
+		try
+		{
+			var user = await userManager.GetUserAsync(User);
+			var result = (
+				from u in context.Users
+				join fab in context.FavoriteAndBlocked
+				on u.Id equals fab.TargetUserId
+				where fab.UserId == user.Id && fab.IsFavorite
+				select new BookServiceFavSpViewModel
+				{
+					SPId = fab.TargetUserId,
+					FirstName = u.FirstName,
+					LastName = u.LastName,
+					ProfilePhoto = u.UserProfilePhoto
+				}
+			).ToList();
+			foreach (var sp in result.ToList())
+			{
+				var blocked = context.FavoriteAndBlocked.Where(fab => fab.UserId == sp.SPId && fab.TargetUserId == user.Id && fab.IsBlocked).FirstOrDefault();
+				if (blocked != null) result.Remove(sp);
+			}
+			return Json(result);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message);
+			return Json(new { err = "Internal Server Error !!" });
+		}
+	}
+}
+
+public class BookServiceFavSpViewModel
+{
+#nullable disable
+	public string SPId { get; set; }
+	public string FirstName { get; set; }
+	public string LastName { get; set; }
+	public string ProfilePhoto { get; set; }
+}
+
+public class ChangeBlockOrFavouriteViewModel
+{
+#nullable disable
+	public string SPId { get; set; }
+	public bool IsBlocked { get; set; }
+	public bool IsFavourite { get; set; }
 }
 
 public class ReturnAddressViewModel

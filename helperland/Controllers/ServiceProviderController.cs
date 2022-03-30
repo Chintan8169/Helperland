@@ -12,12 +12,14 @@ public class ServiceProviderController : Controller
 	private readonly UserManager<User> userManager;
 	private readonly RoleManager<IdentityRole> roleManager;
 	private readonly HelperlandContext context;
+	private readonly Email email;
 
-	public ServiceProviderController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, HelperlandContext context)
+	public ServiceProviderController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, HelperlandContext context, Email email)
 	{
 		this.userManager = userManager;
 		this.roleManager = roleManager;
 		this.context = context;
+		this.email = email;
 	}
 
 	public async Task<IActionResult> Dashboard(bool HasPets)
@@ -50,6 +52,7 @@ public class ServiceProviderController : Controller
 			var blocked = context.FavoriteAndBlocked.Where(fab => (fab.UserId == sp.Id || fab.TargetUserId == sp.Id) && fab.IsBlocked).ToList();
 			foreach (var s in result.ToList())
 			{
+				Console.WriteLine(s.ServiceId);
 				foreach (var b in blocked)
 				{
 					if ((b.UserId == sp.Id && b.TargetUserId == s.UserId) || (b.UserId == s.UserId && b.TargetUserId == sp.Id))
@@ -66,29 +69,31 @@ public class ServiceProviderController : Controller
 	}
 	public async Task<IActionResult> AcceptService(int ServiceId, string RecordVersion)
 	{
+#nullable disable
 		try
 		{
 			var sp = await userManager.GetUserAsync(User);
 			var service = context.ServiceRequests.Where(s => s.ServiceId == ServiceId && s.ZipCode == sp.ZipCode).FirstOrDefault();
 			if (service != null)
 			{
-				if (service.RecordVersion.ToString() == RecordVersion.ToLower())
+				var result = context.ServiceRequests.Where(s => s.ServiceProviderId == sp.Id && s.ServiceStartDate.Day == service.ServiceStartDate.Day && s.ServiceStartDate.Month == service.ServiceStartDate.Month && s.ServiceStartDate.Year == service.ServiceStartDate.Year && s.Status == 2).ToList();
+				if (result.Count() > 0)
 				{
-					var result = context.ServiceRequests.Where(s => s.ServiceProviderId == sp.Id && s.ServiceStartDate.Day == service.ServiceStartDate.Day && s.ServiceStartDate.Month == service.ServiceStartDate.Month && s.ServiceStartDate.Year == service.ServiceStartDate.Year && s.Status == 2).ToList();
-					if (result.Count() > 0)
+					var newServiceDate = service.ServiceStartDate;
+					var newServiceEnd = service.ServiceStartDate.AddHours(service.ServiceHours);
+					foreach (var s in result)
 					{
-						var newServiceDate = service.ServiceStartDate;
-						var newServiceEnd = service.ServiceStartDate.AddHours(service.ServiceHours);
-						foreach (var s in result)
+						var tempServiceStart = s.ServiceStartDate;
+						var tempServiceEnd = s.ServiceStartDate.AddHours((double)(service.ServiceHours + 1));
+						if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
 						{
-							var tempServiceStart = s.ServiceStartDate;
-							var tempServiceEnd = s.ServiceStartDate.AddHours((double)(service.ServiceHours + 1));
-							if ((newServiceEnd.CompareTo(tempServiceStart) > 0 && newServiceEnd.CompareTo(tempServiceEnd) <= 0) || (newServiceDate.CompareTo(tempServiceStart) >= 0 && newServiceDate.CompareTo(tempServiceEnd) < 0) || ((tempServiceStart.CompareTo(newServiceDate) >= 0 && tempServiceEnd.CompareTo(newServiceEnd) < 0)))
-							{
-								return Json(new { conflict = "There Another Service Conflicting this service Click Show Conflict button to see which service is conflicting !", conflictServiceId = s.ServiceId });
-							}
+							return Json(new { conflict = "There Another Service Conflicting this service Click Show Conflict button to see which service is conflicting !", conflictServiceId = s.ServiceId });
 						}
 					}
+				}
+				var service2 = context.ServiceRequests.Where(s => s.ServiceId == ServiceId && s.ZipCode == sp.ZipCode && s.RecordVersion.ToString().ToLower() == RecordVersion.ToString().ToLower()).FirstOrDefault();
+				if (service2 != null)
+				{
 					service.Status = 2;
 					service.ServiceProviderId = sp.Id;
 					service.SpacceptedDate = DateTime.Now;
@@ -97,6 +102,22 @@ public class ServiceProviderController : Controller
 					service.RecordVersion = Guid.NewGuid();
 					context.ServiceRequests.Attach(service);
 					context.SaveChanges();
+					var sps = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == service.ZipCode).ToList();
+					var blockedsps = context.FavoriteAndBlocked.Where(fab => fab.UserId == service.UserId && fab.IsBlocked).Select(fab => fab.TargetUserId).Distinct().ToList().Concat(context.FavoriteAndBlocked.Where(fab => fab.TargetUserId == service.UserId && fab.IsBlocked).Select(fab => fab.UserId).Distinct()).ToList();
+					List<string> spEmails = new List<string>();
+					foreach (var tsp in blockedsps) sps.Remove(sps.Find(u => u.Id == tsp));
+					foreach (var tsp in sps) spEmails.Add(tsp.Email);
+					if (spEmails.Count() <= 0) return Json(new { err = "There is no service provider providing services in your area !" });
+					email.SendMail(new SendMailViewModel
+					{
+						Subject = "Service Not Available",
+						IsBodyHtml = true,
+						Body = @$"
+							<h1 style='font-size:35px;'>Greetings</h1>
+							<p style='font-size:25px;'>The Service Request {service.ServiceId} is no more available. It has been assigned to another Provider !</p>
+						",
+						To = spEmails
+					});
 					return Json(new { success = "Successfully accepted service !" });
 				}
 				else

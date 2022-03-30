@@ -103,10 +103,24 @@ nav {
 	max-width: 600px;
 }
 
+.calculateBtn {
+	height: 100%;
+	width: 100%;
+	border: 0 !important;
+	font-size: 14px;
+	outline: none !important;
+}
+
+.calculateBtn:active {
+	-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
 .amount input {
 	background: transparent;
 	border: none;
 	outline: none;
+	color: #646464;
 }
 
 div.logo a {
@@ -250,6 +264,14 @@ div.logo a {
 	gap: 10px;
 }
 
+.clickable {
+	cursor: pointer;
+	transition: opacity 0.35s;
+}
+.clickable:hover {
+	opacity: 0.8;
+}
+
 .datePicker {
 	max-width: 135px;
 	position: relative;
@@ -279,6 +301,10 @@ div.logo a {
 
 .input-validation-error::placeholder {
 	color: var(--bs-danger) !important;
+}
+
+span.input-validation-error {
+	border: none !important;
 }
 
 .form-control,

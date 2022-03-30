@@ -28,11 +28,20 @@ const EditOrRescheduleModal = bootstrap.Modal.getOrCreateInstance(EditOrReschedu
 const serviceDetailsModalHtml = document.querySelector("#serviceDetails");
 const serviceDetailsModalBody = serviceDetailsModalHtml.querySelector(".modal-body");
 const serviceDetailsModal = bootstrap.Modal.getOrCreateInstance(serviceDetailsModalHtml);
-const RefundModalModalHtml = document.querySelector("#RefundModal");
-const RefundModalModalBody = RefundModalModalHtml.querySelector(".modal-body");
-const RefundModalModal = bootstrap.Modal.getOrCreateInstance(RefundModalModalHtml);
+const RefundModalHtml = document.querySelector("#RefundModal");
+const RefundModalBody = RefundModalHtml.querySelector(".modal-body");
+const RefundModal = bootstrap.Modal.getOrCreateInstance(RefundModalHtml);
 
-// RefundModalModal.show();
+const paidAmount = RefundModalHtml.querySelector("#paidAmount");
+const refundedAmount = RefundModalHtml.querySelector("#refundedAmount");
+const balanceAmount = RefundModalHtml.querySelector("#balanceAmount");
+const Amount = RefundModalHtml.querySelector("#Amount");
+const RefundType = RefundModalHtml.querySelector("#RefundType");
+const calculateBtn = RefundModalHtml.querySelector(".calculateBtn");
+const RefundAmount = RefundModalHtml.querySelector("#RefundAmount");
+const RefundForm = RefundModalHtml.querySelector("#refundForm");
+const refundBtn = RefundModalHtml.querySelector(".refundBtn");
+const RefundReason = RefundModalHtml.querySelector("#RefundReason");
 
 hamburger.addEventListener("click", () => {
 	[verticleMenu, hamburger].forEach((ele) => ele.classList.toggle("open"));
@@ -195,10 +204,16 @@ const openEditOrRescheduleModal = (serviceId, serviceDate, serviceTime, houseNum
 	EditOrRescheduleModal.show();
 };
 
-const openRefundModal = (serviceId, totalCost, refundedAmount) => {
+const openRefundModal = (serviceId, totalCost, alreadyRefundedAmount) => {
 	totalCost = parseFloat(totalCost);
-	refundedAmount = parseFloat(refundedAmount);
-	let balance = totalCost - refundedAmount;
+	alreadyRefundedAmount = parseFloat(alreadyRefundedAmount);
+	let balance = totalCost - alreadyRefundedAmount;
+	paidAmount.value = totalCost.toFixed(2) + " €";
+	balanceAmount.value = balance.toFixed(2) + " €";
+	console.log(alreadyRefundedAmount);
+	refundedAmount.value = alreadyRefundedAmount.toFixed(2) + " €";
+	refundBtn.setAttribute("data-service-id", serviceId);
+	RefundModal.show();
 };
 
 RSubmit.addEventListener("click", async (e) => {
@@ -350,3 +365,87 @@ const openDetailsModal = async (
 		showToast("danger", "Internal Server Error !");
 	}
 };
+
+jQuery.validator.addMethod(
+	"AmountValidation",
+	function (value, element) {
+		if (RefundType.value == "percentage") {
+			return parseFloat(value) > 100 ? false : true;
+		} else {
+			return parseFloat(balanceAmount.value.replace(" €", "")) < parseFloat(value) ? false : true;
+		}
+	},
+	"Enter Proper Value !"
+);
+
+const validator = $("#refundForm").validate({
+	errorClass: "input-validation-error",
+	errorElement: "span",
+	rules: {
+		Amount: {
+			required: true,
+			AmountValidation: true,
+		},
+		RefundReason: {
+			required: true,
+		},
+	},
+	messages: {
+		Amount: {
+			required: "Field is required !",
+		},
+		RefundReason: {
+			required: "Reason is required !",
+		},
+	},
+});
+
+calculateBtn.addEventListener("click", () => {
+	if (validator.element("#Amount")) {
+		if (RefundType.value == "percentage") {
+			RefundAmount.value = (parseFloat(balanceAmount.value) * parseFloat(Amount.value)) / 100 + " €";
+		} else {
+			RefundAmount.value = parseFloat(Amount.value) + " €";
+		}
+	}
+});
+
+refundBtn.addEventListener("click", async (e) => {
+	if (validator.form()) {
+		e.preventDefault();
+		calculateBtn.click();
+		const serviceId = parseInt(refundBtn.getAttribute("data-service-id"));
+		if (serviceId) {
+			try {
+				loading(true);
+				const res = await fetch(`/Admin/Refund`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						ServiceId: serviceId,
+						RefundAmount: parseFloat(RefundAmount.value.replace(" €", "")),
+						RefundReason: RefundReason.value,
+					}),
+				});
+				const data = await res.json();
+				RefundModal.hide();
+				loading(false);
+				if (data.success) {
+					showToast("success", data.success);
+					setTimeout(() => {
+						window.location.reload();
+					}, 2500);
+				} else {
+					showToast("danger", data.err);
+				}
+			} catch (error) {
+				console.log(error.message);
+				loading(false);
+				RefundModal.hide();
+				showToast("danger", "Internal Server Error !");
+			}
+		}
+	}
+});

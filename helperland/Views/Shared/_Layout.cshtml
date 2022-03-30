@@ -279,6 +279,7 @@
 	const hamburger = document.querySelector(".hamburger");
 	const halfPageBlack = document.querySelector(".halfPageBlack");
 	const navMenu = document.querySelector(".fullPage");
+	const body = document.querySelector("body");
 	const loginBtns = document.querySelectorAll(".loginBtn button");
 
 	const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -297,6 +298,12 @@
 		});
 	}
 
+	const loading = (isLoading) => (isLoading) ? body.classList.add("loading") : body.classList.remove("loading");
+
+	loading(true);
+	document.onreadystatechange = () => {
+		if (document.readyState === "complete") loading(false)
+	}
 	halfPageBlack.addEventListener("click", () => hamburger.click());
 </script>
 @RenderSection("CustomScripts",required:false)

@@ -22,7 +22,7 @@
 				<h5 class="modal-title fs-3" id="RefundModalLabel">Refund Amount</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
+			<form class="modal-body" id="refundForm">
 				<div class="amounts row align-items-center">
 					<div class="amount col-12 col-md-4">
 						<div>Paid Amount</div>
@@ -43,10 +43,42 @@
 						</div>
 					</div>
 				</div>
-				<form class="row">
-					<div class="mb-2 col-12 col-md-6"></div>
-				</form>
-			</div>
+				<div class="row">
+					<div class="mb-2 col-12 col-md-6">
+						<label for="Amount" class="fw-bold mb-1">Amount</label>
+						<div class="row g-0">
+							<div class="col-6"><input class="form-control box-shadow-none rounded-0" type="number"
+									name="Amount" id="Amount" min="0"></div>
+							<div class="col-6">
+								<select type="text" class="form-select box-shadow-none rounded-0" name="RefundType"
+									id="RefundType">
+									<option value="percentage">Percentage</option>
+									<option value="fixed">Fixed</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="mb-3 col-12 col-md-6">
+						<label class="fw-bold mb-1">Calculated</label>
+						<div class="row g-0">
+							<div class="col-6"><button type="button" class="rounded-0 calculateBtn">Calculate</button>
+							</div>
+							<div class="col-6">
+								<input type="text" readonly class="form-control box-shadow-none rounded-0"
+									name="RefundAmount" id="RefundAmount">
+							</div>
+						</div>
+					</div>
+					<div class="col-12 mb-2">
+						<label for="RefundReason" class="fw-bold mb-1">Why you want to refund amount?</label>
+						<textarea name="RefundReason" id="RefundReason" class="rounded-0 form-control box-shadow-none"
+							placeholder="Why you want to refund amount?"></textarea>
+					</div>
+					<div class="col-12">
+						<button class="search refundBtn w-100">Refund</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -219,7 +251,16 @@
 			@foreach (var service in Model.viewModels)
 			{
 				<tr>
-					<td class="serviceId clickable" data-dt-colName="Service ID :">@service.ServiceId</td>
+					<td class="serviceId clickable" data-dt-colName="Service ID :" onclick='openDetailsModal(
+							"@service.ServiceId",
+							"@service.SP_First_Name @service.SP_Last_Name",
+							"@service.ProfilePhoto",
+							"@service.SP_Avg_Ratings",
+							"@service.ServiceDate.ToString("dd/MM/yyyy").Replace("-","/")",
+							 "@service.ServiceDate.ToString("HH:mm")",
+							 "@service.ServiceDate.AddHours(service.TotalHours).ToString("HH:mm")",
+							"@service.TotalAmount"
+							)'>@service.ServiceId</td>
 					<td data-dt-colName="Service Date :" class="clickable" onclick='openDetailsModal(
 							"@service.ServiceId",
 							"@service.SP_First_Name @service.SP_Last_Name",
@@ -306,7 +347,7 @@
 						else if (service.ServiceStatus == 3 || service.ServiceStatus == 4)
 						{
 							<div class="action rounded-circle d-flex flex-column align-items-center justify-content-center position-relative"
-					tabindex="0" data-bs-trigger="click" data-bs-toggle="popover" data-bs-offset="0,10"
+					tabindex="0" data-bs-trigger="focus" data-bs-toggle="popover" data-bs-offset="0,10"
 					data-bs-custom-class="actionPopover" data-bs-placement="bottom" data-bs-html="true"
 					data-bs-content='<a role="button" class="custPopoverAnch" onclick=openRefundModal("@service.ServiceId","@service.TotalAmount","@(service.RefundedAmount!=null?service.RefundedAmount:"0.00")")>Refund</a>'>
 								<div class="dot rounded-circle"></div>

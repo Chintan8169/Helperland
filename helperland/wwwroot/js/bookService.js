@@ -13,7 +13,6 @@ $("#bookServiceSubmitViewModel_ServiceDate").datepicker({
 });
 
 $("#bookServiceSubmitViewModel_ServiceDate").datepicker("setDate", nowDate);
-const body = document.querySelector("body");
 const successModalHtml = document.querySelector("#successModal");
 const successModal = new bootstrap.Modal(successModalHtml);
 const tab1Btn = document.querySelector(".nav > button:nth-child(1)");
@@ -179,9 +178,10 @@ scheduleAndPlanFormBtn.addEventListener("click", async (e) => {
 		if (checkExtremeHours() && scheduleAndPlanFormValidator.form() && !checkTimeIsPassed()) {
 			loading(true);
 			const res = await fetch(`/Customer/GetAddresses?ZipCode=${ZipCode.value}`, { method: "GET" });
-			if (res.redirected) {
-				window.location.href = res.url;
-			}
+			const res2 = await fetch("/Customer/GetFavouriteProviders", { method: "GET" });
+			const sps = await res2.json();
+			if (res2.redirected) window.location.href = res2.url;
+			if (res.redirected) window.location.href = res.url;
 			const adds = await res.json();
 			loading(false);
 			if (adds.length > 0) {
@@ -203,6 +203,20 @@ scheduleAndPlanFormBtn.addEventListener("click", async (e) => {
 				});
 			} else {
 				addresses.innerHTML = "There Are No Addresses.Please Add Some !";
+			}
+			if (sps.length > 0) {
+				const favouriteSpsDiv = document.querySelector(".favouriteSPs");
+				favouriteSpsDiv.innerHTML = "";
+				sps.forEach((sp) => {
+					favouriteSpsDiv.innerHTML += `
+					<div class="favSP col-4 d-flex align-items-center justify-content-evenly flex-column py-4 border border-2 rounded-1 mt-3">
+						<img src="/images/${sp.profilePhoto}" class="img-fluid mb-3"/>
+						<div class="fw-bold mb-3 fs-5">${sp.firstName} ${sp.lastName}</div>
+						<input type="radio" name="favsp" hidden id="${sp.spId}" />
+						<label for="${sp.spId}" class="favSpLabel"></label>
+					</div>
+					`;
+				});
 			}
 			document.querySelector("#tab3Error").innerHTML = "";
 			tab2Btn.removeAttribute("disabled");
@@ -348,6 +362,10 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 		if (document.querySelector("#bookServiceSubmitViewModel_Comments").value) {
 			data.Comments = document.querySelector("#bookServiceSubmitViewModel_Comments").value;
 		}
+		const favsp = document.querySelector("input[name='favsp']:checked");
+		if (favsp) {
+			data.ServiceProviderId = favsp.id;
+		}
 		data.HasPets = document.querySelector("#bookServiceSubmitViewModel_HasPets").checked;
 		const addressCheckboxes = document.querySelectorAll("input[name='addressRadio'");
 		for (let i = 0; i < addressCheckboxes.length; i++) {
@@ -387,7 +405,7 @@ document.querySelector("#bookService").addEventListener("click", async () => {
 			successModal.show();
 			document.querySelector(".bookServiceErr").innerHTML = "";
 		} else {
-			throw new Error();
+			document.querySelector(".bookServiceErr").innerHTML = jsonData.err;
 		}
 	} catch (err) {
 		loading(false);

@@ -519,7 +519,8 @@ table.dataTable tbody td {
 }
 
 #myRatingsTable tbody tr.row td,
-#blockCustomerTable tbody tr td {
+#blockCustomerTable tbody tr td,
+#favouriteAndBlockedTable tbody tr td {
 	padding: 0 !important;
 }
 

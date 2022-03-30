@@ -61,8 +61,14 @@ nav.bg-grey .navItem.highlight button {
 	border-color: #1d798c;
 }
 
+.loginErrorToast {
+	color: #842029 !important;
+	background-color: #f8d7da !important;
+	border-color: #f5c2c7 !important;
+}
+
 .forgetPasswordModalForm button,
-.loginModalForm button {
+.loginModalForm button[type="submit"] {
 	background: #1d7a8c !important;
 	font-size: 18px;
 	padding: 7px 30px;

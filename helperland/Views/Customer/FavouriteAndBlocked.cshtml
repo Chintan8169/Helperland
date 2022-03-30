@@ -1,3 +1,4 @@
+@model IEnumerable<FavoriteAndBlockedViewModel>
 @{
 	ViewBag.PageTitle = "Favourite and Blocked Service Provider";
 	Layout = "_CustomerLayout";
@@ -8,6 +9,82 @@
 	href="https://cdn.datatables.net/v/dt/dt-1.11.3/r-2.2.9/rg-1.1.4/datatables.min.css" />
 <link rel="stylesheet" href="~/css/customerServiceHistory.css" asp-append-version="true">
 }
+
+<div class="position-fixed toastContainer bottom-0 end-0 p-3">
+	<div class="toast align-items-center text-white border-0 fade" role="alert" aria-live="assertive"
+		aria-atomic="true">
+		<div class="d-flex">
+			<div class="toast-body py-3 px-4 fs-6"></div>
+			<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+				aria-label="Close"></button>
+		</div>
+	</div>
+</div>
+
+<div class="serviceHistoryTableContainer">
+	<table id="favouriteAndBlockedTable" class="border-0">
+		<thead class="d-none">
+			<tr>
+				<th class="text-nowrap"><span class="d-inline-block">Customer Details</span><span></span></th>
+			</tr>
+		</thead>
+		<tbody class="row g-4 ">
+			@if (Model != null && Model.Any())
+			{
+				@foreach (var sp in Model)
+				{
+					<tr class="col-12 col-md-4" id="user_@sp.SPId">
+						<td class="w-100 h-100 d-flex align-items-center justify-content-evenly flex-column">
+							<img src='@(sp.ProfilePhoto!=null?"/images/"+sp.ProfilePhoto:"/images/avatar-hat.png")'
+						class="mt-4">
+							<div class="fw-bold mt-3 mb-2 fs-4">@sp.FirstName @sp.LastName</div>
+							<div class="feedback d-flex align-items-center justify-content-start mb-2">
+								<div class="stars position-relative d-flex align-items-center justify-content-center">
+									<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+										<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+										<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+										<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+										<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16">
+										<path fill-rule="evenodd" fill="#ECB91C" d="m8.176 12.865 5.045 3.735-1.334-5.78 4.453-3.84-5.871-1.402L8.176.6 5.882
+										5.578.11 6.98l4.355 3.84L3.13 16.6l5.046-3.735z" />
+									</svg>
+									<div class="cover position-absolute top-0 end-0 h-100"
+								style="width: @(100-sp.AvgRatings*20)%;"></div>
+								</div>
+								<span class="lh-sm ms-1">@Math.Round(sp.AvgRatings,2)</span>
+							</div>
+							<div class="mb-3">@sp.TotalCleaning Cleanings</div>
+							<div>
+								<button class="rate rounded-pill mb-3 px-4"
+							onclick=changeFlag("@sp.SPId","@(sp.IsBlocked!=null &&
+							(bool)sp.IsBlocked?"true":"false")","@(sp.IsFavorite!=null &&
+							(bool)sp.IsFavorite?"false":"true")")>@(sp.IsFavorite!=null&&(bool)sp.IsFavorite?"Remove":"Add")</button>
+								<button
+							class='@(sp.IsBlocked!=null && (bool)sp.IsBlocked?"cancel blocked rounded-pill mb-3 px-4":"cancel unblocked rounded-pill mb-3 px-4")'
+							onclick=changeFlag("@sp.SPId","@(sp.IsBlocked!=null &&
+							(bool)sp.IsBlocked?"false":"true")","@(sp.IsFavorite!=null &&
+							(bool)sp.IsFavorite?"true":"false")")>@(sp.IsBlocked!=null
+							&& (bool)sp.IsBlocked?"Unblock":"Block")</button>
+							</div>
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+</div>
 
 @section CustomScripts
 {

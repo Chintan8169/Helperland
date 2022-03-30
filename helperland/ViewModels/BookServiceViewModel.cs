@@ -25,5 +25,6 @@ public class BookServiceSubmitViewModel
 	public float ServiceBasicHours { get; set; }
 #nullable enable
 	public IEnumerable<int>? ExtraServices { get; set; }
+	public string? ServiceProviderId { get; set; }
 	public string? Comments { get; set; }
 }

@@ -299,6 +299,22 @@ input[type="checkbox"]:checked + label .imgDiv svg path {
 	cursor: pointer;
 }
 
+.favSP {
+	color: #646464;
+}
+
+.favSP label::before {
+	content: "Select";
+	display: inline-block;
+	padding: 5px 7px;
+	border: 1px solid #e1e1e1;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.favSP input[name="favsp"]:checked + label::before {
+	content: "Selected";
+}
 #includedServices .modal-dialog {
 	max-width: 900px;
 }
