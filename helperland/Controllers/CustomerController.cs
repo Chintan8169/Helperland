@@ -414,22 +414,37 @@ public class CustomerController : Controller
 			}
 			context.SaveChanges();
 #nullable disable
-			var sps = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == model.ZipCode).ToList();
-			var blockedsps = context.FavoriteAndBlocked.Where(fab => fab.UserId == user.Id && fab.IsBlocked).Select(fab => fab.TargetUserId).Distinct().ToList().Concat(context.FavoriteAndBlocked.Where(fab => fab.TargetUserId == user.Id && fab.IsBlocked).Select(fab => fab.UserId).Distinct()).ToList();
-			List<string> spEmails = new List<string>();
-			foreach (var sp in blockedsps) sps.Remove(sps.Find(u => u.Id == sp));
-			foreach (var sp in sps) spEmails.Add(sp.Email);
-			if (spEmails.Count() <= 0) return Json(new { err = "There is no service provider providing services in your area !" });
-			email.SendMail(new SendMailViewModel
+			if (model.ServiceProviderId != null)
 			{
-				Subject = "New Service",
-				IsBodyHtml = true,
-				Body = @$"
+				var spEmail = context.Users.Where(u => u.Id == model.ServiceProviderId).FirstOrDefault();
+				email.SendMail(new SendMailViewModel
+				{
+					Subject = "New Service",
+					IsBodyHtml = true,
+					Body = @$"
 					<h1 style='font-size:35px;'>Greetings</h1>
-					<p style='font-size:25px;'>New Service is booked with ServiceId {newServiceRequest.ServiceId}</p>
-				",
-				To = spEmails
-			});
+					<p style='font-size:25px;'>New Service is booked with ServiceId {newServiceRequest.ServiceId}</p>",
+					To = new List<string>() { spEmail.Email }
+				});
+			}
+			else
+			{
+				var sps = context.Users.Where(u => u.UserTypeId == 2 && u.ZipCode == model.ZipCode).ToList();
+				var blockedsps = context.FavoriteAndBlocked.Where(fab => fab.UserId == user.Id && fab.IsBlocked).Select(fab => fab.TargetUserId).Distinct().ToList().Concat(context.FavoriteAndBlocked.Where(fab => fab.TargetUserId == user.Id && fab.IsBlocked).Select(fab => fab.UserId).Distinct()).ToList();
+				List<string> spEmails = new List<string>();
+				foreach (var sp in blockedsps) sps.Remove(sps.Find(u => u.Id == sp));
+				foreach (var sp in sps) spEmails.Add(sp.Email);
+				if (spEmails.Count() <= 0) return Json(new { err = "There is no service provider providing services in your area !" });
+				email.SendMail(new SendMailViewModel
+				{
+					Subject = "New Service",
+					IsBodyHtml = true,
+					Body = @$"
+					<h1 style='font-size:35px;'>Greetings</h1>
+					<p style='font-size:25px;'>New Service is booked with ServiceId {newServiceRequest.ServiceId}</p>",
+					To = spEmails
+				});
+			}
 			return Json(new { ServiceId = newServiceRequest.ServiceId });
 		}
 		catch (Exception e)

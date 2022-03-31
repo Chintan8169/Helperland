@@ -60,6 +60,10 @@ tabsBtns.forEach((tab, index) => {
 	});
 });
 
+if (nowDate.getHours() < 18) {
+	ServiceStartTime.value = nowDate.getMinutes() >= 0 && nowDate.getMinutes() <= 30 ? nowDate.getHours() + 0.5 : nowDate.getHours() + 18;
+}
+
 checkAvailabilityBtn.addEventListener("click", async (e) => {
 	try {
 		const zipCodeValidator = $("#ZipCodeForm").validate();
@@ -129,7 +133,7 @@ const checkTimeIsPassed = () => {
 	const selectedDate = $("#bookServiceSubmitViewModel_ServiceDate").datepicker("getDate");
 	if (
 		now.getTime() >= selectedDate.getTime() &&
-		parseFloat(ServiceStartTime.options[ServiceStartTime.options.selectedIndex].value) < now.getHours()
+		parseFloat(ServiceStartTime.options[ServiceStartTime.options.selectedIndex].value) < now.getHours() + now.getMinutes() / 60
 	) {
 		document.querySelector(".ServiceStartTimeError").innerHTML = "This time is passed";
 		return true;
